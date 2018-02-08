@@ -1,0 +1,22 @@
+{
+  "version": 8,
+  "sources": {
+    "test-data": {
+      "type": "geojson",
+      "data": "/styles/test-data.geojson"
+    }
+  },
+  "layers": [
+    {
+      "id": "test-data",
+      "type": "circle",
+      "source": "test-data",
+      "minzoom": 0,
+      "maxzoom": 22,
+      "paint": {
+        "circle-color": "#FF0000",
+        "circle-radius": 10
+      }
+    }
+  ]
+}
