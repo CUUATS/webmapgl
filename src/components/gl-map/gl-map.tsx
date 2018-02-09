@@ -78,17 +78,17 @@ export class GLMap {
 
   render() {
     return ([
-      <div class="panel">
-        <button class="menu-toggle" onClick={this.toggleMenu.bind(this)}>
-          &#9776;<span class="sr-only">Menu</span>
-        </button>
-        <slot name="panel" />
-      </div>,
       <div class={ 'menu menu-' + ((this.menuOpen) ? 'open' : 'closed') }>
         <ul>
           <slot name="menu-start" />
           <slot name="menu-end" />
         </ul>
+      </div>,
+      <div class="panel">
+        <button class="menu-toggle" onClick={this.toggleMenu.bind(this)}>
+          &#9776;<span class="sr-only">Menu</span>
+        </button>
+        <slot name="panel" />
       </div>,
       <div class="map"></div>
     ]);
