@@ -1,0 +1,38 @@
+gl-map {
+  align-items: stretch;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  .panel {
+    background-color: #3F4854;
+    box-sizing: border-box;
+    color: white;
+    height: 40px;
+    min-height: 40px;
+    padding: 5px;
+  }
+  .menu {}
+  .map {
+    height: 100%;
+    width: 100%;
+  }
+  .sr-only {
+    height: 1px;
+    left: -10000px;
+    overflow: hidden;
+    position: absolute;
+    top: auto;
+    width: 1px;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  gl-map {
+    flex-direction: row;
+    .panel {
+      height: auto;
+      min-width: 350px;
+      width: 350px;
+    }
+  }
+}

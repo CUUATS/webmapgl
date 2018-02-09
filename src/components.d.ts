@@ -5,30 +5,39 @@
  */
 
 
+declare global {
+  interface HTMLStencilElement extends HTMLElement {
+    componentOnReady(): Promise<this>;
+    componentOnReady(done: (ele?: this) => void): void;
+  }
+}
+
+
+
 import {
-  WMGLApp as WmglApp
-} from './components/wmgl-app/wmgl-app';
+  GLLegend as GlLegend
+} from './components/gl-legend/gl-legend';
 
 declare global {
-  interface HTMLWmglAppElement extends WmglApp, HTMLElement {
+  interface HTMLGlLegendElement extends GlLegend, HTMLStencilElement {
   }
-  var HTMLWmglAppElement: {
-    prototype: HTMLWmglAppElement;
-    new (): HTMLWmglAppElement;
+  var HTMLGlLegendElement: {
+    prototype: HTMLGlLegendElement;
+    new (): HTMLGlLegendElement;
   };
   interface HTMLElementTagNameMap {
-    "wmgl-app": HTMLWmglAppElement;
+    "gl-legend": HTMLGlLegendElement;
   }
   interface ElementTagNameMap {
-    "wmgl-app": HTMLWmglAppElement;
+    "gl-legend": HTMLGlLegendElement;
   }
   namespace JSX {
     interface IntrinsicElements {
-      "wmgl-app": JSXElements.WmglAppAttributes;
+      "gl-legend": JSXElements.GlLegendAttributes;
     }
   }
   namespace JSXElements {
-    export interface WmglAppAttributes extends HTMLAttributes {
+    export interface GlLegendAttributes extends HTMLAttributes {
       
     }
   }
@@ -36,29 +45,29 @@ declare global {
 
 
 import {
-  WMGLMap as WmglMap
-} from './components/wmgl-map/wmgl-map';
+  GLMap as GlMap
+} from './components/gl-map/gl-map';
 
 declare global {
-  interface HTMLWmglMapElement extends WmglMap, HTMLElement {
+  interface HTMLGlMapElement extends GlMap, HTMLStencilElement {
   }
-  var HTMLWmglMapElement: {
-    prototype: HTMLWmglMapElement;
-    new (): HTMLWmglMapElement;
+  var HTMLGlMapElement: {
+    prototype: HTMLGlMapElement;
+    new (): HTMLGlMapElement;
   };
   interface HTMLElementTagNameMap {
-    "wmgl-map": HTMLWmglMapElement;
+    "gl-map": HTMLGlMapElement;
   }
   interface ElementTagNameMap {
-    "wmgl-map": HTMLWmglMapElement;
+    "gl-map": HTMLGlMapElement;
   }
   namespace JSX {
     interface IntrinsicElements {
-      "wmgl-map": JSXElements.WmglMapAttributes;
+      "gl-map": JSXElements.GlMapAttributes;
     }
   }
   namespace JSXElements {
-    export interface WmglMapAttributes extends HTMLAttributes {
+    export interface GlMapAttributes extends HTMLAttributes {
       latitude?: number;
       longitude?: number;
       maxzoom?: number;
@@ -70,29 +79,29 @@ declare global {
 
 
 import {
-  WMGLStyle as WmglStyle
-} from './components/wmgl-style/wmgl-style';
+  GLStyle as GlStyle
+} from './components/gl-style/gl-style';
 
 declare global {
-  interface HTMLWmglStyleElement extends WmglStyle, HTMLElement {
+  interface HTMLGlStyleElement extends GlStyle, HTMLStencilElement {
   }
-  var HTMLWmglStyleElement: {
-    prototype: HTMLWmglStyleElement;
-    new (): HTMLWmglStyleElement;
+  var HTMLGlStyleElement: {
+    prototype: HTMLGlStyleElement;
+    new (): HTMLGlStyleElement;
   };
   interface HTMLElementTagNameMap {
-    "wmgl-style": HTMLWmglStyleElement;
+    "gl-style": HTMLGlStyleElement;
   }
   interface ElementTagNameMap {
-    "wmgl-style": HTMLWmglStyleElement;
+    "gl-style": HTMLGlStyleElement;
   }
   namespace JSX {
     interface IntrinsicElements {
-      "wmgl-style": JSXElements.WmglStyleAttributes;
+      "gl-style": JSXElements.GlStyleAttributes;
     }
   }
   namespace JSXElements {
-    export interface WmglStyleAttributes extends HTMLAttributes {
+    export interface GlStyleAttributes extends HTMLAttributes {
       url?: string;
     }
   }

@@ -3,13 +3,13 @@ import mapboxgl from 'mapbox-gl/dist/mapbox-gl-dev';
 
 
 @Component({
-  tag: 'wmgl-map',
+  tag: 'gl-map',
   styleUrls: [
     '../../../node_modules/mapbox-gl/dist/mapbox-gl.css',
-    'wmgl-map.scss'
+    'gl-map.scss'
   ]
 })
-export class WMGLMap {
+export class GLMap {
   @Element() el: HTMLElement;
   @Prop() latitude: number;
   @Prop() longitude: number;
@@ -24,8 +24,9 @@ export class WMGLMap {
         if (this._map) {
           this._map.setStyle(style);
         } else {
+          let container = this.el.querySelector('.map');
           this._map = new mapboxgl.Map({
-            container: this.el,
+            container: container,
             center: [this.longitude, this.latitude],
             zoom: this.zoom,
             minZoom: this.minzoom,
@@ -38,7 +39,7 @@ export class WMGLMap {
 
   getStyle() {
     return Promise.all(Array.from(this.el.childNodes)
-      .filter((child) => child.nodeName === 'WMGL-STYLE')
+      .filter((child) => child.nodeName === 'GL-STYLE')
       .map((child) => {
         let url = (child as any).url;
         return fetch(url)
@@ -68,5 +69,17 @@ export class WMGLMap {
         });
         return style;
       });
+  }
+
+  render() {
+    return ([
+      <div class="panel">
+        <div class="menu">
+          <slot name="menu" />
+        </div>
+        <slot name="panel" />
+      </div>,
+      <div class="map"></div>
+    ]);
   }
 }

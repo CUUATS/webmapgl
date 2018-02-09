@@ -2,9 +2,9 @@ exports.config = {
   bundles: [
     {
       components: [
-        'wmgl-app',
-        'wmgl-map',
-        'wmgl-style'
+        'gl-legend',
+        'gl-map',
+        'gl-style'
       ]
     }
   ],

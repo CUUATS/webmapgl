@@ -2,9 +2,9 @@ import { Component, Element, Prop } from '@stencil/core';
 
 
 @Component({
-  tag: 'wmgl-style'
+  tag: 'gl-style'
 })
-export class WMGLStyle {
+export class GLStyle {
   @Element() el: HTMLElement;
   @Prop() url: string;
 }
