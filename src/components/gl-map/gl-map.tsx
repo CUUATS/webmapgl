@@ -1,4 +1,4 @@
-import { Component, Element, Prop } from '@stencil/core';
+import { Component, Element, Prop, State } from '@stencil/core';
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl-dev';
 
 
@@ -16,6 +16,7 @@ export class GLMap {
   @Prop() zoom = 10;
   @Prop() minzoom = 0;
   @Prop() maxzoom = 22;
+  @State() menuOpen = false;
   private _map: mapboxgl.Map;
 
   componentDidLoad() {
@@ -71,13 +72,23 @@ export class GLMap {
       });
   }
 
+  toggleMenu() {
+    this.menuOpen = !this.menuOpen;
+  }
+
   render() {
     return ([
       <div class="panel">
-        <div class="menu">
-          <slot name="menu" />
-        </div>
+        <button class="menu-toggle" onClick={this.toggleMenu.bind(this)}>
+          &#9776;<span class="sr-only">Menu</span>
+        </button>
         <slot name="panel" />
+      </div>,
+      <div class={ 'menu menu-' + ((this.menuOpen) ? 'open' : 'closed') }>
+        <ul>
+          <slot name="menu-start" />
+          <slot name="menu-end" />
+        </ul>
       </div>,
       <div class="map"></div>
     ]);

@@ -8,11 +8,69 @@ gl-map {
     background-color: #3F4854;
     box-sizing: border-box;
     color: white;
-    height: 40px;
+    display: flex;
+    flex: 0 0 auto;
+    height: 50px;
     min-height: 40px;
     padding: 5px;
   }
-  .menu {}
+  .menu-toggle {
+    background-color: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 2px;
+    color: white;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 18px;
+    height: 40px;
+    margin-right: 3px;
+    padding: 0 5px;
+    text-align: center;
+    vertical-align: middle;
+    width: 40px;
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+  }
+  .menu {
+    background: white;
+    color: black;
+    position: absolute;
+    z-index: 100;
+    ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0 15px;
+    }
+    li {
+      border-bottom: 1px solid #dddddd;
+      &:last-child {
+        border-bottom: 0 none transparent;
+      }
+    }
+    a,
+    button {
+      color: #666666;
+      display: block;
+      font-size: 16px;
+      padding: 15px 0;
+      text-decoration: none;
+      &:active,
+      &:focus,
+      &:hover {
+        color: #2e3191;
+        text-decoration: underline;
+      }
+    }
+  }
+  .menu-open {
+    left: 0;
+    right: 0;
+    top: 50px;
+  }
+  .menu-closed {
+    display: none;
+  }
   .map {
     height: 100%;
     width: 100%;
@@ -34,6 +92,42 @@ gl-map {
       height: auto;
       min-width: 350px;
       width: 350px;
+    }
+    .menu-toggle {
+      display: none;
+    }
+    .menu {
+      background-color: transparent;
+      display: block;
+      left: auto;
+      right: 20px;
+      top: 20px;
+      ul {
+        padding: 0;
+      }
+      li {
+        border-bottom: 0 none transparent;
+        display: inline-block;
+        margin-left: 10px;
+      }
+      a,
+      button {
+        background-color: #3f4854;
+        border-radius: 2px;
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.25);
+        color: white;
+        display: inline-block;
+        font-size: 13px;
+        padding: 5px 10px;
+        text-decoration: none;
+        &:active,
+        &:focus,
+        &:hover {
+          background-color: #24abe2;
+          color: white;
+          text-decoration: none;
+        }
+      }
     }
   }
 }
