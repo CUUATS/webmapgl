@@ -5,6 +5,7 @@ gl-map {
   font-family: 'Open Sans', 'Helvetica', 'Arial', 'sans-serif';
   position: relative;
   .panel {
+    align-items: center;
     background-color: #3F4854;
     box-sizing: border-box;
     color: white;
@@ -13,6 +14,13 @@ gl-map {
     height: 50px;
     min-height: 40px;
     padding: 5px;
+    h1 {
+      font-size: 16px;
+      line-height: 18px;
+      margin: 0;
+      padding: 0;
+      vertical-align: middle;
+    }
   }
   .menu-toggle {
     background-color: transparent;
