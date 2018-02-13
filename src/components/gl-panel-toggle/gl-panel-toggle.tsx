@@ -23,12 +23,11 @@ export class GLPanelToggle {
 
   render() {
     let text = (this.panelOpen) ? _t('Hide info panel') : _t('Show info panel');
-    let icon = '../assets/icons/chevron-' +
-      ((this.panelOpen) ? 'left' : 'right') + '.svg';
+    let iconCls = 'ion-chevron-' + ((this.panelOpen) ? 'left' : 'right');
     return (
       <li class="menu-item menu-item-desktop">
         <button onClick={this.togglePanel.bind(this)}
-          title={text}><img src={icon} alt={text} height="14" /></button>
+          title={text}><i class={'icon ' + iconCls}></i></button>
       </li>
     );
   }
