@@ -1,4 +1,5 @@
 gl-map {
+  // Map size: small
   align-items: stretch;
   display: flex;
   flex-direction: column;
@@ -94,10 +95,9 @@ gl-map {
     top: auto;
     width: 1px;
   }
-}
 
-@media screen and (min-width: 768px) {
-  gl-map {
+  // Map size: large
+  &.gl-map-size-lg {
     flex-direction: row;
     .panel {
       align-items: flex-start;

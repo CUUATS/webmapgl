@@ -21,8 +21,11 @@ export class GLMap {
   @State() menuOpen = false;
   @State() panelOpen = true;
   private _map: mapboxgl.Map;
+  private _resizeTimeout: number;
+  private _size: string;
 
   componentDidLoad() {
+    this.initResize();
     this.getStyle()
       .then((style) => {
         if (this._map) {
@@ -43,6 +46,32 @@ export class GLMap {
 
   componentDidUpdate() {
     if (this._map) this._map.resize();
+  }
+
+  initResize() {
+    this.setSizeClass();
+    window.addEventListener('resize', () => {
+      if (this._resizeTimeout) return;
+      this._resizeTimeout = window.setTimeout(() => {
+        this._resizeTimeout = null;
+        this.setSizeClass();
+      }, 66);
+    });
+  }
+
+  getSize() {
+    let width = this.el.getBoundingClientRect().width;
+    return (width >= 768) ? 'lg' : 'sm';
+  }
+
+  setSizeClass() {
+    let size = this.getSize();
+    if (size === this._size) return;
+    let prefix = 'gl-map-size-';
+    if (this.el.classList.contains(prefix + this._size))
+      this.el.classList.remove(prefix + this._size);
+    this.el.classList.add(prefix + size);
+    this._size = size;
   }
 
   getStyle() {
@@ -91,7 +120,7 @@ export class GLMap {
 
   @Listen('setPanelOpen')
   setPanelOpenHandler(e: CustomEvent) {
-    this.setPanelOpen(e.detail);    
+    this.setPanelOpen(e.detail);
   }
 
   render() {
