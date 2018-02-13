@@ -15,6 +15,36 @@ declare global {
 
 
 import {
+  GLFullscreen as GlFullscreen
+} from './components/gl-fullscreen/gl-fullscreen';
+
+declare global {
+  interface HTMLGlFullscreenElement extends GlFullscreen, HTMLStencilElement {
+  }
+  var HTMLGlFullscreenElement: {
+    prototype: HTMLGlFullscreenElement;
+    new (): HTMLGlFullscreenElement;
+  };
+  interface HTMLElementTagNameMap {
+    "gl-fullscreen": HTMLGlFullscreenElement;
+  }
+  interface ElementTagNameMap {
+    "gl-fullscreen": HTMLGlFullscreenElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      "gl-fullscreen": JSXElements.GlFullscreenAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface GlFullscreenAttributes extends HTMLAttributes {
+      
+    }
+  }
+}
+
+
+import {
   GLLegend as GlLegend
 } from './components/gl-legend/gl-legend';
 

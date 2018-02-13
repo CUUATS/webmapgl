@@ -12,6 +12,7 @@ import mapboxgl from 'mapbox-gl/dist/mapbox-gl-dev';
 })
 export class GLMap {
   @Element() el: HTMLElement;
+  @Event() fullscreenSet: EventEmitter;
   @Event() panelOpenSet: EventEmitter;
   @Prop() latitude: number;
   @Prop() longitude: number;
@@ -45,6 +46,18 @@ export class GLMap {
   }
 
   componentDidUpdate() {
+    this.resizeMap();
+  }
+
+  addClass(cls: string) {
+    if (!this.el.classList.contains(cls)) this.el.classList.add(cls);
+  }
+
+  removeClass(cls: string) {
+    if (this.el.classList.contains(cls)) this.el.classList.remove(cls);
+  }
+
+  resizeMap() {
     if (this._map) this._map.resize();
   }
 
@@ -68,9 +81,8 @@ export class GLMap {
     let size = this.getSize();
     if (size === this._size) return;
     let prefix = 'gl-map-size-';
-    if (this.el.classList.contains(prefix + this._size))
-      this.el.classList.remove(prefix + this._size);
-    this.el.classList.add(prefix + size);
+    this.removeClass(prefix + this._size);
+    this.addClass(prefix + size);
     this._size = size;
   }
 
@@ -113,9 +125,24 @@ export class GLMap {
   }
 
   @Method()
+  setFullscreen(fullscreen: boolean) {
+    let cls = 'gl-map-fullscreen';
+    (fullscreen) ? this.addClass(cls) : this.removeClass(cls);
+    this.menuOpen = false;
+    this.setSizeClass();
+    this.resizeMap();
+    this.fullscreenSet.emit(fullscreen);
+  }
+
+  @Method()
   setPanelOpen(open: boolean) {
     this.panelOpen = open;
     this.panelOpenSet.emit(this.panelOpen);
+  }
+
+  @Listen('setFullscreen')
+  setFullscreenHandler(e: CustomEvent) {
+    this.setFullscreen(e.detail);
   }
 
   @Listen('setPanelOpen')

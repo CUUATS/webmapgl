@@ -25,7 +25,7 @@ export class GLPanelToggle {
     let text = (this.panelOpen) ? _t('Hide info panel') : _t('Show info panel');
     let iconCls = 'ion-chevron-' + ((this.panelOpen) ? 'left' : 'right');
     return (
-      <li class="menu-item menu-item-desktop">
+      <li class="menu-item size-lg">
         <button onClick={this.togglePanel.bind(this)}
           title={text}><i class={'icon ' + iconCls}></i></button>
       </li>

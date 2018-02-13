@@ -1,9 +1,11 @@
+$fonts-primary: 'Open Sans', 'Helvetica', 'Arial', 'sans-serif';
+
 gl-map {
   // Map size: small
   align-items: stretch;
   display: flex;
   flex-direction: column;
-  font-family: 'Open Sans', 'Helvetica', 'Arial', 'sans-serif';
+  font-family: $fonts-primary;
   position: relative;
   .panel {
     align-items: center;
@@ -47,28 +49,39 @@ gl-map {
     position: absolute;
     z-index: 100;
     ul {
+      border-bottom: 1px solid #dddddd;
       list-style-type: none;
       margin: 0;
       padding: 0 15px;
     }
     li {
       border-bottom: 1px solid #dddddd;
-      &:last-child {
-        border-bottom: 0 none transparent;
-      }
+    }
+    ul > *:last-child > li,
+    ul > li:last-child {
+      border-bottom: 0 none transparent;
     }
     a,
     button {
+      background-color: transparent;
+      border: 0 none transparent;
       color: #666666;
+      cursor: pointer;
       display: block;
+      font-family: $fonts-primary;
       font-size: 16px;
       padding: 15px 0;
+      text-align: left;
       text-decoration: none;
+      width: 100%;
       &:active,
       &:focus,
       &:hover {
         color: #2e3191;
         text-decoration: underline;
+      }
+      .icon + * {
+        margin-left: 5px;
       }
     }
   }
@@ -80,7 +93,7 @@ gl-map {
   .menu-closed {
     display: none;
   }
-  .menu-item-desktop {
+  .size-lg {
     display: none;
   }
   .map {
@@ -127,6 +140,7 @@ gl-map {
       right: 20px;
       top: 20px;
       ul {
+        border-bottom: 0 none transparent;
         padding: 0;
       }
       li {
@@ -144,6 +158,7 @@ gl-map {
         font-size: 13px;
         padding: 5px 10px;
         text-decoration: none;
+        width: auto;
         &:active,
         &:focus,
         &:hover {
@@ -153,8 +168,21 @@ gl-map {
         }
       }
     }
-    .menu-item-desktop {
+    .size-sm {
+      display: none;
+    }
+    .size-lg {
       display: block;
     }
+  }
+
+  &.gl-map-fullscreen {
+    bottom: 0;
+    height: auto !important;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: auto !important;
   }
 }
