@@ -79,6 +79,36 @@ declare global {
 
 
 import {
+  GLPanelToggle as GlPanelToggle
+} from './components/gl-panel-toggle/gl-panel-toggle';
+
+declare global {
+  interface HTMLGlPanelToggleElement extends GlPanelToggle, HTMLStencilElement {
+  }
+  var HTMLGlPanelToggleElement: {
+    prototype: HTMLGlPanelToggleElement;
+    new (): HTMLGlPanelToggleElement;
+  };
+  interface HTMLElementTagNameMap {
+    "gl-panel-toggle": HTMLGlPanelToggleElement;
+  }
+  interface ElementTagNameMap {
+    "gl-panel-toggle": HTMLGlPanelToggleElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      "gl-panel-toggle": JSXElements.GlPanelToggleAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface GlPanelToggleAttributes extends HTMLAttributes {
+      
+    }
+  }
+}
+
+
+import {
   GLStyle as GlStyle
 } from './components/gl-style/gl-style';
 

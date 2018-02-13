@@ -79,6 +79,9 @@ gl-map {
   .menu-closed {
     display: none;
   }
+  .menu-item-desktop {
+    display: none;
+  }
   .map {
     height: 100%;
     width: 100%;
@@ -110,6 +113,9 @@ gl-map {
         padding: 10px 0;
         vertical-align: top;
       }
+    }
+    .panel-closed {
+      display: none;
     }
     .menu-toggle {
       display: none;
@@ -146,6 +152,9 @@ gl-map {
           text-decoration: none;
         }
       }
+    }
+    .menu-item-desktop {
+      display: block;
     }
   }
 }

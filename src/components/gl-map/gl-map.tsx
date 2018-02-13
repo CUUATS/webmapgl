@@ -1,4 +1,5 @@
-import { Component, Element, Prop, State } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Listen, Method, Prop,
+  State } from '@stencil/core';
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl-dev';
 
 
@@ -11,12 +12,14 @@ import mapboxgl from 'mapbox-gl/dist/mapbox-gl-dev';
 })
 export class GLMap {
   @Element() el: HTMLElement;
+  @Event() panelOpenSet: EventEmitter;
   @Prop() latitude: number;
   @Prop() longitude: number;
   @Prop() zoom = 10;
   @Prop() minzoom = 0;
   @Prop() maxzoom = 22;
   @State() menuOpen = false;
+  @State() panelOpen = true;
   private _map: mapboxgl.Map;
 
   componentDidLoad() {
@@ -36,6 +39,10 @@ export class GLMap {
           });
         }
       });
+  }
+
+  componentDidUpdate() {
+    if (this._map) this._map.resize();
   }
 
   getStyle() {
@@ -76,15 +83,25 @@ export class GLMap {
     this.menuOpen = !this.menuOpen;
   }
 
+  @Method()
+  setPanelOpen(open: boolean) {
+    this.panelOpen = open;
+    this.panelOpenSet.emit(this.panelOpen);
+  }
+
+  @Listen('setPanelOpen')
+  setPanelOpenHandler(e: CustomEvent) {
+    this.setPanelOpen(e.detail);    
+  }
+
   render() {
     return ([
       <div class={ 'menu menu-' + ((this.menuOpen) ? 'open' : 'closed') }>
         <ul>
-          <slot name="menu-start" />
-          <slot name="menu-end" />
+          <slot name="menu" />
         </ul>
       </div>,
-      <div class="panel">
+      <div class={ 'panel panel-' + ((this.panelOpen) ? 'open' : 'closed') }>
         <button class="menu-toggle" onClick={this.toggleMenu.bind(this)}>
           &#9776;<span class="sr-only">Menu</span>
         </button>

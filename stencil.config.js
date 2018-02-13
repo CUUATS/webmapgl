@@ -4,6 +4,7 @@ exports.config = {
       components: [
         'gl-legend',
         'gl-map',
+        'gl-panel-toggle',
         'gl-style'
       ]
     }
