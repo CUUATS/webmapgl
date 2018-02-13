@@ -1,5 +1,6 @@
 import { Component, Element, State, Event, EventEmitter } from '@stencil/core';
 import { addMapEventHandler } from '../utils';
+import { _t } from '../i18n/i18n';
 
 
 @Component({
@@ -21,7 +22,7 @@ export class GLPanelToggle {
   }
 
   render() {
-    let text = (this.panelOpen) ? 'Hide info panel' : 'Show info panel';
+    let text = (this.panelOpen) ? _t('Hide info panel') : _t('Show info panel');
     let icon = '../assets/icons/chevron-' +
       ((this.panelOpen) ? 'left' : 'right') + '.svg';
     return (

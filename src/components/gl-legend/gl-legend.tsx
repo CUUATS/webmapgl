@@ -1,4 +1,5 @@
 import { Component } from '@stencil/core';
+import { _t } from '../i18n/i18n';
 
 
 @Component({
@@ -7,6 +8,6 @@ import { Component } from '@stencil/core';
 })
 export class GLLegend {
   render() {
-    return (<h2>Legend</h2>);
+    return (<h2>{ _t('Legend') }</h2>);
   }
 }
