@@ -1,4 +1,7 @@
 $fonts-primary: 'Open Sans', 'Helvetica', 'Arial', 'sans-serif';
+$color-background: #3f4854;
+$color-button: #1b95c7;
+$color-button-hover: #24abe2;
 
 gl-map {
   // Map size: small
@@ -9,7 +12,7 @@ gl-map {
   position: relative;
   .panel {
     align-items: center;
-    background-color: #3F4854;
+    background-color: $color-background;
     box-sizing: border-box;
     color: white;
     display: flex;
@@ -23,22 +26,49 @@ gl-map {
       margin: 0;
       padding: 0;
       vertical-align: middle;
+      width: 100%;
+    }
+    .panel-items {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+    .panel-box-open {
+      background-color: rgba(255, 255, 255, 0.9);
+      bottom: 0;
+      color: black;
+      left: 0;
+      padding: 0;
+      position: absolute;
+      right: 0;
+      top: 50px;
+      z-index: 80;
+    }
+    .panel-box-closed {
+      display: none;
+    }
+  }
+  .panel-button {
+    background-color: $color-button;
+    border: 0 none transparent;
+    border-radius: 2px;
+    color: white;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 24px;
+    height: 40px;
+    margin-right: 5px;
+    padding: 0 10px;
+    text-align: center;
+    vertical-align: middle;
+    &:hover {
+      background-color: $color-button-hover;
     }
   }
   .menu-toggle {
     background-color: transparent;
     border: 1px solid rgba(255, 255, 255, 0.5);
-    border-radius: 2px;
-    color: white;
-    cursor: pointer;
-    display: inline-block;
-    font-size: 18px;
-    height: 40px;
-    margin-right: 5px;
-    padding: 0 5px;
-    text-align: center;
-    vertical-align: middle;
-    width: 40px;
+    padding: 0 15px;
     &:hover {
       background-color: rgba(255, 255, 255, 0.1);
     }
@@ -48,7 +78,7 @@ gl-map {
     color: black;
     position: absolute;
     z-index: 100;
-    ul {
+    ul.menu-items {
       border-bottom: 1px solid #dddddd;
       list-style-type: none;
       margin: 0;
@@ -139,7 +169,7 @@ gl-map {
       left: auto;
       right: 20px;
       top: 20px;
-      ul {
+      ul.menu-items {
         border-bottom: 0 none transparent;
         padding: 0;
       }
@@ -150,7 +180,7 @@ gl-map {
       }
       a,
       button {
-        background-color: #3f4854;
+        background-color: $color-background;
         border-radius: 2px;
         box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.25);
         color: white;
@@ -162,7 +192,7 @@ gl-map {
         &:active,
         &:focus,
         &:hover {
-          background-color: #24abe2;
+          background-color: $color-button-hover;
           color: white;
           text-decoration: none;
         }

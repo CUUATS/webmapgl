@@ -1,6 +1,7 @@
 import { Component, Element, Event, EventEmitter, Listen, Method, Prop,
   State } from '@stencil/core';
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl-dev';
+import { _t } from '../i18n/i18n';
 
 
 @Component({
@@ -151,17 +152,21 @@ export class GLMap {
   }
 
   render() {
+    let menu = _t('Menu');
     return ([
       <div class={ 'menu menu-' + ((this.menuOpen) ? 'open' : 'closed') }>
-        <ul>
+        <ul class="menu-items">
           <slot name="menu" />
         </ul>
       </div>,
       <div class={ 'panel panel-' + ((this.panelOpen) ? 'open' : 'closed') }>
-        <button class="menu-toggle" onClick={this.toggleMenu.bind(this)}>
-          &#9776;<span class="sr-only">Menu</span>
-        </button>
-        <slot name="panel" />
+        <button class="panel-button menu-toggle" title={menu}
+          onClick={this.toggleMenu.bind(this)}><i class="icon ion-navicon"
+          ></i></button>
+        <slot name="panel-top" />
+        <ul class="panel-items">
+          <slot name="panel" />
+        </ul>
       </div>,
       <div class="map"></div>
     ]);
