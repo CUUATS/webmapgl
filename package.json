@@ -15,7 +15,7 @@
     "test.watch": "jest --watch --no-cache"
   },
   "dependencies": {
-    "@stencil/core": "0.4.3",
+    "@stencil/core": "0.5.1",
     "mapbox-gl": "^0.44.0"
   },
   "devDependencies": {
