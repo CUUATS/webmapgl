@@ -4,6 +4,10 @@
  * and imports for stencil collections that might be configured in your stencil.config.js file
  */
 
+import '@stencil/router';
+
+import '@ionic/core';
+
 
 declare global {
   interface HTMLStencilElement extends HTMLElement {
@@ -15,30 +19,31 @@ declare global {
 
 
 import {
-  GLFullscreen as GlFullscreen
-} from './components/gl-fullscreen/gl-fullscreen';
+  GLApp as GlApp
+} from './components/gl-app/gl-app';
 
 declare global {
-  interface HTMLGlFullscreenElement extends GlFullscreen, HTMLStencilElement {
+  interface HTMLGlAppElement extends GlApp, HTMLStencilElement {
   }
-  var HTMLGlFullscreenElement: {
-    prototype: HTMLGlFullscreenElement;
-    new (): HTMLGlFullscreenElement;
+  var HTMLGlAppElement: {
+    prototype: HTMLGlAppElement;
+    new (): HTMLGlAppElement;
   };
   interface HTMLElementTagNameMap {
-    "gl-fullscreen": HTMLGlFullscreenElement;
+    "gl-app": HTMLGlAppElement;
   }
   interface ElementTagNameMap {
-    "gl-fullscreen": HTMLGlFullscreenElement;
+    "gl-app": HTMLGlAppElement;
   }
   namespace JSX {
     interface IntrinsicElements {
-      "gl-fullscreen": JSXElements.GlFullscreenAttributes;
+      "gl-app": JSXElements.GlAppAttributes;
     }
   }
   namespace JSXElements {
-    export interface GlFullscreenAttributes extends HTMLAttributes {
-      
+    export interface GlAppAttributes extends HTMLAttributes {
+      allowFullscreen?: boolean;
+      mapTitle?: string;
     }
   }
 }
@@ -103,36 +108,6 @@ declare global {
       maxzoom?: number;
       minzoom?: number;
       zoom?: number;
-    }
-  }
-}
-
-
-import {
-  GLPanelToggle as GlPanelToggle
-} from './components/gl-panel-toggle/gl-panel-toggle';
-
-declare global {
-  interface HTMLGlPanelToggleElement extends GlPanelToggle, HTMLStencilElement {
-  }
-  var HTMLGlPanelToggleElement: {
-    prototype: HTMLGlPanelToggleElement;
-    new (): HTMLGlPanelToggleElement;
-  };
-  interface HTMLElementTagNameMap {
-    "gl-panel-toggle": HTMLGlPanelToggleElement;
-  }
-  interface ElementTagNameMap {
-    "gl-panel-toggle": HTMLGlPanelToggleElement;
-  }
-  namespace JSX {
-    interface IntrinsicElements {
-      "gl-panel-toggle": JSXElements.GlPanelToggleAttributes;
-    }
-  }
-  namespace JSXElements {
-    export interface GlPanelToggleAttributes extends HTMLAttributes {
-      
     }
   }
 }

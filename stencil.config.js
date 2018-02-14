@@ -1,15 +1,11 @@
 exports.config = {
-  bundles: [
-    {
-      components: [
-        'gl-fullscreen',
-        'gl-legend',
-        'gl-map',
-        'gl-panel-toggle',
-        'gl-style'
-      ]
-    }
+  collections: [
+    { name: '@stencil/router' },
+    { name: '@ionic/core' }
   ],
+  serviceWorker: {
+    swSrc: 'src/sw.js'
+  },
   copy: [
     {
       src: 'styles'

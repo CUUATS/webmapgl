@@ -10,38 +10,17 @@
   <meta http-equiv="x-ua-compatible" content="IE=Edge"/>
   <script src="/build/app.js"></script>
 
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet">
-  <link href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet">
   <link rel="apple-touch-icon" href="/assets/icon/icon.png">
   <link rel="icon" type="image/x-icon" href="/assets/icon/favicon.ico">
   <link rel="manifest" href="/manifest.json">
 </head>
 <body>
-
-  <gl-map style="width: 729px; height: 400px;"
-      longitude="-88.228878" latitude="40.110319" zoom="12" maxzoom="22">
-    <gl-style url="/styles/test-style.json"></gl-style>
-    <gl-style url="/styles/stamen-toner.json"></gl-style>
-    <h1 slot="panel-top">Web Map GL Test</h1>
-    <gl-legend slot="panel"></gl-legend>
-    <gl-panel-toggle slot="menu"></gl-panel-toggle>
-    <gl-fullscreen slot="menu"></gl-fullscreen>
-    <li class="menu-item" slot="menu">
-      <a href="https://example.com/">About</a>
-    </li>
-    <li class="menu-item" slot="menu">
-      <a href="https://example.com/">Research</a>
-    </li>
-  </gl-map>
-
-  <style>
-    html,
-    body {
-      height: 100%;
-      margin: 0px;
-      padding: 0px;
-      font-family: sans-serif;
-    }
-  </style>
+  <gl-app map-title="Web Map GL Test">
+    <gl-map slot="map"
+        longitude="-88.228878" latitude="40.110319" zoom="12" maxzoom="22">
+      <gl-style url="/styles/test-style.json"></gl-style>
+      <gl-style url="/styles/stamen-toner.json"></gl-style>
+    </gl-map>
+  </gl-app>
 </body>
 </html>
