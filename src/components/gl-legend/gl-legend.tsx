@@ -1,5 +1,4 @@
-import { Component, State } from '@stencil/core';
-import { _t } from '../i18n/i18n';
+import { Component, Prop } from '@stencil/core';
 
 
 @Component({
@@ -7,27 +6,18 @@ import { _t } from '../i18n/i18n';
   styleUrl: 'gl-legend.scss'
 })
 export class GLLegend {
-  @State() open = false;
+  @Prop() legendTitle: string;
 
-  toggleOpen() {
-    this.open = !this.open;
-  }
-
-  render() {
-    let panelTitle = _t('Legend');
-    let contentCls = 'panel-box panel-box-' +
-      ((this.open) ? 'open' : 'closed');
+  async render() {
     return (
-      <li class="panel-item">
-        <button class="panel-button size-sm"
-          onClick={this.toggleOpen.bind(this)}
-          title={panelTitle}><i class="icon ion-map"></i></button>
-        <div class={contentCls}>
-          <div class="panel-bar">
-            <h2>{panelTitle}</h2>
-          </div>
-        </div>
-      </li>
+      <ion-card>
+        <ion-card-header>
+          Card Header
+        </ion-card-header>
+        <ion-card-content>
+          Content!
+        </ion-card-content>
+      </ion-card>
     );
   }
 }

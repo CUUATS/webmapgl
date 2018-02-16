@@ -1,5 +1,4 @@
-import { Component, Element, Prop, State } from '@stencil/core';
-import { default as screenfull } from 'screenfull';
+import { Component, Element, Prop } from '@stencil/core';
 import { _t } from '../i18n/i18n';
 
 
@@ -9,25 +8,8 @@ import { _t } from '../i18n/i18n';
 })
 export class GLApp {
   @Element() el: HTMLElement;
-  @State() fullscreen = false;
   @Prop() allowFullscreen = true;
   @Prop() mapTitle: string;
-
-  toggleFullscreen() {
-    this.fullscreen = !this.fullscreen;
-    (this.fullscreen) ? screenfull.request() : screenfull.exit();
-  }
-
-  getFullscreenButton() {
-    let title = (this.fullscreen) ?
-      _t('Exit fullscreen mode') : _t('Enter fullscreen mode');
-    if (this.allowFullscreen && screenfull.enabled) return (
-      <ion-button onClick={this.toggleFullscreen.bind(this)} title={title}>
-        <ion-icon slot="icon-only"
-          name={(this.fullscreen) ? 'contract' : 'expand'}></ion-icon>
-      </ion-button>
-    );
-  }
 
   render() {
     return (
@@ -52,7 +34,8 @@ export class GLApp {
                 </ion-buttons>
                 <ion-buttons slot="end">
                   <gl-basemaps></gl-basemaps>
-                  {this.getFullscreenButton()}
+                  {(this.allowFullscreen) ?
+                    <gl-fullscreen></gl-fullscreen> : null}
                 </ion-buttons>
                 <ion-title>{this.mapTitle}</ion-title>
               </ion-toolbar>
