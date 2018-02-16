@@ -1,4 +1,4 @@
-import { Component, Element, Prop } from '@stencil/core';
+import { Component, Element, Listen, Prop } from '@stencil/core';
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl-dev';
 
 
@@ -17,27 +17,37 @@ export class GLMap {
   @Prop() minzoom = 0;
   @Prop() maxzoom = 22;
   private _map: mapboxgl.Map;
+  private _styleChangedTimeout: number;
 
-  componentDidLoad() {
-    this.getStyle()
-      .then((style) => {
-        if (this._map) {
-          this._map.setStyle(style);
-        } else {
-          this._map = new mapboxgl.Map({
-            container: this.el,
-            center: [this.longitude, this.latitude],
-            zoom: this.zoom,
-            minZoom: this.minzoom,
-            maxZoom: this.maxzoom,
-            style: style
-          });
-        }
-      });
+  async componentDidLoad() {
+    let style = await this.getStyle();
+    this._map = new mapboxgl.Map({
+      container: this.el,
+      center: [this.longitude, this.latitude],
+      zoom: this.zoom,
+      minZoom: this.minzoom,
+      maxZoom: this.maxzoom,
+      style: style
+    });
   }
 
   componentDidUpdate() {
     this.resizeMap();
+  }
+
+  async updateStyle() {
+    if (!this._map) return;
+    let style = await this.getStyle();
+    this._map.setStyle(style);
+  }
+
+  @Listen('styleChanged')
+  handleStyleChanged() {
+    if (this._styleChangedTimeout) return;
+    this._styleChangedTimeout = window.setTimeout(() => {
+      this._styleChangedTimeout = null;
+      this.updateStyle();
+    }, 66);
   }
 
   resizeMap() {
@@ -45,17 +55,8 @@ export class GLMap {
   }
 
   getStyle() {
-    return Promise.all(Array.from(this.el.childNodes)
-      .filter((child) => child.nodeName === 'GL-STYLE')
-      .map((child) => {
-        let url = (child as any).url;
-        return fetch(url)
-          .then((res) => res.json())
-          .catch((err) => {
-            console.log('Error fetching source ' + url + ': ' + err);
-            return {};
-          });
-      }))
+    return Promise.all(Array.from(this.el.querySelectorAll('gl-style'))
+      .map((styleEl) => styleEl.getStyleJSON()))
       .then((styles) => {
         let style = {
           version: 8,

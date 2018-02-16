@@ -50,6 +50,66 @@ declare global {
 
 
 import {
+  GLBasemapSwitcher as GlBasemapSwitcher
+} from './components/gl-basemap-switcher/gl-basemap-switcher';
+
+declare global {
+  interface HTMLGlBasemapSwitcherElement extends GlBasemapSwitcher, HTMLStencilElement {
+  }
+  var HTMLGlBasemapSwitcherElement: {
+    prototype: HTMLGlBasemapSwitcherElement;
+    new (): HTMLGlBasemapSwitcherElement;
+  };
+  interface HTMLElementTagNameMap {
+    "gl-basemap-switcher": HTMLGlBasemapSwitcherElement;
+  }
+  interface ElementTagNameMap {
+    "gl-basemap-switcher": HTMLGlBasemapSwitcherElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      "gl-basemap-switcher": JSXElements.GlBasemapSwitcherAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface GlBasemapSwitcherAttributes extends HTMLAttributes {
+      
+    }
+  }
+}
+
+
+import {
+  GLBasemaps as GlBasemaps
+} from './components/gl-basemaps/gl-basemaps';
+
+declare global {
+  interface HTMLGlBasemapsElement extends GlBasemaps, HTMLStencilElement {
+  }
+  var HTMLGlBasemapsElement: {
+    prototype: HTMLGlBasemapsElement;
+    new (): HTMLGlBasemapsElement;
+  };
+  interface HTMLElementTagNameMap {
+    "gl-basemaps": HTMLGlBasemapsElement;
+  }
+  interface ElementTagNameMap {
+    "gl-basemaps": HTMLGlBasemapsElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      "gl-basemaps": JSXElements.GlBasemapsAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface GlBasemapsAttributes extends HTMLAttributes {
+      
+    }
+  }
+}
+
+
+import {
   GLLegend as GlLegend
 } from './components/gl-legend/gl-legend';
 
@@ -137,6 +197,10 @@ declare global {
   }
   namespace JSXElements {
     export interface GlStyleAttributes extends HTMLAttributes {
+      basemap?: boolean;
+      enabled?: boolean;
+      name?: string;
+      thumbnail?: string;
       url?: string;
     }
   }

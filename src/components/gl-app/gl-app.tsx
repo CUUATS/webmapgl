@@ -51,12 +51,14 @@ export class GLApp {
                   </ion-menu-toggle>
                 </ion-buttons>
                 <ion-buttons slot="end">
+                  <gl-basemaps></gl-basemaps>
                   {this.getFullscreenButton()}
                 </ion-buttons>
                 <ion-title>{this.mapTitle}</ion-title>
               </ion-toolbar>
             </ion-header>
             <slot name="map" />
+            <ion-popover-controller></ion-popover-controller>
           </ion-page>
         </ion-split-pane>
       </ion-app>
