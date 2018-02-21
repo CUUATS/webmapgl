@@ -4,10 +4,6 @@
  * and imports for stencil collections that might be configured in your stencil.config.js file
  */
 
-import '@stencil/router';
-
-import '@ionic/core';
-
 
 declare global {
   interface HTMLStencilElement extends HTMLElement {
@@ -163,7 +159,7 @@ declare global {
   }
   namespace JSXElements {
     export interface GlLegendAttributes extends HTMLAttributes {
-      
+      legendTitle?: string;
     }
   }
 }
