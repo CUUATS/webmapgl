@@ -20,6 +20,7 @@ export class GLMap {
   @Prop() maxzoom = 22;
   private _loaded = false;
   private _map: mapboxgl.Map;
+  private _resizeMapTimeout: number;
   private _updateStyleTimeout: number;
 
   async componentDidLoad() {
@@ -33,6 +34,7 @@ export class GLMap {
       style: style
     });
     this._loaded = true;
+    window.addEventListener('resize', this.resizeMap.bind(this));
   }
 
   componentDidUpdate() {
@@ -68,7 +70,11 @@ export class GLMap {
   }
 
   resizeMap() {
-    if (this._map) this._map.resize();
+    if (this._resizeMapTimeout) return;
+    this._resizeMapTimeout = window.setTimeout(async () => {
+      this._resizeMapTimeout = null;
+      if (this._map) this._map.resize();
+    }, 66);
   }
 
   getStyle() {
