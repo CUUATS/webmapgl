@@ -1,4 +1,4 @@
-import { Component, Prop } from '@stencil/core';
+import { Component, Element, State } from '@stencil/core';
 
 
 @Component({
@@ -6,18 +6,46 @@ import { Component, Prop } from '@stencil/core';
   styleUrl: 'gl-legend.scss'
 })
 export class GLLegend {
-  @Prop() legendTitle: string;
+  @Element() el: HTMLElement;
+  @State() items = [];
 
-  async render() {
+  componentDidLoad() {
+    this.updateItems();
+    document.querySelector('gl-map')
+      .addEventListener('styleUpdated', this.updateItems.bind(this));
+  }
+
+  async updateItems() {
+    let items = [];
+    await Promise.all(
+      Array.from(document.querySelectorAll('gl-style'))
+        .map(async (style) => {
+          await style.componentOnReady();
+          let json = await style.getJSON();
+
+          let metadata = json.metadata;
+          if (!metadata) return;
+
+          let spec = metadata['webmapgl:legend'];
+          if (!spec || !spec.items) return;
+
+          items.push(...spec.items);
+        })
+    );
+    this.items = items;
+  }
+
+  render() {
     return (
-      <ion-card>
-        <ion-card-header>
-          Card Header
-        </ion-card-header>
-        <ion-card-content>
-          Content!
-        </ion-card-content>
-      </ion-card>
+      <ion-item-group>
+        <slot name="start" />
+        {this.items.map((item) =>
+          <gl-legend-item item-type={item.type} layers={item.layers || []}
+             image={item.image || ''} text={item.text || ''}
+             toggle={item.toggle || false}></gl-legend-item>
+        )}
+        <slot name="end" />
+      </ion-item-group>
     );
   }
 }

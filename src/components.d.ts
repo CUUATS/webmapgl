@@ -39,6 +39,7 @@ declare global {
   namespace JSXElements {
     export interface GlAppAttributes extends HTMLAttributes {
       allowFullscreen?: boolean;
+      legend?: boolean;
       mapTitle?: string;
     }
   }
@@ -136,6 +137,40 @@ declare global {
 
 
 import {
+  GLLegendItem as GlLegendItem
+} from './components/gl-legend-item/gl-legend-item';
+
+declare global {
+  interface HTMLGlLegendItemElement extends GlLegendItem, HTMLStencilElement {
+  }
+  var HTMLGlLegendItemElement: {
+    prototype: HTMLGlLegendItemElement;
+    new (): HTMLGlLegendItemElement;
+  };
+  interface HTMLElementTagNameMap {
+    "gl-legend-item": HTMLGlLegendItemElement;
+  }
+  interface ElementTagNameMap {
+    "gl-legend-item": HTMLGlLegendItemElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      "gl-legend-item": JSXElements.GlLegendItemAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface GlLegendItemAttributes extends HTMLAttributes {
+      image?: string;
+      itemType?: string;
+      layers?: Array<string>;
+      text?: string;
+      toggle?: boolean;
+    }
+  }
+}
+
+
+import {
   GLLegend as GlLegend
 } from './components/gl-legend/gl-legend';
 
@@ -159,7 +194,7 @@ declare global {
   }
   namespace JSXElements {
     export interface GlLegendAttributes extends HTMLAttributes {
-      legendTitle?: string;
+      
     }
   }
 }

@@ -10,6 +10,7 @@ import { _t } from '../i18n/i18n';
 export class GLApp {
   @Element() el: HTMLElement;
   @Prop() allowFullscreen = true;
+  @Prop() legend = true;
   @Prop() mapTitle: string;
 
   render() {
@@ -19,9 +20,12 @@ export class GLApp {
           <ion-menu>
             <ion-header>
               <ion-toolbar>
-                <ion-title>{_t('Menu')}</ion-title>
+                <ion-title>{_t('Legend')}</ion-title>
               </ion-toolbar>
             </ion-header>
+            <ion-content>
+              <gl-legend></gl-legend>
+            </ion-content>
           </ion-menu>
           <ion-page main>
             <ion-header>
