@@ -1,4 +1,5 @@
-import { Component, Element, Listen, Prop } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Listen, Prop }
+  from '@stencil/core';
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl-dev';
 
 
@@ -11,13 +12,15 @@ import mapboxgl from 'mapbox-gl/dist/mapbox-gl-dev';
 })
 export class GLMap {
   @Element() el: HTMLElement;
+  @Event() styleUpdated: EventEmitter;
   @Prop() latitude: number;
   @Prop() longitude: number;
   @Prop() zoom = 10;
   @Prop() minzoom = 0;
   @Prop() maxzoom = 22;
+  private _loaded = false;
   private _map: mapboxgl.Map;
-  private _styleChangedTimeout: number;
+  private _updateStyleTimeout: number;
 
   async componentDidLoad() {
     let style = await this.getStyle();
@@ -29,6 +32,7 @@ export class GLMap {
       maxZoom: this.maxzoom,
       style: style
     });
+    this._loaded = true;
   }
 
   componentDidUpdate() {
@@ -36,18 +40,31 @@ export class GLMap {
   }
 
   async updateStyle() {
-    if (!this._map) return;
-    let style = await this.getStyle();
-    this._map.setStyle(style);
+    if (this._updateStyleTimeout) return;
+    this._updateStyleTimeout = window.setTimeout(async () => {
+      this._updateStyleTimeout = null;
+      let style = await this.getStyle();
+      this._map.setStyle(style);
+      this.styleUpdated.emit(style);
+    }, 66);
   }
 
-  @Listen('styleChanged')
-  handleStyleChanged() {
-    if (this._styleChangedTimeout) return;
-    this._styleChangedTimeout = window.setTimeout(() => {
-      this._styleChangedTimeout = null;
-      this.updateStyle();
-    }, 66);
+  @Listen('styleElementAdded')
+  handleStyleAdded() {
+    if (!this._loaded) return;
+    this.updateStyle();
+  }
+
+  @Listen('styleElementModified')
+  handleStyleModified() {
+    if (!this._loaded) return;
+    this.updateStyle();
+  }
+
+  @Listen('styleElementRemoved')
+  handleStyleRemoved() {
+    if (!this._loaded) return;
+    this.updateStyle();
   }
 
   resizeMap() {
@@ -56,7 +73,7 @@ export class GLMap {
 
   getStyle() {
     return Promise.all(Array.from(this.el.querySelectorAll('gl-style'))
-      .map((styleEl) => styleEl.getStyleJSON()))
+      .map((styleEl) => styleEl.getJSON()))
       .then((styles) => {
         let style = {
           version: 8,

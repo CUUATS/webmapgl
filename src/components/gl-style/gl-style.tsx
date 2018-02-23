@@ -1,4 +1,4 @@
-import { Component, Element, Event, EventEmitter, Method, Prop
+import { Component, Element, Event, EventEmitter, Method, Prop, State
   } from '@stencil/core';
 
 
@@ -7,30 +7,46 @@ import { Component, Element, Event, EventEmitter, Method, Prop
 })
 export class GLStyle {
   @Element() el: HTMLElement;
-  @Event() styleChanged: EventEmitter;
+  @Event() styleElementAdded: EventEmitter;
+  @Event() styleElementModified: EventEmitter;
+  @Event() styleElementRemoved: EventEmitter;
   @Prop() basemap = false;
   @Prop() enabled = true;
   @Prop() name: string;
   @Prop() thumbnail: string;
   @Prop() url: string;
-  private _cache: any;
+  @State() json: any;
+  private _jsonPromise: Promise<any>;
+
+  componentDidLoad() {
+    this.styleElementAdded.emit(this);
+  }
 
   componentDidUpdate() {
-    this.styleChanged.emit(this);
+    this.styleElementModified.emit(this);
+  }
+
+  componentDidUnload() {
+    this.styleElementRemoved.emit(this);
+  }
+
+  async fetchJSON() {
+    console.log('Fetching style JSON', this.url);
+    let res = await fetch(this.url);
+    this.json = res.json();
   }
 
   @Method()
-  getStyleJSON() {
-    if (!this.enabled) return Promise.resolve({});
-    if (this._cache) return Promise.resolve(this._cache);
-    return fetch(this.url)
-      .then((res) => {
-        this._cache = res.json();
-        return this._cache;
-      })
-      .catch((err) => {
-        console.log('Error fetching style ' + this.url + ': ' + err);
-        return {};
-      });
+  async getJSON() {
+    if (!this.enabled) return {};
+    if (this.json) return this.json;
+    if (this._jsonPromise) return this._jsonPromise;
+
+    this._jsonPromise = new Promise((resolve, reject) => {
+      this.fetchJSON()
+        .then(() => resolve(this.json))
+        .catch((err) => reject(err));
+    });
+    return this._jsonPromise;
   }
 }
