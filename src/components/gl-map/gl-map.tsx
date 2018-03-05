@@ -1,4 +1,4 @@
-import { Component, Element, Event, EventEmitter, Listen, Prop }
+import { Component, Element, Event, EventEmitter, Listen, Method, Prop }
   from '@stencil/core';
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl-dev';
 
@@ -77,9 +77,14 @@ export class GLMap {
     }, 66);
   }
 
+  @Method()
   getStyle() {
     return Promise.all(Array.from(this.el.querySelectorAll('gl-style'))
-      .map((styleEl) => styleEl.getJSON()))
+      .map(async (styleEl) => {
+        await styleEl.componentOnReady();
+        let json = await styleEl.getJSON();
+        return json;
+      }))
       .then((styles) => {
         let style = {
           version: 8,
@@ -100,5 +105,29 @@ export class GLMap {
         });
         return style;
       });
+  }
+
+  @Method()
+  getStyleElementById(id: string) {
+    let styles = document.querySelectorAll('gl-style');
+    for (let i = 0; i < styles.length; i++) {
+      let style = styles[i];
+      if (style.id === id) return style;
+    }
+  }
+
+  @Method()
+  async setLayoutProperty(layerName: string, propName: string, propValue: any) {
+    let layerParts = layerName.split(':', 1);
+    let style = this.getStyleElementById(layerParts[0]);
+    let json = await (style as HTMLGlStyleElement).getJSON();
+    for (let layer of json.layers) {
+      if (layer.id === layerName) {
+        layer.layout = layer.layer || {};
+        layer.layout[propName] = propValue;
+        style.setJSON(json);
+        return;
+      }
+    }
   }
 }

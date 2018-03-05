@@ -164,7 +164,7 @@ declare global {
       itemType?: string;
       layers?: Array<string>;
       text?: string;
-      toggle?: boolean;
+      visible?: boolean;
     }
   }
 }
@@ -260,6 +260,7 @@ declare global {
     export interface GlStyleAttributes extends HTMLAttributes {
       basemap?: boolean;
       enabled?: boolean;
+      id?: string;
       name?: string;
       thumbnail?: string;
       url?: string;
