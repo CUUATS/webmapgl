@@ -25,16 +25,18 @@ export class GLMap {
 
   async componentDidLoad() {
     let style = await this.getStyle();
-    this._map = new mapboxgl.Map({
-      container: this.el,
-      center: [this.longitude, this.latitude],
-      zoom: this.zoom,
-      minZoom: this.minzoom,
-      maxZoom: this.maxzoom,
-      style: style
+    window.requestAnimationFrame(() => {
+      this._map = new mapboxgl.Map({
+        container: this.el,
+        center: [this.longitude, this.latitude],
+        zoom: this.zoom,
+        minZoom: this.minzoom,
+        maxZoom: this.maxzoom,
+        style: style
+      });
+      this._loaded = true;
+      window.addEventListener('resize', this.resizeMap.bind(this));
     });
-    this._loaded = true;
-    window.addEventListener('resize', this.resizeMap.bind(this));
   }
 
   componentDidUpdate() {
