@@ -18,6 +18,8 @@
     "@ionic/core": "0.0.2",
     "@stencil/core": "0.6.6",
     "@stencil/router": "0.0.25",
+    "@types/mapbox-gl": "^0.44.0",
+    "dot": "^1.1.2",
     "mapbox-gl": "^0.44.0",
     "screenfull": "^3.3.2"
   },
@@ -25,6 +27,7 @@
     "@stencil/dev-server": "latest",
     "@stencil/sass": "^0.0.2",
     "@stencil/utils": "latest",
+    "@types/dot": "^1.1.2",
     "@types/jest": "^21.1.1",
     "jest": "^21.2.1"
   },

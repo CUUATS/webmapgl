@@ -12,6 +12,7 @@ export class GLApp {
   @Prop() allowFullscreen = true;
   @Prop() legend = true;
   @Prop() mapTitle: string;
+  @Prop() popup = true;
 
   render() {
     return (
@@ -47,6 +48,8 @@ export class GLApp {
             </ion-header>
             <slot name="map" />
             <ion-popover-controller></ion-popover-controller>
+            {(this.popup) ? <gl-popup-controller></gl-popup-controller> : null}
+            {(this.popup) ? <gl-popup></gl-popup> : null}
           </ion-page>
         </ion-split-pane>
       </ion-app>

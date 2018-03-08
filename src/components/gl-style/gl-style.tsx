@@ -60,10 +60,14 @@ export class GLStyle {
       json.sources = sources;
     }
 
-    if (json.metadata && json.metadata['webmapgl:legend']) {
-      for (let item of json.metadata['webmapgl:legend'].items) {
-        if (item.layers) item.layers =
-          item.layers.map((layerName) => this._prefix(layerName));
+    if (json.metadata) {
+      for (let key in json.metadata) {
+        if (key.slice(0, 9) !== 'webmapgl:') continue;
+        let items = json.metadata[key];
+        if (!(items instanceof Array)) continue;
+        for (let item of items)
+          if (item.layers) item.layers =
+            item.layers.map((l) => this._prefix(l));
       }
     }
 

@@ -1,6 +1,7 @@
 import { Component, Element, Event, EventEmitter, Listen, Method, Prop }
   from '@stencil/core';
-import mapboxgl from 'mapbox-gl/dist/mapbox-gl-dev';
+import mapboxgl from 'mapbox-gl';
+import { Hold } from '../utils';
 
 
 @Component({
@@ -18,24 +19,25 @@ export class GLMap {
   @Prop() zoom = 10;
   @Prop() minzoom = 0;
   @Prop() maxzoom = 22;
-  private _loaded = false;
   private _map: mapboxgl.Map;
+  private _ready = new Hold();
   private _resizeMapTimeout: number;
   private _updateStyleTimeout: number;
 
   async componentDidLoad() {
     let style = await this.getStyle();
+    this._map = new mapboxgl.Map({
+      container: this.el,
+      center: [this.longitude, this.latitude],
+      zoom: this.zoom,
+      minZoom: this.minzoom,
+      maxZoom: this.maxzoom,
+      style: style
+    });
+    this._ready.release();
+    window.addEventListener('resize', this.resizeMap.bind(this));
     window.requestAnimationFrame(() => {
-      this._map = new mapboxgl.Map({
-        container: this.el,
-        center: [this.longitude, this.latitude],
-        zoom: this.zoom,
-        minZoom: this.minzoom,
-        maxZoom: this.maxzoom,
-        style: style
-      });
-      this._loaded = true;
-      window.addEventListener('resize', this.resizeMap.bind(this));
+      this.resizeMap();
     });
   }
 
@@ -54,20 +56,20 @@ export class GLMap {
   }
 
   @Listen('styleElementAdded')
-  handleStyleAdded() {
-    if (!this._loaded) return;
+  async handleStyleAdded() {
+    await this.mapReady();
     this.updateStyle();
   }
 
   @Listen('styleElementModified')
-  handleStyleModified() {
-    if (!this._loaded) return;
+  async handleStyleModified() {
+    await this.mapReady();
     this.updateStyle();
   }
 
   @Listen('styleElementRemoved')
-  handleStyleRemoved() {
-    if (!this._loaded) return;
+  async handleStyleRemoved() {
+    await this.mapReady();
     this.updateStyle();
   }
 
@@ -77,6 +79,18 @@ export class GLMap {
       this._resizeMapTimeout = null;
       if (this._map) this._map.resize();
     }, 66);
+  }
+
+
+  @Method()
+  mapReady() {
+    return this._ready.promise;
+  }
+
+  @Method()
+  async getMap() {
+    await this.mapReady();
+    return this._map;
   }
 
   @Method()
@@ -131,5 +145,23 @@ export class GLMap {
         return;
       }
     }
+  }
+
+  @Method()
+  async setCursor(cursor: string) {
+    await this.mapReady();
+    this._map.getCanvas().style.cursor = cursor;
+  }
+
+  @Method()
+  async on(eventName: string, layerName: string, handler: Function) {
+    await this.mapReady();
+    this._map.on(eventName, layerName, handler);
+  }
+
+  @Method()
+  async off(eventName: string, layerName: string, handler: Function) {
+    await this.mapReady();
+    this._map.off(eventName, layerName, handler);
   }
 }

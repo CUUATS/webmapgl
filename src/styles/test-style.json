@@ -1,22 +1,27 @@
 {
   "version": 8,
   "metadata": {
-    "webmapgl:legend": {
-      "items": [
-        {
-          "type": "divider",
-          "text": "Public Input",
-          "layers": ["test-data"],
-          "toggle": true
-        },
-        {
-          "type": "item",
-          "text": "Area of Concern",
-          "image": "data:image/svg+xml;utf8,<svg viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\"><circle cx=\"50\" cy=\"50\" r=\"25\" fill=\"#FF0000\"/></svg>",
-          "layers": ["test-data"]
-        }
-      ]
-    }
+    "webmapgl:legenditems": [
+      {
+        "type": "divider",
+        "text": "Public Input",
+        "layers": ["test-data"],
+        "toggle": true
+      },
+      {
+        "type": "item",
+        "text": "Area of Concern",
+        "image": "data:image/svg+xml;utf8,<svg viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\"><circle cx=\"50\" cy=\"50\" r=\"25\" fill=\"#FF0000\"/></svg>",
+        "layers": ["test-data"]
+      }
+    ],
+    "webmapgl:popups": [
+      {
+        "type": "custom",
+        "template": "<h2>{{=properties.title}}</h2>{{? properties.description}}<p>{{=properties.description}}</p>{{?}}",
+        "layers": ["test-data"]
+      }
+    ]
   },
   "sources": {
     "test-data": {

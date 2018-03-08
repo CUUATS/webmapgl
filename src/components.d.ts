@@ -41,6 +41,7 @@ declare global {
       allowFullscreen?: boolean;
       legend?: boolean;
       mapTitle?: string;
+      popup?: boolean;
     }
   }
 }
@@ -229,6 +230,66 @@ declare global {
       maxzoom?: number;
       minzoom?: number;
       zoom?: number;
+    }
+  }
+}
+
+
+import {
+  GLPopupController as GlPopupController
+} from './components/gl-popup-controller/gl-popup-controller';
+
+declare global {
+  interface HTMLGlPopupControllerElement extends GlPopupController, HTMLStencilElement {
+  }
+  var HTMLGlPopupControllerElement: {
+    prototype: HTMLGlPopupControllerElement;
+    new (): HTMLGlPopupControllerElement;
+  };
+  interface HTMLElementTagNameMap {
+    "gl-popup-controller": HTMLGlPopupControllerElement;
+  }
+  interface ElementTagNameMap {
+    "gl-popup-controller": HTMLGlPopupControllerElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      "gl-popup-controller": JSXElements.GlPopupControllerAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface GlPopupControllerAttributes extends HTMLAttributes {
+      
+    }
+  }
+}
+
+
+import {
+  GLPopup as GlPopup
+} from './components/gl-popup/gl-popup';
+
+declare global {
+  interface HTMLGlPopupElement extends GlPopup, HTMLStencilElement {
+  }
+  var HTMLGlPopupElement: {
+    prototype: HTMLGlPopupElement;
+    new (): HTMLGlPopupElement;
+  };
+  interface HTMLElementTagNameMap {
+    "gl-popup": HTMLGlPopupElement;
+  }
+  interface ElementTagNameMap {
+    "gl-popup": HTMLGlPopupElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      "gl-popup": JSXElements.GlPopupAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface GlPopupAttributes extends HTMLAttributes {
+      closeKey?: number;
     }
   }
 }

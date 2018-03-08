@@ -1,0 +1,11 @@
+gl-map .mapboxgl-popup-content {
+  & > *:nth-child(2) {
+    margin-top: 0;
+  }
+  & > *:last-child {
+    margin-bottom: 0;
+  }
+  h2 {
+    font-size: 1.3em;
+  }
+}

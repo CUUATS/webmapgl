@@ -37,10 +37,10 @@ export class GLLegend {
           let metadata = json.metadata;
           if (!metadata) return;
 
-          let spec = metadata['webmapgl:legend'];
-          if (!spec || !spec.items) return;
+          let spec = metadata['webmapgl:legenditems'];
+          if (!spec) return;
 
-          spec.items.forEach((item) => {
+          spec.forEach((item) => {
             let visible = this.getLayersVisible(json, item.layers);
             if (item.toggle || visible) items.push({
               type: item.type,
