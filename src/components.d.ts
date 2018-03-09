@@ -46,7 +46,9 @@ declare global {
   }
   namespace JSXElements {
     export interface GlAppAttributes extends HTMLAttributes {
-      allowFullscreen?: boolean;
+      basemap?: boolean;
+      featureAdd?: boolean;
+      fullscreen?: boolean;
       legend?: boolean;
       mapTitle?: string;
       popup?: boolean;
