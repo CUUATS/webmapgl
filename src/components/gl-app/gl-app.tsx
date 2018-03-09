@@ -14,6 +14,10 @@ export class GLApp {
   @Prop() mapTitle: string;
   @Prop() popup = true;
 
+  componentDidLoad() {
+    this.el.querySelector('gl-map').resizeMap();
+  }
+
   render() {
     return (
       <ion-app>

@@ -36,9 +36,6 @@ export class GLMap {
     });
     this._ready.release();
     window.addEventListener('resize', this.resizeMap.bind(this));
-    window.requestAnimationFrame(() => {
-      this.resizeMap();
-    });
   }
 
   componentDidUpdate() {
@@ -73,6 +70,7 @@ export class GLMap {
     this.updateStyle();
   }
 
+  @Method()
   resizeMap() {
     if (this._resizeMapTimeout) return;
     this._resizeMapTimeout = window.setTimeout(async () => {
