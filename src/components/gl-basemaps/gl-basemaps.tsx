@@ -12,10 +12,10 @@ export class GLBasemaps {
   render() {
     let title = _t('Change basemap');
     return (
-      <ion-button onClick={() =>
+      <ion-button onClick={(e) =>
           presentPopover({
             component: 'gl-basemap-switcher',
-            ev: event
+            ev: e
           })} title={title}>
         <ion-icon slot="icon-only" name='globe'></ion-icon>
       </ion-button>
