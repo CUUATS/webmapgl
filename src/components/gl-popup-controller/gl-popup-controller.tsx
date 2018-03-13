@@ -1,5 +1,6 @@
 import { Component, Event, EventEmitter } from '@stencil/core';
 import { default as dot } from 'dot';
+import { eachStyleMetadata } from '../utils';
 
 
 @Component({
@@ -27,29 +28,17 @@ export class GLPopupController {
   async update() {
     let layers = [];
     let templates = {};
-    await Promise.all(
-      Array.from(document.querySelectorAll('gl-style'))
-        .map(async (style) => {
-          await style.componentOnReady();
-          let json = await style.getJSON();
-
-          let metadata = json.metadata;
-          if (!metadata) return;
-
-          let spec = metadata['webmapgl:popups'];
-          if (!spec) return;
-
-          spec.forEach((item) => {
-            if (!item.layers) return;
-            let template = dot.template(
-              item.template, {...dot.templateSettings, varname: 'properties'});
-            item.layers.forEach((layerName) => {
-              if (layers.indexOf(layerName) === -1) layers.push(layerName);
-              templates[layerName] = template;
-            });
-          });
-        })
-    );
+    await eachStyleMetadata('popups', (meta) => {
+      meta.forEach((item) => {
+        if (!item.layers) return;
+        let template = dot.template(
+          item.template, {...dot.templateSettings, varname: 'properties'});
+        item.layers.forEach((layerName) => {
+          if (layers.indexOf(layerName) === -1) layers.push(layerName);
+          templates[layerName] = template;
+        });
+      });
+    });
 
     for (let newLayer of layers) {
       if (this._layers.indexOf(newLayer) !== -1) return;

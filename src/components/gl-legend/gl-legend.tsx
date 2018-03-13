@@ -1,4 +1,5 @@
 import { Component, Element, State } from '@stencil/core';
+import { eachStyleMetadata } from '../utils';
 
 
 @Component({
@@ -28,30 +29,18 @@ export class GLLegend {
 
   async updateItems() {
     let items = [];
-    await Promise.all(
-      Array.from(document.querySelectorAll('gl-style'))
-        .map(async (style) => {
-          await style.componentOnReady();
-          let json = await style.getJSON();
-
-          let metadata = json.metadata;
-          if (!metadata) return;
-
-          let spec = metadata['webmapgl:legenditems'];
-          if (!spec) return;
-
-          spec.forEach((item) => {
-            let visible = this.getLayersVisible(json, item.layers);
-            if (item.toggle || visible) items.push({
-              type: item.type,
-              layers: item.layers || [],
-              image: item.image || '',
-              text: item.text || '',
-              visible: (item.toggle) ? visible : undefined
-            });
-          });
-        })
-    );
+    await eachStyleMetadata('legenditems', (meta, json) => {
+      meta.forEach((item) => {
+        let visible = this.getLayersVisible(json, item.layers);
+        if (item.toggle || visible) items.push({
+          type: item.type,
+          layers: item.layers || [],
+          image: item.image || '',
+          text: item.text || '',
+          visible: (item.toggle) ? visible : undefined
+        });
+      });
+    });
     this.items = items;
   }
 
