@@ -6,9 +6,15 @@ exports.config = {
       src: 'styles'
     }
   ],
+  outputTargets: [
+    {
+      serviceWorker: null
+    }
+  ],
   plugins: [
     sass()
-  ]
+  ],
+  watch: true
 };
 
 exports.devServer = {
