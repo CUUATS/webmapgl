@@ -8,6 +8,7 @@ exports.config = {
   ],
   outputTargets: [
     {
+      type: 'www',
       serviceWorker: null
     }
   ],

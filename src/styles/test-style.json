@@ -21,6 +21,14 @@
         "template": "<h2>{{=properties.title}}</h2>{{? properties.description}}<p>{{=properties.description}}</p>{{?}}",
         "layers": ["test-data"]
       }
+    ],
+    "webmapgl:behaviors": [
+      {
+        "type": "add-feature",
+        "title": "Area of Concern",
+        "layers": ["test-data"],
+        "endpoint": "https://example.com/add"
+      }
     ]
   },
   "sources": {

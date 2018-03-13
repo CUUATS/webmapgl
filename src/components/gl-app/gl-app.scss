@@ -2,4 +2,21 @@ gl-app {
   display: block;
   height: 100%;
   width: 100%;
+  ion-page {
+    display: flex;
+    flex-direction: column;
+  }
+  .map-content {
+    & > ion-scroll {
+      display: none;
+    }
+    .fixed-content {
+      display: block;
+      height: 100%;
+      width: 100%;
+    }
+    ion-fab.fab-vertical-bottom {
+      bottom: 30px;
+    }
+  }
 }

@@ -13,6 +13,7 @@ export class GLApp {
   @Prop() fullscreen = true;
   @Prop() legend = true;
   @Prop() featureAdd = true;
+  @Prop() featureEdit = true;
   @Prop() mapTitle: string;
   @Prop() popup = true;
 
@@ -39,6 +40,23 @@ export class GLApp {
     return buttons;
   }
 
+  getBeforeMap() {
+    let items = [];
+    if (this.featureAdd) items.push(<gl-feature-add></gl-feature-add>);
+    return items;
+  }
+
+  getFooter() {
+    let items = [];
+    if (this.featureAdd || this.featureEdit)
+      items.push(<gl-draw-toolbar></gl-draw-toolbar>);
+    if (items.length) return (
+      <ion-footer>
+        {items}
+      </ion-footer>
+    );
+  }
+
   getControllers() {
     let controllers = [];
     if (this.basemap) controllers.push(
@@ -47,6 +65,9 @@ export class GLApp {
       <gl-popup-controller></gl-popup-controller>,
       <gl-popup></gl-popup>
     );
+    if (this.featureAdd || this.featureEdit) controllers.push(
+      <ion-action-sheet-controller></ion-action-sheet-controller>,
+      <gl-draw-controller></gl-draw-controller>);
     return controllers;
   }
 
@@ -72,7 +93,13 @@ export class GLApp {
                 <ion-title>{this.mapTitle}</ion-title>
               </ion-toolbar>
             </ion-header>
-            <slot name="map" />
+            <ion-content class="map-content">
+              <div class="fixed-content" slot="fixed">
+                <slot name="map" />
+                {this.getBeforeMap()}
+              </div>
+            </ion-content>
+            {this.getFooter()}
           </ion-page>
         </ion-split-pane>
       </ion-app>,

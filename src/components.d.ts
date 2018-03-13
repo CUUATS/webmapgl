@@ -13,6 +13,8 @@ declare global {
   interface HTMLStencilElement extends HTMLElement {
     componentOnReady(): Promise<this>;
     componentOnReady(done: (ele?: this) => void): void;
+
+    forceUpdate(): void;
   }
 
   interface HTMLAttributes {}
@@ -48,6 +50,7 @@ declare global {
     export interface GlAppAttributes extends HTMLAttributes {
       basemap?: boolean;
       featureAdd?: boolean;
+      featureEdit?: boolean;
       fullscreen?: boolean;
       legend?: boolean;
       mapTitle?: string;
@@ -112,6 +115,101 @@ declare global {
   namespace JSXElements {
     export interface GlBasemapsAttributes extends HTMLAttributes {
       
+    }
+  }
+}
+
+
+import {
+  GLDrawController as GlDrawController
+} from './components/gl-draw-controller/gl-draw-controller';
+
+declare global {
+  interface HTMLGlDrawControllerElement extends GlDrawController, HTMLStencilElement {
+  }
+  var HTMLGlDrawControllerElement: {
+    prototype: HTMLGlDrawControllerElement;
+    new (): HTMLGlDrawControllerElement;
+  };
+  interface HTMLElementTagNameMap {
+    "gl-draw-controller": HTMLGlDrawControllerElement;
+  }
+  interface ElementTagNameMap {
+    "gl-draw-controller": HTMLGlDrawControllerElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      "gl-draw-controller": JSXElements.GlDrawControllerAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface GlDrawControllerAttributes extends HTMLAttributes {
+      
+    }
+  }
+}
+
+
+import {
+  GLDrawToolbar as GlDrawToolbar
+} from './components/gl-draw-toolbar/gl-draw-toolbar';
+
+declare global {
+  interface HTMLGlDrawToolbarElement extends GlDrawToolbar, HTMLStencilElement {
+  }
+  var HTMLGlDrawToolbarElement: {
+    prototype: HTMLGlDrawToolbarElement;
+    new (): HTMLGlDrawToolbarElement;
+  };
+  interface HTMLElementTagNameMap {
+    "gl-draw-toolbar": HTMLGlDrawToolbarElement;
+  }
+  interface ElementTagNameMap {
+    "gl-draw-toolbar": HTMLGlDrawToolbarElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      "gl-draw-toolbar": JSXElements.GlDrawToolbarAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface GlDrawToolbarAttributes extends HTMLAttributes {
+      cancelText?: any;
+      color?: string;
+      confirmText?: any;
+      label?: any;
+    }
+  }
+}
+
+
+import {
+  GLFeatureAdd as GlFeatureAdd
+} from './components/gl-feature-add/gl-feature-add';
+
+declare global {
+  interface HTMLGlFeatureAddElement extends GlFeatureAdd, HTMLStencilElement {
+  }
+  var HTMLGlFeatureAddElement: {
+    prototype: HTMLGlFeatureAddElement;
+    new (): HTMLGlFeatureAddElement;
+  };
+  interface HTMLElementTagNameMap {
+    "gl-feature-add": HTMLGlFeatureAddElement;
+  }
+  interface ElementTagNameMap {
+    "gl-feature-add": HTMLGlFeatureAddElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      "gl-feature-add": JSXElements.GlFeatureAddAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface GlFeatureAddAttributes extends HTMLAttributes {
+      horizontal?: 'left' | 'center' | 'right';
+      icon?: string;
+      vertical?: 'bottom' | 'center' | 'top';
     }
   }
 }
