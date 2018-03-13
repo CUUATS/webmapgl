@@ -1,9 +1,6 @@
 const sass = require('@stencil/sass');
 
 exports.config = {
-  serviceWorker: {
-    swSrc: 'src/sw.js'
-  },
   copy: [
     {
       src: 'styles'
