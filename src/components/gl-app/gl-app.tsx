@@ -67,6 +67,8 @@ export class GLApp {
     );
     if (this.featureAdd || this.featureEdit) controllers.push(
       <ion-action-sheet-controller></ion-action-sheet-controller>,
+      <ion-modal-controller></ion-modal-controller>,
+      <gl-attributes-controller></gl-attributes-controller>,
       <gl-draw-controller></gl-draw-controller>);
     return controllers;
   }

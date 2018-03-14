@@ -61,6 +61,71 @@ declare global {
 
 
 import {
+  GLAttributesController as GlAttributesController
+} from './components/gl-attributes-controller/gl-attributes-controller';
+
+declare global {
+  interface HTMLGlAttributesControllerElement extends GlAttributesController, HTMLStencilElement {
+  }
+  var HTMLGlAttributesControllerElement: {
+    prototype: HTMLGlAttributesControllerElement;
+    new (): HTMLGlAttributesControllerElement;
+  };
+  interface HTMLElementTagNameMap {
+    "gl-attributes-controller": HTMLGlAttributesControllerElement;
+  }
+  interface ElementTagNameMap {
+    "gl-attributes-controller": HTMLGlAttributesControllerElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      "gl-attributes-controller": JSXElements.GlAttributesControllerAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface GlAttributesControllerAttributes extends HTMLAttributes {
+      confirmComponent?: string;
+      formComponent?: string;
+    }
+  }
+}
+
+
+import {
+  GLAttributesForm as GlAttributesForm
+} from './components/gl-attributes-form/gl-attributes-form';
+
+declare global {
+  interface HTMLGlAttributesFormElement extends GlAttributesForm, HTMLStencilElement {
+  }
+  var HTMLGlAttributesFormElement: {
+    prototype: HTMLGlAttributesFormElement;
+    new (): HTMLGlAttributesFormElement;
+  };
+  interface HTMLElementTagNameMap {
+    "gl-attributes-form": HTMLGlAttributesFormElement;
+  }
+  interface ElementTagNameMap {
+    "gl-attributes-form": HTMLGlAttributesFormElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      "gl-attributes-form": JSXElements.GlAttributesFormAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface GlAttributesFormAttributes extends HTMLAttributes {
+      cancelText?: any;
+      feature?: any;
+      fields?: any[];
+      heading?: any;
+      submitText?: any;
+    }
+  }
+}
+
+
+import {
   GLBasemapSwitcher as GlBasemapSwitcher
 } from './components/gl-basemap-switcher/gl-basemap-switcher';
 

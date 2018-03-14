@@ -1,6 +1,23 @@
 {
   "version": 8,
   "metadata": {
+    "webmapgl:forms": {
+      "area-of-concern": {
+        "fields": [
+          {
+            "attribute": "title",
+            "label": "Title",
+            "type": "text",
+            "required": true
+          },
+          {
+            "attribute": "description",
+            "label": "Description",
+            "type": "text"
+          }
+        ]
+      }
+    },
     "webmapgl:legenditems": [
       {
         "type": "divider",
@@ -27,6 +44,7 @@
         "type": "add-feature",
         "title": "Area of Concern",
         "layers": ["test-data"],
+        "form": "area-of-concern",
         "endpoint": "https://example.com/add"
       }
     ]

@@ -29,8 +29,14 @@ export class GLFeatureAdd {
 
   async update() {
     let behaviors = [];
-    await eachStyleMetadata('behaviors', (meta) => {
-      meta.forEach((item) => behaviors.push(item));
+    await eachStyleMetadata('behaviors', (meta, json) => {
+      meta.forEach((item) => {
+        if (item.type !== 'add-feature') return;
+        behaviors.push({
+          ...item,
+          form: (json.metadata['webmapgl:forms'] || {})[item.form]
+        });
+      });
     });
     this.behaviors = behaviors;
   }
@@ -39,13 +45,13 @@ export class GLFeatureAdd {
     if (this.behaviors.length > 1) {
       // TODO: Handle layer choice.
     } else if (this.behaviors.length === 1) {
-      this.startDraw();
+      this.startDraw(this.behaviors[0]);
     }
   }
 
-  async startDraw() {
+  async startDraw(behavior) {
     await this._drawCtrl.componentOnReady();
-    this._drawCtrl.enter();
+    this._drawCtrl.enter({}, behavior);
   }
 
   async cancelDraw() {

@@ -22,6 +22,7 @@ export class GLDrawController {
   @Event() drawDelete: EventEmitter;
   @Event() drawEnter: EventEmitter;
   @Event() drawExit: EventEmitter;
+  private _behavior: any;
   private _draw: MapboxDraw;
   private _defaultOptions: GLDrawOptions = {
     type: 'point',
@@ -73,8 +74,9 @@ export class GLDrawController {
   }
 
   @Method()
-  async enter(options?: GLDrawOptions) {
+  async enter(options?: GLDrawOptions, behavior?: any) {
     if (this._draw) return;
+    this._behavior = behavior;
     this._draw = new MapboxDraw(this.getControlOptions(options));
     let map = await this.getMap();
     map.addControl(this._draw);
@@ -88,5 +90,16 @@ export class GLDrawController {
     map.removeControl(this._draw);
     this._draw = null;
     this.drawExit.emit();
+  }
+
+  @Method()
+  getAll() {
+    if (!this._draw) return;
+    return this._draw.getAll();
+  }
+
+  @Method()
+  getBehavior() {
+    return this._behavior;
   }
 }

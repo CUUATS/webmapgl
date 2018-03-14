@@ -1,3 +1,13 @@
+export async function presentModal(contentEl: HTMLElement) {
+  const modalController = document.querySelector('ion-modal-controller');
+  await modalController.componentOnReady();
+
+  const modalElement = await modalController.create({
+    component: contentEl
+  });
+  modalElement.present();
+}
+
 export async function presentPopover(opts) {
   const popoverController = document.querySelector('ion-popover-controller');
   await popoverController.componentOnReady();
