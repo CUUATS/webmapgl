@@ -12,18 +12,18 @@ export class GLDrawToolbar {
   @Prop() color = 'primary';
   @Prop() confirmText = _t('Continue');
   @Prop() label = _t('Add a Feature');
-  @State() complete = false;
+  @State() featureCount = 0;
   @State() visible = false;
 
   componentDidLoad() {
     let drawCtrl = document.querySelector('gl-draw-controller');
     drawCtrl.addEventListener('drawEnter', () => {
-      this.complete = false;
+      this.featureCount = 0;
       this.visible = true;
     });
     drawCtrl.addEventListener('drawExit', () => this.visible = false);
-    drawCtrl.addEventListener('drawStart', () => this.complete = false);
-    drawCtrl.addEventListener('drawEnd', () => this.complete = true);
+    drawCtrl.addEventListener('drawCreate', () => this.featureCount += 1);
+    drawCtrl.addEventListener('drawDelete', () => this.featureCount -= 1);
   }
 
   cancel() {
@@ -34,33 +34,23 @@ export class GLDrawToolbar {
     this.drawConfirm.emit();
   }
 
-  getButtons() {
-    let buttons = [
-      <ion-buttons slot="start">
-        <ion-button onClick={() => this.cancel()}>
-          <ion-icon slot="start" name="close"></ion-icon>
-          {this.cancelText}
-        </ion-button>
-      </ion-buttons>
-    ];
-    if (this.complete) {
-      buttons.push(
+  render() {
+    if (this.visible) return (
+      <ion-toolbar color={this.color}>
+        <ion-buttons slot="start">
+          <ion-button onClick={() => this.cancel()}>
+            <ion-icon slot="start" name="close"></ion-icon>
+            {this.cancelText}
+          </ion-button>
+        </ion-buttons>
+        <ion-title>{this.label}</ion-title>
         <ion-buttons slot="end">
-          <ion-button onClick={() => this.confirm()}>
+          <ion-button onClick={() => this.confirm()}
+              disabled={this.featureCount === 0}>
             <ion-icon slot="start" name="checkmark"></ion-icon>
             {this.confirmText}
           </ion-button>
         </ion-buttons>
-      );
-    }
-    return buttons;
-  }
-
-  render() {
-    if (this.visible) return (
-      <ion-toolbar color={this.color}>
-        <ion-title>{this.label}</ion-title>
-        {this.getButtons()}
       </ion-toolbar>
     );
   }

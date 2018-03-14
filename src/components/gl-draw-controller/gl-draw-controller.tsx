@@ -1,6 +1,15 @@
 import { Component, Event, EventEmitter, Method } from '@stencil/core';
 import MapboxDraw from '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw';
 
+export interface GLDrawOptions {
+  type?: 'point' | 'line' | 'polygon';
+  multiple?: boolean;
+  combine?: boolean;
+  delete?: boolean;
+  mode?: 'draw' | 'simple' | 'direct';
+  styles?: any[];
+}
+
 
 @Component({
   styleUrls: [
@@ -9,12 +18,24 @@ import MapboxDraw from '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw';
   tag: 'gl-draw-controller'
 })
 export class GLDrawController {
-  @Event() drawEnd: EventEmitter;
+  @Event() drawCreate: EventEmitter;
+  @Event() drawDelete: EventEmitter;
   @Event() drawEnter: EventEmitter;
   @Event() drawExit: EventEmitter;
-  @Event() drawStart: EventEmitter;
-  private _active = false;
-  private _draw = new MapboxDraw();
+  private _draw: MapboxDraw;
+  private _defaultOptions: GLDrawOptions = {
+    type: 'point',
+    multiple: false,
+    combine: false,
+    delete: false,
+    mode: 'draw'
+  };
+
+  async componentDidLoad() {
+    let map = await this.getMap();
+    map.on('draw.create', (e) => this.drawCreate.emit(e));
+    map.on('draw.delete', (e) => this.drawDelete.emit(e));
+  }
 
   async getMap() {
     let mapEl = document.querySelector('gl-map');
@@ -23,21 +44,50 @@ export class GLDrawController {
     return map;
   }
 
+  getControlOptions(options?: GLDrawOptions) {
+    let opts = {...this._defaultOptions, ...(options || {})};
+
+    let mode = 'simple_select';
+    if (opts.mode === 'direct') mode = 'direct_select';
+    if (opts.mode === 'draw') {
+      if (opts.type === 'point') mode = 'draw_point';
+      if (opts.type === 'line') mode = 'draw_line_string';
+      if (opts.type === 'polygon') mode = 'draw_polygon';
+    }
+
+    let result = {
+      controls: {
+        point: opts.multiple && opts.type === 'point',
+        line_string: opts.multiple && opts.type === 'line',
+        polygon: opts.multiple && opts.type === 'polygon',
+        trash: opts.delete,
+        combine_features: opts.multiple && opts.combine,
+        uncombine_features: opts.multiple && opts.combine
+      },
+      defaultMode: mode
+    };
+
+    if (opts.styles) (result as any).styles = opts.styles;
+
+    return result;
+  }
+
   @Method()
-  async enter() {
-    if (this._active) return;
+  async enter(options?: GLDrawOptions) {
+    if (this._draw) return;
+    this._draw = new MapboxDraw(this.getControlOptions(options));
     let map = await this.getMap();
+    console.log(this._draw, map);
     map.addControl(this._draw);
-    this._active = true;
     this.drawEnter.emit();
   }
 
   @Method()
   async exit() {
-    if (!this._active) return;
+    if (!this._draw) return;
     let map = await this.getMap();
     map.removeControl(this._draw);
-    this._active = false;
+    this._draw = null;
     this.drawExit.emit();
   }
 }
