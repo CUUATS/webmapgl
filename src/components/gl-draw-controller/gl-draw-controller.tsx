@@ -77,7 +77,6 @@ export class GLDrawController {
     if (this._draw) return;
     this._draw = new MapboxDraw(this.getControlOptions(options));
     let map = await this.getMap();
-    console.log(this._draw, map);
     map.addControl(this._draw);
     this.drawEnter.emit();
   }
