@@ -11,9 +11,36 @@
             "required": true
           },
           {
+            "attribute": "concern",
+            "label": "Type of Concern",
+            "type": "text",
+            "facets": ["large-area"],
+            "widget": "radio",
+            "choices": [
+              {"value": "sinkhole", "label": "Sink Hole"},
+              {"value": "condition", "label": "Poor Condition"},
+              {"value": "markings", "label": "Faded Markings"},
+              {"value": "wear", "label": "General Wear"}
+            ]
+          },
+          {
+            "attribute": "concern",
+            "label": "Type of Concern",
+            "type": "text",
+            "widget": "radio",
+            "facets": ["small-area"],
+            "choices": [
+              {"value": "pothole", "label": "Pot Hole"},
+              {"value": "dirt", "label": "Dirt on Roadway"},
+              {"value": "grass", "label": "Grass on Sidewalk"},
+              {"value": "other", "label": "Other Problems"}
+            ]
+          },
+          {
             "attribute": "description",
             "label": "Description",
-            "type": "text"
+            "type": "text",
+            "widget": "textarea"
           }
         ]
       }

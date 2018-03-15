@@ -12,15 +12,70 @@ export class GLAttributesForm {
   @Prop() submitText = _t('Save');
   @Prop() cancelText = _t('Cancel');
 
-  getListItems() {
-    return this.fields.map((field) => {
+  getWidget(field) {
+    if (field.widget) return field.widget;
+    if (field.type === 'boolean') return 'toggle';
+    if (field.choices) return 'radio';
+    return 'input';
+  }
+
+  getFields() {
+    let items = [];
+    for (let field of this.fields) {
+      let widget = this.getWidget(field);
+      if (widget === 'radio') {
+        items.push(...this.getRadioField(field));
+      } else if (widget === 'select') {
+        items.push(this.getSelectField(field));
+      } else {
+        items.push(this.getInputField(field));
+      }
+    }
+    return items;
+  }
+
+  getRadioField(field) {
+    let items = field.choices.map((choice) => {
       return (
         <ion-item>
-          <ion-label floating>{field.label}</ion-label>
-          <ion-input type="text"></ion-input>
+          <ion-label>{choice.label}</ion-label>
+          <ion-radio value={choice.value}></ion-radio>
         </ion-item>
       );
     });
+    return ([
+      <ion-list-header>{field.label}</ion-list-header>,
+      <ion-radio-group>
+        {items}
+      </ion-radio-group>
+    ]);
+  }
+
+  getSelectField(field) {
+    let options = field.choices.map((choice) => {
+      return (
+        <ion-select-option value={choice.value}>
+          {choice.label}
+        </ion-select-option>
+      );
+    });
+    return (
+      <ion-item>
+        <ion-label>{field.label}</ion-label>,
+        <ion-select>
+          {options}
+        </ion-select>
+      </ion-item>
+    );
+  }
+
+  getInputField(field) {
+    return (
+      <ion-item>
+        <ion-label floating>{field.label}</ion-label>
+        <ion-input type="text"></ion-input>
+      </ion-item>
+    );
   }
 
   async dismissModal() {
@@ -56,7 +111,7 @@ export class GLAttributesForm {
       </ion-header>,
       <ion-content>
         <ion-list>
-          {this.getListItems()}
+          {this.getFields()}
         </ion-list>
       </ion-content>
     ]);
