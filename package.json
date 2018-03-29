@@ -15,7 +15,7 @@
     "test.watch": "jest --watch --no-cache"
   },
   "dependencies": {
-    "@ionic/core": "0.1.4-9",
+    "@ionic/core": "0.1.5",
     "@mapbox/mapbox-gl-draw": "^1.0.6",
     "@stencil/core": "0.7.10",
     "@stencil/router": "0.0.25",

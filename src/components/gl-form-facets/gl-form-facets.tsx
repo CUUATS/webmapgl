@@ -19,7 +19,7 @@ export class GLFormFacets {
   render() {
     let items = this.facets.map((facet) => {
       return (
-        <ion-item tappable={true} onClick={() => this.showFields(facet.id)}>
+        <ion-item button={true} onClick={() => this.showFields(facet.id)}>
           {facet.label}
         </ion-item>
       );
