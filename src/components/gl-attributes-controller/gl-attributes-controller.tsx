@@ -27,6 +27,7 @@ export class GLAttributesController {
       _t('Add {feature}') : _t('Edit {feature}');
     title = title.replace('{feature}', behavior.title);
     (form as any).feature = feature;
+    (form as any).facets = behavior.form.facets;
     (form as any).fields = behavior.form.fields;
     (form as any).heading = title;
     presentModal(form);

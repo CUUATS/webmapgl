@@ -3,6 +3,16 @@
   "metadata": {
     "webmapgl:forms": {
       "area-of-concern": {
+        "facets": [
+          {
+            "id": "large-area",
+            "label": "Large Area"
+          },
+          {
+            "id": "small-area",
+            "label": "Small Area"
+          }
+        ],
         "fields": [
           {
             "attribute": "title",
