@@ -2,7 +2,8 @@ import { Component, Element, Prop } from '@stencil/core';
 
 
 @Component({
-  tag: 'gl-form'
+  tag: 'gl-form',
+  styleUrl: 'gl-form.scss'
 })
 export class GLForm {
   @Element() el: HTMLElement;

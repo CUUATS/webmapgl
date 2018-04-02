@@ -44,3 +44,11 @@ export class Hold {
     });
   }
 }
+
+export function getThumbnail(item) {
+  if (item.image) return (
+    <ion-thumbnail slot="start">
+      <img src={item.image} />
+    </ion-thumbnail>
+  );
+}
