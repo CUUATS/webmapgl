@@ -321,6 +321,9 @@ declare global {
 declare global {
   interface HTMLGlFormFieldsElement extends HTMLStencilElement {
     'facet': string;
+    'getValidationMessages': () => any[];
+    'getValues': () => any[];
+    'isValid': () => boolean;
   }
   var HTMLGlFormFieldsElement: {
     prototype: HTMLGlFormFieldsElement;
@@ -340,6 +343,7 @@ declare global {
   namespace JSXElements {
     export interface GlFormFieldsAttributes extends HTMLAttributes {
       'facet'?: string;
+      'onFieldValueChanged'?: (event: CustomEvent) => void;
     }
   }
 }

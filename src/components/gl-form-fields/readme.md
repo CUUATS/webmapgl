@@ -19,6 +19,22 @@ string
 string
 
 
+## Events
+
+#### fieldValueChanged
+
+
+## Methods
+
+#### getValidationMessages()
+
+
+#### getValues()
+
+
+#### isValid()
+
+
 
 ----------------------------------------------
 

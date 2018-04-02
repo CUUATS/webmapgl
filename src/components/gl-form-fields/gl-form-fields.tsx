@@ -1,4 +1,6 @@
-import { Component, Element, Prop } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Method,
+  Prop } from '@stencil/core';
+import { _t } from '../i18n/i18n';
 
 
 @Component({
@@ -6,7 +8,45 @@ import { Component, Element, Prop } from '@stencil/core';
 })
 export class GLFormFields {
   @Element() el: HTMLElement;
+  @Event() fieldValueChanged: EventEmitter;
   @Prop() facet: string;
+  private _values = [];
+  private _messages = [];
+
+  @Method()
+  isValid() {
+    for (let message of this._messages) if (message) return false;
+    return true;
+  }
+
+  @Method()
+  getValidationMessages() {
+    return this._messages.filter((msg) => msg);
+  }
+
+  @Method()
+  getValues() {
+    return [...this._values];
+  }
+
+  validate(field, value) {
+    if (field.required &&
+        (value === undefined || value === null || value === ''))
+      return _t('{field} is required.').replace('{field}', field.label);
+
+    return null;
+  }
+
+  changed(field, value) {
+    let validationMessage = this.validate(field, value)
+    this._values[field._index] = value;
+    this._messages[field._index] = validationMessage;
+    this.fieldValueChanged.emit({
+      field: field,
+      value: value,
+      validationMessage: validationMessage
+    });
+  }
 
   getWidget(field) {
     if (field.widget) return field.widget;
@@ -18,8 +58,10 @@ export class GLFormFields {
   getFields() {
     const form = this.el.closest('gl-form');
     let items = [];
-    for (let field of form.fields) {
+    for (let i in form.fields) {
+      let field = {...form.fields[i], _index: i};
       if (field.facets && field.facets.indexOf(this.facet) === -1) continue;
+      this._messages[i] = this.validate(field, null);
       let widget = this.getWidget(field);
       if (widget === 'radio') {
         items.push(...this.getRadioField(field));
@@ -37,7 +79,9 @@ export class GLFormFields {
       return (
         <ion-item>
           <ion-label>{choice.label}</ion-label>
-          <ion-radio value={choice.value}></ion-radio>
+          <ion-radio
+            onIonSelect={(e) => this.changed(field, e.detail.value)}
+            value={choice.value}></ion-radio>
         </ion-item>
       );
     });
@@ -60,7 +104,7 @@ export class GLFormFields {
     return (
       <ion-item>
         <ion-label>{field.label}</ion-label>,
-        <ion-select>
+        <ion-select onIonChange={(e) => this.changed(field, e.detail.value)}>
           {options}
         </ion-select>
       </ion-item>
@@ -71,7 +115,9 @@ export class GLFormFields {
     return (
       <ion-item>
         <ion-label floating>{field.label}</ion-label>
-        <ion-input type="text"></ion-input>
+        <ion-input
+          onIonInput={(e) => this.changed(field, e.detail.target.value)}
+          type="text"></ion-input>
       </ion-item>
     );
   }
