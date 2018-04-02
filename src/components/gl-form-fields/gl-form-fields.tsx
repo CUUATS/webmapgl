@@ -1,5 +1,6 @@
 import { Component, Element, Event, EventEmitter, Method,
   Prop } from '@stencil/core';
+import { getThumbnail } from '../utils';
 import { _t } from '../i18n/i18n';
 
 
@@ -78,6 +79,7 @@ export class GLFormFields {
     let items = field.choices.map((choice) => {
       return (
         <ion-item>
+          {getThumbnail(choice)}
           <ion-label>{choice.label}</ion-label>
           <ion-radio
             onIonSelect={(e) => this.changed(field, e.detail.value)}

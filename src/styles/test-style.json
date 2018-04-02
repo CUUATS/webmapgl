@@ -29,10 +29,26 @@
             "facets": ["large-area"],
             "widget": "radio",
             "choices": [
-              {"value": "sinkhole", "label": "Sink Hole"},
-              {"value": "condition", "label": "Poor Condition"},
-              {"value": "markings", "label": "Faded Markings"},
-              {"value": "wear", "label": "General Wear"}
+              {
+                "value": "sinkhole",
+                "label": "Sink Hole",
+                "image": "/styles/large-area.jpg"
+              },
+              {
+                "value": "condition",
+                "label": "Poor Condition",
+                "image": "/styles/large-area.jpg"
+              },
+              {
+                "value": "markings",
+                "label": "Faded Markings",
+                "image": "/styles/large-area.jpg"
+              },
+              {
+                "value": "wear",
+                "label": "General Wear",
+                "image": "/styles/large-area.jpg"
+              }
             ]
           },
           {
