@@ -8,10 +8,6 @@ import { Component, Prop } from '@stencil/core';
 export class GLFormFacets {
   @Prop() facets: any[] = [];
 
-  componentDidLoad() {
-    console.log('facets', this.facets);
-  }
-
   showFields(facetId: string) {
     document.querySelector('ion-nav').push('gl-form-fields', {facet: facetId});
   }
