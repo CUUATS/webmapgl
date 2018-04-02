@@ -6,11 +6,13 @@
         "facets": [
           {
             "id": "large-area",
-            "label": "Large Area"
+            "label": "Large Area",
+            "image": "/styles/large-area.jpg"
           },
           {
             "id": "small-area",
-            "label": "Small Area"
+            "label": "Small Area",
+            "image": "/styles/small-area.jpg"
           }
         ],
         "fields": [
