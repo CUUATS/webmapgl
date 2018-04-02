@@ -23,7 +23,7 @@ export class GLPopup {
 
     if (this.closeKey !== undefined)
       document.addEventListener('keyup', (e) => {
-        if (e.keyCode === this.closeKey) this.remove();
+        if (e.keyCode === this.closeKey) this.removePopup();
       });
   }
 
@@ -41,7 +41,7 @@ export class GLPopup {
   }
 
   @Method()
-  remove() {
+  removePopup() {
     if (this._popup) this._popup.remove();
   }
 }

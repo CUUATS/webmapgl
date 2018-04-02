@@ -24,7 +24,7 @@ number
 #### isOpen()
 
 
-#### remove()
+#### removePopup()
 
 
 

@@ -17,7 +17,7 @@
   "dependencies": {
     "@ionic/core": "0.1.5",
     "@mapbox/mapbox-gl-draw": "^1.0.6",
-    "@stencil/core": "0.7.10",
+    "@stencil/core": "0.7.11",
     "@stencil/router": "0.0.25",
     "dot": "^1.1.2",
     "mapbox-gl": "0.44.1",

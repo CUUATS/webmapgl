@@ -539,7 +539,7 @@ declare global {
   interface HTMLGlPopupElement extends HTMLStencilElement {
     'closeKey': number;
     'isOpen': () => any;
-    'remove': () => void;
+    'removePopup': () => void;
   }
   var HTMLGlPopupElement: {
     prototype: HTMLGlPopupElement;
