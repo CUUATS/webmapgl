@@ -7,14 +7,14 @@
 
 ## Properties
 
-#### cancelText
+#### behavior
 
 any
 
 
-#### facets
+#### cancelText
 
-
+any
 
 
 #### feature
@@ -22,14 +22,9 @@ any
 any
 
 
-#### fields
-
-
-
-
 #### heading
 
-any
+string
 
 
 #### submitText
@@ -39,14 +34,14 @@ any
 
 ## Attributes
 
-#### cancel-text
+#### behavior
 
 any
 
 
-#### facets
+#### cancel-text
 
-
+any
 
 
 #### feature
@@ -54,14 +49,9 @@ any
 any
 
 
-#### fields
-
-
-
-
 #### heading
 
-any
+string
 
 
 #### submit-text

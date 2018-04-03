@@ -103,11 +103,10 @@ declare global {
 
 declare global {
   interface HTMLGlAttributesFormElement extends HTMLStencilElement {
+    'behavior': any;
     'cancelText': any;
-    'facets': any[];
     'feature': any;
-    'fields': any[];
-    'heading': any;
+    'heading': string;
     'submitText': any;
   }
   var HTMLGlAttributesFormElement: {
@@ -127,11 +126,10 @@ declare global {
   }
   namespace JSXElements {
     export interface GlAttributesFormAttributes extends HTMLAttributes {
+      'behavior'?: any;
       'cancelText'?: any;
-      'facets'?: any[];
       'feature'?: any;
-      'fields'?: any[];
-      'heading'?: any;
+      'heading'?: string;
       'submitText'?: any;
     }
   }
@@ -563,6 +561,33 @@ declare global {
   namespace JSXElements {
     export interface GlPopupAttributes extends HTMLAttributes {
       'closeKey'?: number;
+    }
+  }
+}
+
+
+declare global {
+  interface HTMLGlRemoteControllerElement extends HTMLStencilElement {
+    'send': (behavior: any, feature: any) => void;
+  }
+  var HTMLGlRemoteControllerElement: {
+    prototype: HTMLGlRemoteControllerElement;
+    new (): HTMLGlRemoteControllerElement;
+  };
+  interface HTMLElementTagNameMap {
+    'gl-remote-controller': HTMLGlRemoteControllerElement;
+  }
+  interface ElementTagNameMap {
+    'gl-remote-controller': HTMLGlRemoteControllerElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      'gl-remote-controller': JSXElements.GlRemoteControllerAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface GlRemoteControllerAttributes extends HTMLAttributes {
+
     }
   }
 }

@@ -69,7 +69,8 @@ export class GLApp {
       <ion-action-sheet-controller></ion-action-sheet-controller>,
       <ion-modal-controller></ion-modal-controller>,
       <gl-attributes-controller></gl-attributes-controller>,
-      <gl-draw-controller></gl-draw-controller>);
+      <gl-draw-controller></gl-draw-controller>,
+      <gl-remote-controller></gl-remote-controller>);
     return controllers;
   }
 
