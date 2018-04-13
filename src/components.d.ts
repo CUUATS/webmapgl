@@ -34,15 +34,21 @@ import {
 } from '@stencil/core';
 
 declare global {
-  interface HTMLGlAppElement extends HTMLStencilElement {
-    'basemap': boolean;
-    'featureAdd': boolean;
-    'featureEdit': boolean;
-    'fullscreen': boolean;
-    'legend': boolean;
-    'mapTitle': string;
-    'popup': boolean;
+
+  namespace StencilComponents {
+    interface GlApp {
+      'basemap': boolean;
+      'featureAdd': boolean;
+      'featureEdit': boolean;
+      'fullscreen': boolean;
+      'legend': boolean;
+      'mapTitle': string;
+      'popup': boolean;
+    }
   }
+
+  interface HTMLGlAppElement extends StencilComponents.GlApp, HTMLStencilElement {}
+
   var HTMLGlAppElement: {
     prototype: HTMLGlAppElement;
     new (): HTMLGlAppElement;
@@ -73,10 +79,16 @@ declare global {
 
 
 declare global {
-  interface HTMLGlAttributesControllerElement extends HTMLStencilElement {
-    'confirmComponent': string;
-    'formComponent': string;
+
+  namespace StencilComponents {
+    interface GlAttributesController {
+      'confirmComponent': string;
+      'formComponent': string;
+    }
   }
+
+  interface HTMLGlAttributesControllerElement extends StencilComponents.GlAttributesController, HTMLStencilElement {}
+
   var HTMLGlAttributesControllerElement: {
     prototype: HTMLGlAttributesControllerElement;
     new (): HTMLGlAttributesControllerElement;
@@ -102,13 +114,19 @@ declare global {
 
 
 declare global {
-  interface HTMLGlAttributesFormElement extends HTMLStencilElement {
-    'behavior': any;
-    'cancelText': any;
-    'feature': any;
-    'heading': string;
-    'submitText': any;
+
+  namespace StencilComponents {
+    interface GlAttributesForm {
+      'behavior': any;
+      'cancelText': any;
+      'feature': any;
+      'heading': string;
+      'submitText': any;
+    }
   }
+
+  interface HTMLGlAttributesFormElement extends StencilComponents.GlAttributesForm, HTMLStencilElement {}
+
   var HTMLGlAttributesFormElement: {
     prototype: HTMLGlAttributesFormElement;
     new (): HTMLGlAttributesFormElement;
@@ -137,9 +155,15 @@ declare global {
 
 
 declare global {
-  interface HTMLGlBasemapSwitcherElement extends HTMLStencilElement {
 
+  namespace StencilComponents {
+    interface GlBasemapSwitcher {
+
+    }
   }
+
+  interface HTMLGlBasemapSwitcherElement extends StencilComponents.GlBasemapSwitcher, HTMLStencilElement {}
+
   var HTMLGlBasemapSwitcherElement: {
     prototype: HTMLGlBasemapSwitcherElement;
     new (): HTMLGlBasemapSwitcherElement;
@@ -164,9 +188,15 @@ declare global {
 
 
 declare global {
-  interface HTMLGlBasemapsElement extends HTMLStencilElement {
 
+  namespace StencilComponents {
+    interface GlBasemaps {
+
+    }
   }
+
+  interface HTMLGlBasemapsElement extends StencilComponents.GlBasemaps, HTMLStencilElement {}
+
   var HTMLGlBasemapsElement: {
     prototype: HTMLGlBasemapsElement;
     new (): HTMLGlBasemapsElement;
@@ -191,12 +221,18 @@ declare global {
 
 
 declare global {
-  interface HTMLGlDrawControllerElement extends HTMLStencilElement {
-    'enter': (options?: GLDrawOptions, behavior?: any) => Promise<void>;
-    'exit': () => Promise<void>;
-    'getAll': () => any;
-    'getBehavior': () => any;
+
+  namespace StencilComponents {
+    interface GlDrawController {
+      'enter': (options?: GLDrawOptions, behavior?: any) => Promise<void>;
+      'exit': () => Promise<void>;
+      'getAll': () => any;
+      'getBehavior': () => any;
+    }
   }
+
+  interface HTMLGlDrawControllerElement extends StencilComponents.GlDrawController, HTMLStencilElement {}
+
   var HTMLGlDrawControllerElement: {
     prototype: HTMLGlDrawControllerElement;
     new (): HTMLGlDrawControllerElement;
@@ -224,12 +260,18 @@ declare global {
 
 
 declare global {
-  interface HTMLGlDrawToolbarElement extends HTMLStencilElement {
-    'cancelText': any;
-    'color': string;
-    'confirmText': any;
-    'label': any;
+
+  namespace StencilComponents {
+    interface GlDrawToolbar {
+      'cancelText': any;
+      'color': string;
+      'confirmText': any;
+      'label': any;
+    }
   }
+
+  interface HTMLGlDrawToolbarElement extends StencilComponents.GlDrawToolbar, HTMLStencilElement {}
+
   var HTMLGlDrawToolbarElement: {
     prototype: HTMLGlDrawToolbarElement;
     new (): HTMLGlDrawToolbarElement;
@@ -259,11 +301,17 @@ declare global {
 
 
 declare global {
-  interface HTMLGlFeatureAddElement extends HTMLStencilElement {
-    'horizontal': 'left' | 'center' | 'right';
-    'icon': string;
-    'vertical': 'bottom' | 'center' | 'top';
+
+  namespace StencilComponents {
+    interface GlFeatureAdd {
+      'horizontal': 'left' | 'center' | 'right';
+      'icon': string;
+      'vertical': 'bottom' | 'center' | 'top';
+    }
   }
+
+  interface HTMLGlFeatureAddElement extends StencilComponents.GlFeatureAdd, HTMLStencilElement {}
+
   var HTMLGlFeatureAddElement: {
     prototype: HTMLGlFeatureAddElement;
     new (): HTMLGlFeatureAddElement;
@@ -290,9 +338,15 @@ declare global {
 
 
 declare global {
-  interface HTMLGlFormFacetsElement extends HTMLStencilElement {
-    'facets': any[];
+
+  namespace StencilComponents {
+    interface GlFormFacets {
+      'facets': any[];
+    }
   }
+
+  interface HTMLGlFormFacetsElement extends StencilComponents.GlFormFacets, HTMLStencilElement {}
+
   var HTMLGlFormFacetsElement: {
     prototype: HTMLGlFormFacetsElement;
     new (): HTMLGlFormFacetsElement;
@@ -317,12 +371,18 @@ declare global {
 
 
 declare global {
-  interface HTMLGlFormFieldsElement extends HTMLStencilElement {
-    'facet': string;
-    'getValidationMessages': () => any[];
-    'getValues': () => any[];
-    'isValid': () => boolean;
+
+  namespace StencilComponents {
+    interface GlFormFields {
+      'facet': string;
+      'getValidationMessages': () => any[];
+      'getValues': () => any[];
+      'isValid': () => boolean;
+    }
   }
+
+  interface HTMLGlFormFieldsElement extends StencilComponents.GlFormFields, HTMLStencilElement {}
+
   var HTMLGlFormFieldsElement: {
     prototype: HTMLGlFormFieldsElement;
     new (): HTMLGlFormFieldsElement;
@@ -348,10 +408,16 @@ declare global {
 
 
 declare global {
-  interface HTMLGlFormElement extends HTMLStencilElement {
-    'facets': any[];
-    'fields': any[];
+
+  namespace StencilComponents {
+    interface GlForm {
+      'facets': any[];
+      'fields': any[];
+    }
   }
+
+  interface HTMLGlFormElement extends StencilComponents.GlForm, HTMLStencilElement {}
+
   var HTMLGlFormElement: {
     prototype: HTMLGlFormElement;
     new (): HTMLGlFormElement;
@@ -377,9 +443,15 @@ declare global {
 
 
 declare global {
-  interface HTMLGlFullscreenElement extends HTMLStencilElement {
 
+  namespace StencilComponents {
+    interface GlFullscreen {
+
+    }
   }
+
+  interface HTMLGlFullscreenElement extends StencilComponents.GlFullscreen, HTMLStencilElement {}
+
   var HTMLGlFullscreenElement: {
     prototype: HTMLGlFullscreenElement;
     new (): HTMLGlFullscreenElement;
@@ -404,13 +476,19 @@ declare global {
 
 
 declare global {
-  interface HTMLGlLegendItemElement extends HTMLStencilElement {
-    'image': string;
-    'itemType': string;
-    'layers': Array<string>;
-    'text': string;
-    'visible': boolean;
+
+  namespace StencilComponents {
+    interface GlLegendItem {
+      'image': string;
+      'itemType': string;
+      'layers': Array<string>;
+      'text': string;
+      'visible': boolean;
+    }
   }
+
+  interface HTMLGlLegendItemElement extends StencilComponents.GlLegendItem, HTMLStencilElement {}
+
   var HTMLGlLegendItemElement: {
     prototype: HTMLGlLegendItemElement;
     new (): HTMLGlLegendItemElement;
@@ -439,9 +517,15 @@ declare global {
 
 
 declare global {
-  interface HTMLGlLegendElement extends HTMLStencilElement {
 
+  namespace StencilComponents {
+    interface GlLegend {
+
+    }
   }
+
+  interface HTMLGlLegendElement extends StencilComponents.GlLegend, HTMLStencilElement {}
+
   var HTMLGlLegendElement: {
     prototype: HTMLGlLegendElement;
     new (): HTMLGlLegendElement;
@@ -466,22 +550,28 @@ declare global {
 
 
 declare global {
-  interface HTMLGlMapElement extends HTMLStencilElement {
-    'getMap': () => Promise<any>;
-    'getStyle': () => Promise<{ version: number; sources: {}; layers: any[]; }>;
-    'getStyleElementById': (id: string) => Element;
-    'latitude': number;
-    'longitude': number;
-    'mapReady': () => Promise<void>;
-    'maxzoom': number;
-    'minzoom': number;
-    'off': (eventName: string, layerName: string, handler: Function) => Promise<void>;
-    'on': (eventName: string, layerName: string, handler: Function) => Promise<void>;
-    'resizeMap': () => void;
-    'setCursor': (cursor: string) => Promise<void>;
-    'setLayoutProperty': (layerName: string, propName: string, propValue: any) => Promise<void>;
-    'zoom': number;
+
+  namespace StencilComponents {
+    interface GlMap {
+      'getMap': () => Promise<any>;
+      'getStyle': () => Promise<{ version: number; sources: {}; layers: any[]; }>;
+      'getStyleElementById': (id: string) => Element;
+      'latitude': number;
+      'longitude': number;
+      'mapReady': () => Promise<void>;
+      'maxzoom': number;
+      'minzoom': number;
+      'off': (eventName: string, layerName: string, handler: Function) => Promise<void>;
+      'on': (eventName: string, layerName: string, handler: Function) => Promise<void>;
+      'resizeMap': () => void;
+      'setCursor': (cursor: string) => Promise<void>;
+      'setLayoutProperty': (layerName: string, propName: string, propValue: any) => Promise<void>;
+      'zoom': number;
+    }
   }
+
+  interface HTMLGlMapElement extends StencilComponents.GlMap, HTMLStencilElement {}
+
   var HTMLGlMapElement: {
     prototype: HTMLGlMapElement;
     new (): HTMLGlMapElement;
@@ -511,9 +601,15 @@ declare global {
 
 
 declare global {
-  interface HTMLGlPopupControllerElement extends HTMLStencilElement {
 
+  namespace StencilComponents {
+    interface GlPopupController {
+
+    }
   }
+
+  interface HTMLGlPopupControllerElement extends StencilComponents.GlPopupController, HTMLStencilElement {}
+
   var HTMLGlPopupControllerElement: {
     prototype: HTMLGlPopupControllerElement;
     new (): HTMLGlPopupControllerElement;
@@ -538,11 +634,17 @@ declare global {
 
 
 declare global {
-  interface HTMLGlPopupElement extends HTMLStencilElement {
-    'closeKey': number;
-    'isOpen': () => any;
-    'removePopup': () => void;
+
+  namespace StencilComponents {
+    interface GlPopup {
+      'closeKey': number;
+      'isOpen': () => any;
+      'removePopup': () => void;
+    }
   }
+
+  interface HTMLGlPopupElement extends StencilComponents.GlPopup, HTMLStencilElement {}
+
   var HTMLGlPopupElement: {
     prototype: HTMLGlPopupElement;
     new (): HTMLGlPopupElement;
@@ -567,9 +669,15 @@ declare global {
 
 
 declare global {
-  interface HTMLGlRemoteControllerElement extends HTMLStencilElement {
-    'send': (behavior: any, feature: any) => void;
+
+  namespace StencilComponents {
+    interface GlRemoteController {
+      'send': (behavior: any, feature: any) => void;
+    }
   }
+
+  interface HTMLGlRemoteControllerElement extends StencilComponents.GlRemoteController, HTMLStencilElement {}
+
   var HTMLGlRemoteControllerElement: {
     prototype: HTMLGlRemoteControllerElement;
     new (): HTMLGlRemoteControllerElement;
@@ -594,16 +702,22 @@ declare global {
 
 
 declare global {
-  interface HTMLGlStyleElement extends HTMLStencilElement {
-    'basemap': boolean;
-    'enabled': boolean;
-    'getJSON': () => Promise<any>;
-    'id': string;
-    'name': string;
-    'setJSON': (json: any) => void;
-    'thumbnail': string;
-    'url': string;
+
+  namespace StencilComponents {
+    interface GlStyle {
+      'basemap': boolean;
+      'enabled': boolean;
+      'getJSON': () => Promise<any>;
+      'id': string;
+      'name': string;
+      'setJSON': (json: any) => void;
+      'thumbnail': string;
+      'url': string;
+    }
   }
+
+  interface HTMLGlStyleElement extends StencilComponents.GlStyle, HTMLStencilElement {}
+
   var HTMLGlStyleElement: {
     prototype: HTMLGlStyleElement;
     new (): HTMLGlStyleElement;
