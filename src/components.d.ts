@@ -117,11 +117,14 @@ declare global {
 
   namespace StencilComponents {
     interface GlAttributesForm {
+      'alertDuration': number;
       'behavior': any;
       'cancelText': any;
+      'failureMessage': any;
       'feature': any;
       'heading': string;
       'submitText': any;
+      'successMessage': any;
     }
   }
 
@@ -144,11 +147,14 @@ declare global {
   }
   namespace JSXElements {
     export interface GlAttributesFormAttributes extends HTMLAttributes {
+      'alertDuration'?: number;
       'behavior'?: any;
       'cancelText'?: any;
+      'failureMessage'?: any;
       'feature'?: any;
       'heading'?: string;
       'submitText'?: any;
+      'successMessage'?: any;
     }
   }
 }
@@ -672,7 +678,7 @@ declare global {
 
   namespace StencilComponents {
     interface GlRemoteController {
-      'send': (behavior: any, feature: any) => void;
+      'send': (behavior: any, feature: any) => Promise<Response>;
     }
   }
 

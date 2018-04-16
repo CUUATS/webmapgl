@@ -12,6 +12,6 @@ const translation = {
   }
 }[lang] || {};
 
-export function _t(text: string) {
+export function _t(text: string) : string {
   return translation[text] || text;
 }

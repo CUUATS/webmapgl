@@ -68,6 +68,7 @@ export class GLApp {
     if (this.featureAdd || this.featureEdit) controllers.push(
       <ion-action-sheet-controller></ion-action-sheet-controller>,
       <ion-modal-controller></ion-modal-controller>,
+      <ion-toast-controller></ion-toast-controller>,
       <gl-attributes-controller></gl-attributes-controller>,
       <gl-draw-controller></gl-draw-controller>,
       <gl-remote-controller></gl-remote-controller>);

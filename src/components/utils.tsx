@@ -15,6 +15,13 @@ export async function presentPopover(opts) {
   return await popoverElement.present();
 }
 
+export async function presentToast(opts) {
+  const toastController = document.querySelector('ion-toast-controller');
+  await toastController.componentOnReady();
+  let toastElement = await toastController.create(opts);
+  return toastElement.present();
+}
+
 export function eachStyleJSON(fn: Function) {
   return Promise.all(
     Array.from(document.querySelectorAll('gl-style'))

@@ -1,4 +1,5 @@
 import { Component, Element, Listen, Prop, State } from '@stencil/core';
+import { presentToast } from '../utils';
 import { _t } from '../i18n/i18n';
 
 
@@ -12,6 +13,9 @@ export class GLAttributesForm {
   @Prop() heading: string;
   @Prop() submitText = _t('Save');
   @Prop() cancelText = _t('Cancel');
+  @Prop() successMessage = _t('Saved successfully.');
+  @Prop() failureMessage = _t('An error occurred while saving.');
+  @Prop() alertDuration = 3000;
   @State() canSubmit = false;
 
   componentDidLoad() {
@@ -36,21 +40,38 @@ export class GLAttributesForm {
     this.dismissModal();
   }
 
-  submit() {
+  async submit() {
     let fields = this.el.querySelector('gl-form-fields');
     if (fields) {
       let values = fields.getValues();
       let props = this.feature.properties || {};
-      for (let i in this.behavior.fields) {
-        let field = this.behavior.fields[i];
+      for (let i in this.behavior.form.fields) {
+        let field = this.behavior.form.fields[i];
         let value = values[i];
         if (value !== undefined) props[field.attribute] = value;
       }
       this.feature.properties = props;
       let remote = document.querySelector('gl-remote-controller');
-      remote.send(this.behavior, this.feature);
+      let res;
+      try {
+        res = await remote.send(this.behavior, this.feature);
+      } catch(e) {
+        this.alert(false);
+      }
+      if (res) this.alert(res.status === 200);
     }
     this.dismissModal();
+  }
+
+  alert(success: boolean) {
+    let message = (success) ?
+      this.behavior.successMessage || this.successMessage :
+      this.behavior.failureMessage || this.failureMessage;
+
+    return presentToast({
+      message: message,
+      duration: this.alertDuration
+    });
   }
 
   render() {

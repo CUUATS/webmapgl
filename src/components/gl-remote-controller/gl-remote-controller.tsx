@@ -7,6 +7,15 @@ import { Component, Method } from '@stencil/core';
 export class GLRemoteController {
   @Method()
   send(behavior: any, feature: any) {
-    console.log(behavior, feature);
+    let headers = {};
+    headers['Content-Type'] = 'application/json';
+    if (behavior.token) headers['Authorization'] = 'Bearer ' + behavior.token;
+
+    return fetch(behavior.endpoint, {
+      body: JSON.stringify(feature),
+      headers: headers,
+      method: behavior.method || 'POST',
+      mode: behavior.mode || 'cors'
+    });
   }
 }
