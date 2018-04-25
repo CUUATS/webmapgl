@@ -7,7 +7,7 @@ import { eachStyleMetadata } from '../utils';
   tag: 'gl-feature-add'
 })
 export class GLFeatureAdd {
-  @Prop() horizontal: 'left' | 'center' | 'right' = 'right';
+  @Prop() horizontal: 'start' | 'center' | 'end' = 'end';
   @Prop() icon = 'add';
   @Prop() vertical: 'bottom' | 'center' | 'top' = 'bottom';
   @State() behaviors: any[] = [];

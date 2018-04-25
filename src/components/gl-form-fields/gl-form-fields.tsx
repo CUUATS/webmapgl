@@ -116,9 +116,9 @@ export class GLFormFields {
   getInputField(field) {
     return (
       <ion-item>
-        <ion-label floating>{field.label}</ion-label>
+        <ion-label position="floating">{field.label}</ion-label>
         <ion-input
-          onIonInput={(e) => this.changed(field, e.detail.target.value)}
+          onIonInput={(e) => this.changed(field, (e.detail.target as any).value)}
           type="text"></ion-input>
       </ion-item>
     );

@@ -11,10 +11,10 @@ export class GLAttributesForm {
   @Prop() feature: any;
   @Prop() behavior: any;
   @Prop() heading: string;
-  @Prop() submitText = _t('Save');
-  @Prop() cancelText = _t('Cancel');
-  @Prop() successMessage = _t('Saved successfully.');
-  @Prop() failureMessage = _t('An error occurred while saving.');
+  @Prop() submitText: string = _t('Save');
+  @Prop() cancelText: string = _t('Cancel');
+  @Prop() successMessage: string = _t('Saved successfully.');
+  @Prop() failureMessage: string = _t('An error occurred while saving.');
   @Prop() alertDuration = 3000;
   @State() canSubmit = false;
 

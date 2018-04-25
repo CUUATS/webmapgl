@@ -119,12 +119,12 @@ declare global {
     interface GlAttributesForm {
       'alertDuration': number;
       'behavior': any;
-      'cancelText': any;
-      'failureMessage': any;
+      'cancelText': string;
+      'failureMessage': string;
       'feature': any;
       'heading': string;
-      'submitText': any;
-      'successMessage': any;
+      'submitText': string;
+      'successMessage': string;
     }
   }
 
@@ -149,12 +149,12 @@ declare global {
     export interface GlAttributesFormAttributes extends HTMLAttributes {
       'alertDuration'?: number;
       'behavior'?: any;
-      'cancelText'?: any;
-      'failureMessage'?: any;
+      'cancelText'?: string;
+      'failureMessage'?: string;
       'feature'?: any;
       'heading'?: string;
-      'submitText'?: any;
-      'successMessage'?: any;
+      'submitText'?: string;
+      'successMessage'?: string;
     }
   }
 }
@@ -269,10 +269,10 @@ declare global {
 
   namespace StencilComponents {
     interface GlDrawToolbar {
-      'cancelText': any;
+      'cancelText': string;
       'color': string;
-      'confirmText': any;
-      'label': any;
+      'confirmText': string;
+      'label': string;
     }
   }
 
@@ -295,10 +295,10 @@ declare global {
   }
   namespace JSXElements {
     export interface GlDrawToolbarAttributes extends HTMLAttributes {
-      'cancelText'?: any;
+      'cancelText'?: string;
       'color'?: string;
-      'confirmText'?: any;
-      'label'?: any;
+      'confirmText'?: string;
+      'label'?: string;
       'onDrawCancel'?: (event: CustomEvent) => void;
       'onDrawConfirm'?: (event: CustomEvent) => void;
     }
@@ -310,7 +310,7 @@ declare global {
 
   namespace StencilComponents {
     interface GlFeatureAdd {
-      'horizontal': 'left' | 'center' | 'right';
+      'horizontal': 'start' | 'center' | 'end';
       'icon': string;
       'vertical': 'bottom' | 'center' | 'top';
     }
@@ -335,7 +335,7 @@ declare global {
   }
   namespace JSXElements {
     export interface GlFeatureAddAttributes extends HTMLAttributes {
-      'horizontal'?: 'left' | 'center' | 'right';
+      'horizontal'?: 'start' | 'center' | 'end';
       'icon'?: string;
       'vertical'?: 'bottom' | 'center' | 'top';
     }

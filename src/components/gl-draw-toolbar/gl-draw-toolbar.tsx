@@ -8,10 +8,10 @@ import { _t } from '../i18n/i18n';
 export class GLDrawToolbar {
   @Event() drawCancel: EventEmitter;
   @Event() drawConfirm: EventEmitter;
-  @Prop() cancelText = _t('Cancel');
+  @Prop() cancelText: string = _t('Cancel');
   @Prop() color = 'primary';
-  @Prop() confirmText = _t('Continue');
-  @Prop() label = _t('Add a Feature');
+  @Prop() confirmText: string = _t('Continue');
+  @Prop() label: string = _t('Add a Feature');
   @State() featureCount = 0;
   @State() visible = false;
   private _drawCtrl: HTMLGlDrawControllerElement;
