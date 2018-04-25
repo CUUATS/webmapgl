@@ -21,6 +21,21 @@ export class GLApp {
     this.el.querySelector('gl-map').resizeMap();
   }
 
+  getMenu() {
+    if (this.legend) return (
+      <ion-menu>
+        <ion-header>
+          <ion-toolbar>
+            <ion-title>{_t('Legend')}</ion-title>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content>
+          <gl-legend></gl-legend>
+        </ion-content>
+      </ion-menu>
+    );
+  }
+
   getStartButtons() {
     let buttons = [];
     if (this.legend) buttons.push(
@@ -79,16 +94,7 @@ export class GLApp {
     return [
       <ion-app>
         <ion-split-pane>
-          <ion-menu>
-            <ion-header>
-              <ion-toolbar>
-                <ion-title>{_t('Legend')}</ion-title>
-              </ion-toolbar>
-            </ion-header>
-            <ion-content>
-              <gl-legend></gl-legend>
-            </ion-content>
-          </ion-menu>
+          {this.getMenu()}
           <ion-page main>
             <ion-header>
               <ion-toolbar>

@@ -8,14 +8,14 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
 
   <meta http-equiv="x-ua-compatible" content="IE=Edge"/>
-  <script src="/build/app.js"></script>
+  <script src="/build/webmapgl.js"></script>
 
   <link rel="apple-touch-icon" href="/assets/icon/icon.png">
   <link rel="icon" type="image/x-icon" href="/assets/icon/favicon.ico">
   <link rel="manifest" href="/manifest.json">
 </head>
 <body>
-  <gl-app map-title="Web Map GL Test">
+  <gl-app map-title="Web Map GL Test" legend="false">
     <gl-map slot="map"
         longitude="-88.228878" latitude="40.110319" zoom="12" maxzoom="22">
       <gl-style url="/styles/test-style.json"></gl-style>
