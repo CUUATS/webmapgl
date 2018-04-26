@@ -1,0 +1,12 @@
+gl-drawer {
+  height: 50%;
+  &.gl-drawer-closed {
+    display: none;
+  }
+  &.gl-drawer-open {
+    display: block;
+  }
+  ion-content {
+    height: 100%;
+  }
+}
