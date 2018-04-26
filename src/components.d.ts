@@ -38,12 +38,14 @@ declare global {
   namespace StencilComponents {
     interface GlApp {
       'basemap': boolean;
+      'drawer': boolean;
       'featureAdd': boolean;
       'featureEdit': boolean;
       'fullscreen': boolean;
       'legend': boolean;
       'mapTitle': string;
       'popup': boolean;
+      'popupType': 'none' | 'popup' | 'drawer' | 'manual';
     }
   }
 
@@ -67,12 +69,14 @@ declare global {
   namespace JSXElements {
     export interface GlAppAttributes extends HTMLAttributes {
       'basemap'?: boolean;
+      'drawer'?: boolean;
       'featureAdd'?: boolean;
       'featureEdit'?: boolean;
       'fullscreen'?: boolean;
       'legend'?: boolean;
       'mapTitle'?: string;
       'popup'?: boolean;
+      'popupType'?: 'none' | 'popup' | 'drawer' | 'manual';
     }
   }
 }
@@ -301,6 +305,43 @@ declare global {
       'label'?: string;
       'onDrawCancel'?: (event: CustomEvent) => void;
       'onDrawConfirm'?: (event: CustomEvent) => void;
+    }
+  }
+}
+
+
+declare global {
+
+  namespace StencilComponents {
+    interface GlDrawer {
+      'drawerTitle': string;
+      'open': boolean;
+      'setContent': (content: any, title?: any) => void;
+      'toggle': () => void;
+    }
+  }
+
+  interface HTMLGlDrawerElement extends StencilComponents.GlDrawer, HTMLStencilElement {}
+
+  var HTMLGlDrawerElement: {
+    prototype: HTMLGlDrawerElement;
+    new (): HTMLGlDrawerElement;
+  };
+  interface HTMLElementTagNameMap {
+    'gl-drawer': HTMLGlDrawerElement;
+  }
+  interface ElementTagNameMap {
+    'gl-drawer': HTMLGlDrawerElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      'gl-drawer': JSXElements.GlDrawerAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface GlDrawerAttributes extends HTMLAttributes {
+      'drawerTitle'?: string;
+      'open'?: boolean;
     }
   }
 }
@@ -645,6 +686,7 @@ declare global {
     interface GlPopup {
       'closeKey': number;
       'isOpen': () => any;
+      'openPopup': (content: string[], features: any[]) => void;
       'removePopup': () => void;
     }
   }

@@ -1,5 +1,5 @@
 import '@ionic/core';
-import { Component, Element, Prop } from '@stencil/core';
+import { Component, Element, Listen, Prop } from '@stencil/core';
 import { _t } from '../i18n/i18n';
 
 
@@ -10,12 +10,14 @@ import { _t } from '../i18n/i18n';
 export class GLApp {
   @Element() el: HTMLElement;
   @Prop() basemap = true;
+  @Prop() drawer = false;
   @Prop() fullscreen = true;
   @Prop() legend = true;
   @Prop() featureAdd = true;
   @Prop() featureEdit = true;
   @Prop() mapTitle: string;
   @Prop() popup = true;
+  @Prop() popupType: 'none' | 'popup' | 'drawer' | 'manual' = 'popup';
 
   componentDidLoad() {
     this.el.querySelector('gl-map').resizeMap();
@@ -61,6 +63,10 @@ export class GLApp {
     return items;
   }
 
+  getDrawer() {
+    if (this.drawer) return (<gl-drawer></gl-drawer>);
+  }
+
   getFooter() {
     let items = [];
     if (this.featureAdd || this.featureEdit)
@@ -76,10 +82,10 @@ export class GLApp {
     let controllers = [];
     if (this.basemap) controllers.push(
       <ion-popover-controller></ion-popover-controller>);
-    if (this.popup) controllers.push(
-      <gl-popup-controller></gl-popup-controller>,
-      <gl-popup></gl-popup>
+    if (this.popupType != 'none') controllers.push(
+      <gl-popup-controller></gl-popup-controller>
     );
+    if (this.popup) controllers.push(<gl-popup></gl-popup>);
     if (this.featureAdd || this.featureEdit) controllers.push(
       <ion-action-sheet-controller></ion-action-sheet-controller>,
       <ion-modal-controller></ion-modal-controller>,
@@ -88,6 +94,23 @@ export class GLApp {
       <gl-draw-controller></gl-draw-controller>,
       <gl-remote-controller></gl-remote-controller>);
     return controllers;
+  }
+
+  @Listen('openPopup')
+  async dispatchPopup(e: CustomEvent) {
+    let content = (e as any).detail.content;
+    let features = (e as any).detail.features;
+
+    if (this.popupType === 'popup' && this.popup) {
+      let popup = document.querySelector('gl-popup');
+      await popup.componentOnReady();
+      popup.openPopup(content, features);
+    } else if (this.popupType === 'drawer' && this.drawer) {
+      let drawer = document.querySelector('gl-drawer');
+      await drawer.componentOnReady();
+      drawer.setContent(content, 'Feature Details');
+      drawer.open = true;
+    }
   }
 
   render() {
@@ -109,6 +132,7 @@ export class GLApp {
                 {this.getBeforeMap()}
               </div>
             </ion-content>
+            {this.getDrawer()}
             {this.getFooter()}
           </ion-page>
         </ion-split-pane>

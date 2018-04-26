@@ -16,17 +16,13 @@ export class GLPopup {
     await mapEl.componentOnReady();
     this._map = await mapEl.getMap();
 
-    let controller = document.querySelector('gl-popup-controller');
-    if (controller)
-      controller.addEventListener('openPopup', (e) =>
-        this.openPopup((e as any).detail.content, (e as any).detail.features));
-
     if (this.closeKey !== undefined)
       document.addEventListener('keyup', (e) => {
         if (e.keyCode === this.closeKey) this.removePopup();
       });
   }
 
+  @Method()
   openPopup(content: string[], features: any[]) {
     var coordinates = features[0].geometry.coordinates.slice();
     this._popup = new mapboxgl.Popup()
