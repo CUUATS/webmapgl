@@ -45,7 +45,6 @@ declare global {
       'legend': boolean;
       'mapTitle': string;
       'popup': boolean;
-      'popupType': 'none' | 'popup' | 'drawer' | 'manual';
     }
   }
 
@@ -76,7 +75,6 @@ declare global {
       'legend'?: boolean;
       'mapTitle'?: string;
       'popup'?: boolean;
-      'popupType'?: 'none' | 'popup' | 'drawer' | 'manual';
     }
   }
 }
@@ -686,7 +684,7 @@ declare global {
     interface GlPopup {
       'closeKey': number;
       'isOpen': () => any;
-      'openPopup': (content: string[], features: any[]) => void;
+      'openPopup': (title: string[], body: string[], features: any[]) => void;
       'removePopup': () => void;
     }
   }

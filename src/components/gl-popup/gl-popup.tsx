@@ -23,11 +23,18 @@ export class GLPopup {
   }
 
   @Method()
-  openPopup(content: string[], features: any[]) {
+  openPopup(title: string[], body: string[], features: any[]) {
+    // TODO: Handle non-point features.
     var coordinates = features[0].geometry.coordinates.slice();
+
+    // TODO: Deal with multiple features in popup.
+    let html = (title && title[0]) ?
+      '<h2 class="gl-popup-title">' + title[0] + '</h2>' : '';
+    if (body && body[0]) html += body[0];
+
     this._popup = new mapboxgl.Popup()
         .setLngLat(coordinates)
-        .setHTML(content[0])
+        .setHTML(html)
         .addTo(this._map);
   }
 

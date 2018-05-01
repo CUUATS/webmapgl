@@ -17,7 +17,6 @@ export class GLApp {
   @Prop() featureEdit = true;
   @Prop() mapTitle: string;
   @Prop() popup = true;
-  @Prop() popupType: 'none' | 'popup' | 'drawer' | 'manual' = 'popup';
 
   componentDidLoad() {
     this.el.querySelector('gl-map').resizeMap();
@@ -82,7 +81,7 @@ export class GLApp {
     let controllers = [];
     if (this.basemap) controllers.push(
       <ion-popover-controller></ion-popover-controller>);
-    if (this.popupType != 'none') controllers.push(
+    if (this.popup) controllers.push(
       <gl-popup-controller></gl-popup-controller>
     );
     if (this.popup) controllers.push(<gl-popup></gl-popup>);
@@ -98,18 +97,14 @@ export class GLApp {
 
   @Listen('openPopup')
   async dispatchPopup(e: CustomEvent) {
-    let content = (e as any).detail.content;
+    let title = (e as any).detail.title;
+    let body = (e as any).detail.body;
     let features = (e as any).detail.features;
 
-    if (this.popupType === 'popup' && this.popup) {
+    if (this.popup) {
       let popup = document.querySelector('gl-popup');
       await popup.componentOnReady();
-      popup.openPopup(content, features);
-    } else if (this.popupType === 'drawer' && this.drawer) {
-      let drawer = document.querySelector('gl-drawer');
-      await drawer.componentOnReady();
-      drawer.setContent(content, 'Feature Details');
-      drawer.open = true;
+      popup.openPopup(title, body, features);
     }
   }
 

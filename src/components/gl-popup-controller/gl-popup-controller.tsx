@@ -15,8 +15,20 @@ export class GLPopupController {
     'mouseleave': () => this.handleMouseleave()
   };
   private _layers : string[] = [];
-  private _templates  = {};
+  private _bodyTemplates  = {};
+  private _titleTemplates  = {};
   private _map: HTMLGlMapElement;
+
+  makeTemplate(templateStr: string) {
+    if (!templateStr) return;
+    return dot.template(
+      templateStr, {...dot.templateSettings, varname: 'properties'});
+  }
+
+  renderTemplate(library: any, feature: any) {
+    let template = library[feature.layer.id];
+    return (template) ? template(feature.properties) : null;
+  }
 
   async componentDidLoad() {
     this._map = document.querySelector('gl-map');
@@ -27,15 +39,17 @@ export class GLPopupController {
 
   async update() {
     let layers = [];
-    let templates = {};
-    await eachStyleMetadata('popups', (meta) => {
+    let bodyTemplates = {};
+    let titleTemplates = {};
+    await eachStyleMetadata('behaviors', (meta) => {
       meta.forEach((item) => {
-        if (!item.layers) return;
-        let template = dot.template(
-          item.template, {...dot.templateSettings, varname: 'properties'});
+        if (item.type !== 'popup' || !item.layers) return;
+        let bodyTemplate = this.makeTemplate(item.body);
+        let titleTemplate = this.makeTemplate(item.title);
         item.layers.forEach((layerName) => {
           if (layers.indexOf(layerName) === -1) layers.push(layerName);
-          templates[layerName] = template;
+          bodyTemplates[layerName] = bodyTemplate;
+          titleTemplates[layerName] = titleTemplate;
         });
       });
     });
@@ -51,7 +65,8 @@ export class GLPopupController {
     }
 
     this._layers = layers;
-    this._templates = templates;
+    this._bodyTemplates = bodyTemplates;
+    this._titleTemplates = titleTemplates;
   }
 
   setHandlers(layer: string, add: boolean) {
@@ -63,12 +78,13 @@ export class GLPopupController {
 
   handleClick(e) {
     let features = e.features || [];
-    let content = features.map((feature) => {
-      let template = this._templates[feature.layer.id];
-      return (template) ? template(feature.properties) : null;
-    });
+    let body = features.map(
+      (f) => this.renderTemplate(this._bodyTemplates, f));
+    let title = features.map(
+      (f) => this.renderTemplate(this._titleTemplates, f));
     this.openPopup.emit({
-      content: content,
+      body: body,
+      title: title,
       features: features
     });
   }

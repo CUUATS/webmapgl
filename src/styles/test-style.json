@@ -87,13 +87,6 @@
         "layers": ["test-data"]
       }
     ],
-    "webmapgl:popups": [
-      {
-        "type": "custom",
-        "template": "<h2>{{=properties.title}}</h2>{{? properties.description}}<p>{{=properties.description}}</p>{{?}}",
-        "layers": ["test-data"]
-      }
-    ],
     "webmapgl:behaviors": [
       {
         "type": "add-feature",
@@ -101,6 +94,12 @@
         "layers": ["test-data"],
         "form": "area-of-concern",
         "endpoint": "https://example.com/add"
+      },
+      {
+        "type": "popup",
+        "title": "{{=properties.title}}",
+        "body": "{{? properties.description}}<p>{{=properties.description}}</p>{{?}}",
+        "layers": ["test-data"]
       }
     ]
   },
