@@ -37,7 +37,7 @@ export class GLApp {
   }
 
   getStartButtons() {
-    let buttons = [];
+    let buttons = [<slot name="start-buttons" />];
     if (this.legend) buttons.push(
       <ion-menu-toggle>
         <ion-button>
@@ -49,7 +49,7 @@ export class GLApp {
   }
 
   getEndButtons() {
-    let buttons = [];
+    let buttons = [<slot name="end-buttons" />];
     if (this.basemap) buttons.push(<gl-basemaps></gl-basemaps>);
     if (this.fullscreen) buttons.push(<gl-fullscreen></gl-fullscreen>);
     return buttons;

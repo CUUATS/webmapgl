@@ -309,6 +309,41 @@ declare global {
 declare global {
 
   namespace StencilComponents {
+    interface GlDrawerToggle {
+      'buttonTitle': string;
+      'icon': string;
+    }
+  }
+
+  interface HTMLGlDrawerToggleElement extends StencilComponents.GlDrawerToggle, HTMLStencilElement {}
+
+  var HTMLGlDrawerToggleElement: {
+    prototype: HTMLGlDrawerToggleElement;
+    new (): HTMLGlDrawerToggleElement;
+  };
+  interface HTMLElementTagNameMap {
+    'gl-drawer-toggle': HTMLGlDrawerToggleElement;
+  }
+  interface ElementTagNameMap {
+    'gl-drawer-toggle': HTMLGlDrawerToggleElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      'gl-drawer-toggle': JSXElements.GlDrawerToggleAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface GlDrawerToggleAttributes extends HTMLAttributes {
+      'buttonTitle'?: string;
+      'icon'?: string;
+    }
+  }
+}
+
+
+declare global {
+
+  namespace StencilComponents {
     interface GlDrawer {
       'drawerTitle': string;
       'open': boolean;
