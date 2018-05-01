@@ -11,12 +11,6 @@ export class GLDrawer {
   @State() content: string;
 
   @Method()
-  setContent(content, title?) {
-    this.content = content;
-    if (title) this.drawerTitle = title;
-  }
-
-  @Method()
   toggle() {
     this.open = !this.open;
   }
@@ -42,7 +36,7 @@ export class GLDrawer {
           <ion-title>{this.drawerTitle}</ion-title>
         </ion-toolbar>
       </ion-header>,
-      <ion-content innerHTML={this.content}></ion-content>
+      <ion-content><slot /></ion-content>
     ]);
   }
 }

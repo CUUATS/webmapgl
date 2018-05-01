@@ -10,7 +10,6 @@ import { _t } from '../i18n/i18n';
 export class GLApp {
   @Element() el: HTMLElement;
   @Prop() basemap = true;
-  @Prop() drawer = false;
   @Prop() fullscreen = true;
   @Prop() legend = true;
   @Prop() featureAdd = true;
@@ -60,10 +59,6 @@ export class GLApp {
     let items = [];
     if (this.featureAdd) items.push(<gl-feature-add></gl-feature-add>);
     return items;
-  }
-
-  getDrawer() {
-    if (this.drawer) return (<gl-drawer></gl-drawer>);
   }
 
   getFooter() {
@@ -127,7 +122,7 @@ export class GLApp {
                 {this.getBeforeMap()}
               </div>
             </ion-content>
-            {this.getDrawer()}
+            <slot name="after-content" />
             {this.getFooter()}
           </ion-page>
         </ion-split-pane>

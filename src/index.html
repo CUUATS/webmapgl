@@ -15,8 +15,7 @@
   <link rel="manifest" href="/manifest.json">
 </head>
 <body>
-  <gl-app map-title="Web Map GL Test" legend="false" drawer="true"
-      popup-type="drawer">
+  <gl-app map-title="Web Map GL Test" legend="false">
     <gl-map slot="map"
         longitude="-88.228878" latitude="40.110319" zoom="12" maxzoom="22">
       <gl-style url="/styles/test-style.json"></gl-style>
@@ -30,6 +29,8 @@
         thumbnail="http://tile.stamen.com/watercolor/13/2087/3098.png"
         name="Watercolor" enabled="false"></gl-style>
     </gl-map>
+    <gl-drawer slot="after-content" open="true" drawer-title="Options">
+    </gl-drawer>
   </gl-app>
 </body>
 </html>

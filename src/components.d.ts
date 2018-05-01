@@ -38,7 +38,6 @@ declare global {
   namespace StencilComponents {
     interface GlApp {
       'basemap': boolean;
-      'drawer': boolean;
       'featureAdd': boolean;
       'featureEdit': boolean;
       'fullscreen': boolean;
@@ -68,7 +67,6 @@ declare global {
   namespace JSXElements {
     export interface GlAppAttributes extends HTMLAttributes {
       'basemap'?: boolean;
-      'drawer'?: boolean;
       'featureAdd'?: boolean;
       'featureEdit'?: boolean;
       'fullscreen'?: boolean;
@@ -314,7 +312,6 @@ declare global {
     interface GlDrawer {
       'drawerTitle': string;
       'open': boolean;
-      'setContent': (content: any, title?: any) => void;
       'toggle': () => void;
     }
   }
