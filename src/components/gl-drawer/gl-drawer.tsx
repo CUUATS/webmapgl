@@ -1,4 +1,4 @@
-import { Component, Method, Prop, State } from '@stencil/core';
+import { Component, Method, Prop, State, Watch } from '@stencil/core';
 
 
 @Component({
@@ -13,6 +13,13 @@ export class GLDrawer {
   @Method()
   toggle() {
     this.open = !this.open;
+  }
+
+  @Watch('open')
+  async openChanged() {
+    let map = document.querySelector('gl-map');
+    await map.componentOnReady();
+    map.resizeMap();
   }
 
   hostData() {
