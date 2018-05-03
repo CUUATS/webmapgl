@@ -417,6 +417,49 @@ declare global {
 declare global {
 
   namespace StencilComponents {
+    interface GlFeatureList {
+      'features': any[];
+      'filter': any[];
+      'layers': string[] | string;
+      'order': 'asc' | 'desc' | 'none';
+      'orderBy': string;
+      'queryMode': 'source' | 'rendered' | 'manual';
+    }
+  }
+
+  interface HTMLGlFeatureListElement extends StencilComponents.GlFeatureList, HTMLStencilElement {}
+
+  var HTMLGlFeatureListElement: {
+    prototype: HTMLGlFeatureListElement;
+    new (): HTMLGlFeatureListElement;
+  };
+  interface HTMLElementTagNameMap {
+    'gl-feature-list': HTMLGlFeatureListElement;
+  }
+  interface ElementTagNameMap {
+    'gl-feature-list': HTMLGlFeatureListElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      'gl-feature-list': JSXElements.GlFeatureListAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface GlFeatureListAttributes extends HTMLAttributes {
+      'features'?: any[];
+      'filter'?: any[];
+      'layers'?: string[] | string;
+      'order'?: 'asc' | 'desc' | 'none';
+      'orderBy'?: string;
+      'queryMode'?: 'source' | 'rendered' | 'manual';
+    }
+  }
+}
+
+
+declare global {
+
+  namespace StencilComponents {
     interface GlFormFacets {
       'facets': any[];
     }
@@ -639,7 +682,9 @@ declare global {
       'maxzoom': number;
       'minzoom': number;
       'off': (eventName: string, layerName: string, handler: Function) => Promise<void>;
-      'on': (eventName: string, layerName: string, handler: Function) => Promise<void>;
+      'on': (eventName: string, layerNameOrHandler: string | Function, handler?: Function) => Promise<void>;
+      'queryRenderedFeatures': (geometry?: any, options?: any) => Promise<any>;
+      'querySourceFeatures': (sourceId: string, options?: any) => Promise<any>;
       'resizeMap': () => void;
       'setCursor': (cursor: string) => Promise<void>;
       'setLayoutProperty': (layerName: string, propName: string, propValue: any) => Promise<void>;

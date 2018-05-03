@@ -131,6 +131,18 @@ export class GLMap {
   }
 
   @Method()
+  async queryRenderedFeatures(geometry? , options?) {
+    await this.mapReady();
+    return this._map.queryRenderedFeatures(geometry, options);
+  }
+
+  @Method()
+  async querySourceFeatures(sourceId: string, options?: any) {
+    await this.mapReady();
+    return this._map.querySourceFeatures(sourceId, options);
+  }
+
+  @Method()
   async setLayoutProperty(layerName: string, propName: string, propValue: any) {
     let layerParts = layerName.split(':', 1);
     let style = this.getStyleElementById(layerParts[0]);
@@ -151,10 +163,16 @@ export class GLMap {
     this._map.getCanvas().style.cursor = cursor;
   }
 
+  on(eventName: string, layerNameOrHandler: string, handler: Function): void;
+  on(eventName: string, layerNameOrHandler: Function): void;
+
   @Method()
-  async on(eventName: string, layerName: string, handler: Function) {
+  async on(eventName: string, layerNameOrHandler: string | Function,
+      handler?: Function) {
     await this.mapReady();
-    this._map.on(eventName, layerName, handler);
+    (handler) ?
+      this._map.on(eventName, layerNameOrHandler, handler) :
+      this._map.on(eventName, layerNameOrHandler);
   }
 
   @Method()
