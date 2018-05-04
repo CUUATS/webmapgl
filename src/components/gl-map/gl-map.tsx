@@ -122,7 +122,7 @@ export class GLMap {
   }
 
   @Method()
-  getStyleElementById(id: string) {
+  getStyleElementById(id: string): HTMLGlStyleElement {
     let styles = document.querySelectorAll('gl-style');
     for (let i = 0; i < styles.length; i++) {
       let style = styles[i];

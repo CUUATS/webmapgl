@@ -1,4 +1,5 @@
 import { Component, Prop, Watch } from '@stencil/core';
+import { compileTemplates } from '../utils';
 
 
 @Component({
@@ -7,14 +8,18 @@ import { Component, Prop, Watch } from '@stencil/core';
 export class GLFeatureList {
   @Prop({mutable: true}) features: any[];
   @Prop() queryMode: 'source' | 'rendered' | 'manual' = 'source';
+  @Prop() styleId: string;
   @Prop() layers: string[] | string;
   @Prop() orderBy: string;
   @Prop() order: 'asc' | 'desc' | 'none' = 'asc';
   @Prop() filter: any[];
+  @Prop() templateId: string;
+  private _template: any;
 
   async componentWillLoad() {
     let map = document.querySelector('gl-map');
     await map.componentOnReady();
+    // TODO: Use a timeout to limit the frequency of updates.
     map.on('render', () => this.getFeatures());
   }
 
@@ -42,23 +47,27 @@ export class GLFeatureList {
   }
 
   getLayersArray() {
-    return (Array.isArray(this.layers)) ?
+    let layers = (Array.isArray(this.layers)) ?
       this.layers : (this.layers || '').split(',');
+    return layers.map((layer) => this.styleId + ':' + layer);
   }
 
   async getFeatures() {
     if (this.queryMode === 'manual') return;
 
-    let map = document.querySelector('gl-map');
+    const map = document.querySelector('gl-map');
+    const layers = this.getLayersArray();
     await map.componentOnReady();
+    const style = map.getStyleElementById(this.styleId);
+    const json = await style.getJSON();
     let features = [];
+    this._template = compileTemplates(
+      json.metadata['webmapgl:templates'][this.templateId]);
 
     if (this.queryMode === 'source') {
       // TODO: Use the source data for geojson sources so that we can list
       // features outside the map extent.
-      const style = await map.getStyle();
-      const layers = this.getLayersArray();
-      await Promise.all(style.layers.map(async (layer) => {
+      await Promise.all(json.layers.map(async (layer) => {
         if (layers.indexOf(layer.id) === -1) return;
         let layerFeatures = await map.querySourceFeatures(layer.source, {
           sourceLayer: layer['source-layer'] || null,
@@ -90,9 +99,8 @@ export class GLFeatureList {
   getListItems() {
     return (this.features || []).map((feature) => {
       return (
-        <ion-item>
-          <ion-label>{JSON.stringify(feature)}</ion-label>
-        </ion-item>
+        <gl-feature-list-item feature={feature} template={this._template}>
+        </gl-feature-list-item>
       );
     });
   }

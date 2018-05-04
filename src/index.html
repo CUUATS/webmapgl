@@ -31,7 +31,8 @@
     </gl-map>
     <gl-drawer-toggle slot="end-buttons"></gl-drawer-toggle>
     <gl-drawer slot="after-content" open="true" drawer-title="Options">
-      <gl-feature-list layers="test:test-data" order-by="title"></gl-feature-list>
+      <gl-feature-list style-id="test" layers="test-data"
+        order-by="title" template-id="test-data"></gl-feature-list>
     </gl-drawer>
   </gl-app>
 </body>

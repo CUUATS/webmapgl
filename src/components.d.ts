@@ -29,9 +29,6 @@ import '@ionic/core';
 import {
   GLDrawOptions,
 } from './components/gl-draw-controller/gl-draw-controller';
-import {
-  Element,
-} from '@stencil/core';
 
 declare global {
 
@@ -417,6 +414,41 @@ declare global {
 declare global {
 
   namespace StencilComponents {
+    interface GlFeatureListItem {
+      'feature': any;
+      'template': any;
+    }
+  }
+
+  interface HTMLGlFeatureListItemElement extends StencilComponents.GlFeatureListItem, HTMLStencilElement {}
+
+  var HTMLGlFeatureListItemElement: {
+    prototype: HTMLGlFeatureListItemElement;
+    new (): HTMLGlFeatureListItemElement;
+  };
+  interface HTMLElementTagNameMap {
+    'gl-feature-list-item': HTMLGlFeatureListItemElement;
+  }
+  interface ElementTagNameMap {
+    'gl-feature-list-item': HTMLGlFeatureListItemElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      'gl-feature-list-item': JSXElements.GlFeatureListItemAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface GlFeatureListItemAttributes extends HTMLAttributes {
+      'feature'?: any;
+      'template'?: any;
+    }
+  }
+}
+
+
+declare global {
+
+  namespace StencilComponents {
     interface GlFeatureList {
       'features': any[];
       'filter': any[];
@@ -424,6 +456,8 @@ declare global {
       'order': 'asc' | 'desc' | 'none';
       'orderBy': string;
       'queryMode': 'source' | 'rendered' | 'manual';
+      'styleId': string;
+      'templateId': string;
     }
   }
 
@@ -452,6 +486,8 @@ declare global {
       'order'?: 'asc' | 'desc' | 'none';
       'orderBy'?: string;
       'queryMode'?: 'source' | 'rendered' | 'manual';
+      'styleId'?: string;
+      'templateId'?: string;
     }
   }
 }
@@ -675,7 +711,7 @@ declare global {
     interface GlMap {
       'getMap': () => Promise<any>;
       'getStyle': () => Promise<{ version: number; sources: {}; layers: any[]; }>;
-      'getStyleElementById': (id: string) => Element;
+      'getStyleElementById': (id: string) => any;
       'latitude': number;
       'longitude': number;
       'mapReady': () => Promise<void>;
