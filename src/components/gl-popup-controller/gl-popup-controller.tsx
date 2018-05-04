@@ -41,11 +41,12 @@ export class GLPopupController {
     let layers = [];
     let bodyTemplates = {};
     let titleTemplates = {};
-    await eachStyleMetadata('behaviors', (meta) => {
+    await eachStyleMetadata('behaviors', (meta, json) => {
       meta.forEach((item) => {
         if (item.type !== 'popup' || !item.layers) return;
-        let bodyTemplate = this.makeTemplate(item.body);
-        let titleTemplate = this.makeTemplate(item.title);
+        let template = json.metadata['webmapgl:templates'][item.template];
+        let bodyTemplate = this.makeTemplate(template.body);
+        let titleTemplate = this.makeTemplate(template.title);
         item.layers.forEach((layerName) => {
           if (layers.indexOf(layerName) === -1) layers.push(layerName);
           bodyTemplates[layerName] = bodyTemplate;

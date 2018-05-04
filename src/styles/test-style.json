@@ -97,11 +97,16 @@
       },
       {
         "type": "popup",
-        "title": "{{=properties.title}}",
-        "body": "{{? properties.description}}<p>{{=properties.description}}</p>{{?}}",
+        "template": "test-data",
         "layers": ["test-data"]
       }
-    ]
+    ],
+    "webmapgl:templates": {
+      "test-data": {
+        "title": "{{=properties.title}}",
+        "body": "{{? properties.description}}<p>{{=properties.description}}</p>{{?}}"
+      }
+    }
   },
   "sources": {
     "test-data": {
