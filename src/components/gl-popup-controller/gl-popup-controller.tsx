@@ -1,6 +1,5 @@
 import { Component, Event, EventEmitter } from '@stencil/core';
-import { default as dot } from 'dot';
-import { eachStyleMetadata } from '../utils';
+import { compileTemplates, eachStyleMetadata } from '../utils';
 
 
 @Component({
@@ -15,19 +14,12 @@ export class GLPopupController {
     'mouseleave': () => this.handleMouseleave()
   };
   private _layers : string[] = [];
-  private _bodyTemplates  = {};
-  private _titleTemplates  = {};
+  private _templates  = {};
   private _map: HTMLGlMapElement;
 
-  makeTemplate(templateStr: string) {
-    if (!templateStr) return;
-    return dot.template(
-      templateStr, {...dot.templateSettings, varname: 'properties'});
-  }
-
-  renderTemplate(library: any, feature: any) {
-    let template = library[feature.layer.id];
-    return (template) ? template(feature.properties) : null;
+  renderTemplate(templateName: any, feature: any) {
+    let templates = this._templates[feature.layer.id];
+    return (templates) ? templates[templateName](feature.properties) : null;
   }
 
   async componentDidLoad() {
@@ -39,18 +31,15 @@ export class GLPopupController {
 
   async update() {
     let layers = [];
-    let bodyTemplates = {};
-    let titleTemplates = {};
+    let templates = {};
     await eachStyleMetadata('behaviors', (meta, json) => {
       meta.forEach((item) => {
         if (item.type !== 'popup' || !item.layers) return;
-        let template = json.metadata['webmapgl:templates'][item.template];
-        let bodyTemplate = this.makeTemplate(template.body);
-        let titleTemplate = this.makeTemplate(template.title);
+        let template = compileTemplates(
+          json.metadata['webmapgl:templates'][item.template]);
         item.layers.forEach((layerName) => {
           if (layers.indexOf(layerName) === -1) layers.push(layerName);
-          bodyTemplates[layerName] = bodyTemplate;
-          titleTemplates[layerName] = titleTemplate;
+          templates[layerName] = template;
         });
       });
     });
@@ -66,8 +55,7 @@ export class GLPopupController {
     }
 
     this._layers = layers;
-    this._bodyTemplates = bodyTemplates;
-    this._titleTemplates = titleTemplates;
+    this._templates = templates;
   }
 
   setHandlers(layer: string, add: boolean) {
@@ -79,10 +67,8 @@ export class GLPopupController {
 
   handleClick(e) {
     let features = e.features || [];
-    let body = features.map(
-      (f) => this.renderTemplate(this._bodyTemplates, f));
-    let title = features.map(
-      (f) => this.renderTemplate(this._titleTemplates, f));
+    let body = features.map((f) => this.renderTemplate('body', f));
+    let title = features.map((f) => this.renderTemplate('title', f));
     this.openPopup.emit({
       body: body,
       title: title,

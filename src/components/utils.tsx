@@ -1,3 +1,5 @@
+import { default as dot } from 'dot';
+
 export async function presentModal(contentEl: HTMLElement) {
   const modalController = document.querySelector('ion-modal-controller');
   await modalController.componentOnReady();
@@ -58,4 +60,13 @@ export function getThumbnail(item) {
       <img src={item.image} />
     </ion-thumbnail>
   );
+}
+
+export function compileTemplates(templateObj: any) {
+  let compiled = {};
+  for (let prop in templateObj) {
+    compiled[prop] = dot.template(
+      templateObj[prop], {...dot.templateSettings, varname: 'properties'});
+  }
+  return compiled;
 }
