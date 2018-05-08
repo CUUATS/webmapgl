@@ -27,8 +27,8 @@ import 'ionicons';
 import '@ionic/core';
 
 import {
-  GLDrawOptions,
-} from './components/gl-draw-controller/gl-draw-controller';
+  DrawOptions,
+} from './components/draw-controller/draw-controller';
 
 declare global {
 
@@ -227,7 +227,7 @@ declare global {
 
   namespace StencilComponents {
     interface GlDrawController {
-      'enter': (options?: GLDrawOptions, behavior?: any) => Promise<void>;
+      'enter': (options?: DrawOptions, behavior?: any) => Promise<void>;
       'exit': () => Promise<void>;
       'getAll': () => any;
       'getBehavior': () => any;
