@@ -7,6 +7,8 @@ import { Component, Prop } from '@stencil/core';
 export class GLFeatureListItem {
   @Prop() template: any;
   @Prop() feature: any;
+  @Prop() layer: string;
+  @Prop() like: boolean = true;
 
   render() {
     let content = [];
@@ -22,6 +24,10 @@ export class GLFeatureListItem {
       <div class="gl-feature-list-item-content"
         innerHTML={template.body(props)}></div>
     );
+
+    if (this.like) content.push(
+      <gl-like-button slot="end" feature-id={this.feature.id}>
+      </gl-like-button>);
 
     return (
       <ion-item>{content}</ion-item>

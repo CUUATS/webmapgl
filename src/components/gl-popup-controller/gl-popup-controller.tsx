@@ -1,12 +1,15 @@
-import { Component, Event, EventEmitter } from '@stencil/core';
-import { compileTemplates, eachStyleMetadata } from '../utils';
+import { Component, Event, EventEmitter, Prop } from '@stencil/core';
+import { compileTemplates } from '../utils';
 
 
 @Component({
   tag: 'gl-popup-controller'
 })
 export class GLPopupController {
+  map?: HTMLGlMapElement;
+
   @Event() openPopup: EventEmitter;
+  @Prop({connect: 'gl-map'}) lazyMap!: HTMLGlMapElement;
 
   private _handlers = {
     'click': (e) => this.handleClick(e),
@@ -15,32 +18,26 @@ export class GLPopupController {
   };
   private _layers : string[] = [];
   private _templates  = {};
-  private _map: HTMLGlMapElement;
 
   renderTemplate(templateName: any, feature: any) {
     let templates = this._templates[feature.layer.id];
     return (templates) ? templates[templateName](feature.properties) : null;
   }
 
-  async componentDidLoad() {
-    this._map = document.querySelector('gl-map');
-    await this._map.componentOnReady();
-    this.update();
-    this._map.addEventListener('styleUpdated', this.update.bind(this));
+  async componentWillLoad() {
+    this.map = await this.lazyMap.componentOnReady();
+    this.map.onBehavior('popup', this.update.bind(this));
   }
 
-  async update() {
+  async update(behaviors) {
     let layers = [];
     let templates = {};
-    await eachStyleMetadata('behaviors', (meta, json) => {
-      meta.forEach((item) => {
-        if (item.type !== 'popup' || !item.layers) return;
-        let template = compileTemplates(
-          json.metadata['webmapgl:templates'][item.template]);
-        item.layers.forEach((layerName) => {
-          if (layers.indexOf(layerName) === -1) layers.push(layerName);
-          templates[layerName] = template;
-        });
+
+    behaviors.forEach((item) => {
+      let template = compileTemplates(item.template);
+      item.layers.forEach((layerName) => {
+        if (layers.indexOf(layerName) === -1) layers.push(layerName);
+        templates[layerName] = template;
       });
     });
 
@@ -59,7 +56,7 @@ export class GLPopupController {
   }
 
   setHandlers(layer: string, add: boolean) {
-    let action = (add) ? this._map.on : this._map.off;
+    let action = (add) ? this.map.on : this.map.off;
     action('click', layer, this._handlers.click);
     action('mouseenter', layer, this._handlers.mouseenter);
     action('mouseleave', layer, this._handlers.mouseleave);
@@ -77,10 +74,10 @@ export class GLPopupController {
   }
 
   handleMouseenter() {
-    this._map.setCursor('pointer');
+    this.map.setCursor('pointer');
   }
 
   handleMouseleave() {
-    this._map.setCursor('');
+    this.map.setCursor('');
   }
 }

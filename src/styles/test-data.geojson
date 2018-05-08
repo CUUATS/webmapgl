@@ -1,12 +1,74 @@
 {
-"type": "FeatureCollection",
-"name": "test-data",
-"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
-"features": [
-{ "type": "Feature", "id": 1, "properties": { "title": "Feature One", "description": "The best feature of all time" }, "geometry": { "type": "Point", "coordinates": [ -88.22947674914731, 40.131694970233667 ] } },
-{ "type": "Feature", "id": 2, "properties": { "title": "Feature Two", "description": "Another great feature" }, "geometry": { "type": "Point", "coordinates": [ -88.227914735008071, 40.076703035700525 ] } },
-{ "type": "Feature", "id": 3, "properties": { "title": "Feature Three", "description": "A feature for everyone" }, "geometry": { "type": "Point", "coordinates": [ -88.154020922557478, 40.094784431026397 ] } },
-{ "type": "Feature", "id": 4, "properties": { "title": "Feature Four" }, "geometry": { "type": "Point", "coordinates": [ -88.263885604512282, 40.102961365013314 ] } },
-{ "type": "Feature", "id": 5, "properties": { "title": "Feature Five" }, "geometry": { "type": "Point", "coordinates": [ -88.263885604512282, 40.102961365013314 ] } }
-]
+  "type": "FeatureCollection",
+  "name": "test-data",
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "urn:ogc:def:crs:OGC:1.3:CRS84"
+    }
+  },
+  "features": [{
+      "type": "Feature",
+      "id": 1,
+      "properties": {
+        "title": "Feature One",
+        "description": "The best feature of all time",
+        "_likes": 3
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-88.22947674914731, 40.131694970233667]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 2,
+      "properties": {
+        "title": "Feature Two",
+        "description": "Another great feature",
+        "_likes": 0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-88.227914735008071, 40.076703035700525]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 3,
+      "properties": {
+        "title": "Feature Three",
+        "description": "A feature for everyone",
+        "_likes": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-88.154020922557478, 40.094784431026397]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 4,
+      "properties": {
+        "title": "Feature Four",
+        "_likes": 4
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-88.263885604512282, 40.102961365013314]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 5,
+      "properties": {
+        "title": "Feature Five",
+        "_likes": 0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-88.263885604512282, 40.102961365013314]
+      }
+    }
+  ]
 }

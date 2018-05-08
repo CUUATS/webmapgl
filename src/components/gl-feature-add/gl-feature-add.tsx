@@ -1,5 +1,4 @@
 import { Component, Prop, State } from '@stencil/core';
-import { eachStyleMetadata } from '../utils';
 
 
 @Component({
@@ -7,18 +6,25 @@ import { eachStyleMetadata } from '../utils';
   tag: 'gl-feature-add'
 })
 export class GLFeatureAdd {
+  map?: HTMLGlMapElement;
+
   @Prop() horizontal: 'start' | 'center' | 'end' = 'end';
   @Prop() icon = 'add';
+  @Prop({connect: 'gl-map'}) lazyMap!: HTMLGlMapElement;
   @Prop() vertical: 'bottom' | 'center' | 'top' = 'bottom';
+
   @State() behaviors: any[] = [];
   @State() enabled = true;
+
   private _drawCtrl: HTMLGlDrawControllerElement;
   private _drawToolbar: HTMLGlDrawToolbarElement;
 
+  async componentWillLoad() {
+    this.map = await this.lazyMap.componentOnReady();
+    this.map.onBehavior('add-feature', this.update.bind(this));
+  }
+
   componentDidLoad() {
-    this.update();
-    document.querySelector('gl-map')
-      .addEventListener('styleUpdated', this.update.bind(this));
     this._drawCtrl = document.querySelector('gl-draw-controller');
     this._drawCtrl.addEventListener('drawEnter', () => this.enabled = false);
     this._drawCtrl.addEventListener('drawExit', () => this.enabled = true);
@@ -27,17 +33,7 @@ export class GLFeatureAdd {
     this._drawToolbar.addEventListener('drawConfirm', () => this.confirmDraw());
   }
 
-  async update() {
-    let behaviors = [];
-    await eachStyleMetadata('behaviors', (meta, json) => {
-      meta.forEach((item) => {
-        if (item.type !== 'add-feature') return;
-        behaviors.push({
-          ...item,
-          form: (json.metadata['webmapgl:forms'] || {})[item.form]
-        });
-      });
-    });
+  async update(behaviors) {
     this.behaviors = behaviors;
   }
 

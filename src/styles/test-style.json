@@ -1,110 +1,118 @@
 {
   "version": 8,
   "metadata": {
-    "webmapgl:forms": {
-      "area-of-concern": {
-        "facets": [
-          {
-            "id": "large-area",
-            "label": "Large Area",
-            "image": "/styles/large-area.jpg"
-          },
-          {
-            "id": "small-area",
-            "label": "Small Area",
-            "image": "/styles/small-area.jpg"
-          }
-        ],
-        "fields": [
-          {
-            "attribute": "title",
-            "label": "Title",
-            "type": "text",
-            "required": true
-          },
-          {
-            "attribute": "concern",
-            "label": "Type of Concern",
-            "type": "text",
-            "facets": ["large-area"],
-            "widget": "radio",
-            "choices": [
-              {
-                "value": "sinkhole",
-                "label": "Sink Hole",
-                "image": "/styles/large-area.jpg"
-              },
-              {
-                "value": "condition",
-                "label": "Poor Condition",
-                "image": "/styles/large-area.jpg"
-              },
-              {
-                "value": "markings",
-                "label": "Faded Markings",
-                "image": "/styles/large-area.jpg"
-              },
-              {
-                "value": "wear",
-                "label": "General Wear",
-                "image": "/styles/large-area.jpg"
-              }
-            ]
-          },
-          {
-            "attribute": "concern",
-            "label": "Type of Concern",
-            "type": "text",
-            "widget": "radio",
-            "facets": ["small-area"],
-            "choices": [
-              {"value": "pothole", "label": "Pot Hole"},
-              {"value": "dirt", "label": "Dirt on Roadway"},
-              {"value": "grass", "label": "Grass on Sidewalk"},
-              {"value": "other", "label": "Other Problems"}
-            ]
-          },
-          {
-            "attribute": "description",
-            "label": "Description",
-            "type": "text",
-            "widget": "textarea"
-          }
-        ]
-      }
-    },
-    "webmapgl:legenditems": [
+    "webmapgl:behaviors": [
       {
-        "type": "divider",
+        "type": "legend",
+        "widget": "divider",
         "text": "Public Input",
         "layers": ["test-data"],
         "toggle": true
       },
       {
-        "type": "item",
+        "type": "legend",
+        "widget": "item",
         "text": "Area of Concern",
         "image": "data:image/svg+xml;utf8,<svg viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\"><circle cx=\"50\" cy=\"50\" r=\"25\" fill=\"%23FF0000\"/></svg>",
         "layers": ["test-data"]
-      }
-    ],
-    "webmapgl:behaviors": [
+      },
       {
         "type": "add-feature",
         "title": "Area of Concern",
         "layers": ["test-data"],
-        "form": "area-of-concern",
+        "resource:form": "area-of-concern",
         "endpoint": "https://example.com/add"
       },
       {
         "type": "popup",
-        "template": "test-data",
+        "resource:template": "test-data",
+        "layers": ["test-data"]
+      },
+      {
+        "type": "like",
+        "property": "_likes",
+        "endpoint": "https://example.com/like",
         "layers": ["test-data"]
       }
     ],
-    "webmapgl:templates": {
-      "test-data": {
-        "title": "{{=properties.title}}",
-        "body": "{{? properties.description}}<p>{{=properties.description}}</p>{{?}}"
+    "webmapgl:resources": {
+      "form": {
+        "area-of-concern": {
+          "facets": [
+            {
+              "id": "large-area",
+              "label": "Large Area",
+              "image": "/styles/large-area.jpg"
+            },
+            {
+              "id": "small-area",
+              "label": "Small Area",
+              "image": "/styles/small-area.jpg"
+            }
+          ],
+          "fields": [
+            {
+              "attribute": "title",
+              "label": "Title",
+              "type": "text",
+              "required": true
+            },
+            {
+              "attribute": "concern",
+              "label": "Type of Concern",
+              "type": "text",
+              "facets": ["large-area"],
+              "widget": "radio",
+              "choices": [
+                {
+                  "value": "sinkhole",
+                  "label": "Sink Hole",
+                  "image": "/styles/large-area.jpg"
+                },
+                {
+                  "value": "condition",
+                  "label": "Poor Condition",
+                  "image": "/styles/large-area.jpg"
+                },
+                {
+                  "value": "markings",
+                  "label": "Faded Markings",
+                  "image": "/styles/large-area.jpg"
+                },
+                {
+                  "value": "wear",
+                  "label": "General Wear",
+                  "image": "/styles/large-area.jpg"
+                }
+              ]
+            },
+            {
+              "attribute": "concern",
+              "label": "Type of Concern",
+              "type": "text",
+              "widget": "radio",
+              "facets": ["small-area"],
+              "choices": [
+                {"value": "pothole", "label": "Pot Hole"},
+                {"value": "dirt", "label": "Dirt on Roadway"},
+                {"value": "grass", "label": "Grass on Sidewalk"},
+                {"value": "other", "label": "Other Problems"}
+              ]
+            },
+            {
+              "attribute": "description",
+              "label": "Description",
+              "type": "text",
+              "widget": "textarea"
+            }
+          ]
+        }
+      },
+      "template": {
+        "test-data": {
+          "title": "{{=properties.title}}",
+          "body": "{{? properties.description}}<p>{{=properties.description}}</p>{{?}}"
+        }
       }
     }
   },

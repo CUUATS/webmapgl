@@ -416,6 +416,8 @@ declare global {
   namespace StencilComponents {
     interface GlFeatureListItem {
       'feature': any;
+      'layer': string;
+      'like': boolean;
       'template': any;
     }
   }
@@ -440,6 +442,8 @@ declare global {
   namespace JSXElements {
     export interface GlFeatureListItemAttributes extends HTMLAttributes {
       'feature'?: any;
+      'layer'?: string;
+      'like'?: boolean;
       'template'?: any;
     }
   }
@@ -708,9 +712,82 @@ declare global {
 declare global {
 
   namespace StencilComponents {
+    interface GlLikeButton {
+      'feature': any;
+      'iconNo': string;
+      'iconYes': string;
+    }
+  }
+
+  interface HTMLGlLikeButtonElement extends StencilComponents.GlLikeButton, HTMLStencilElement {}
+
+  var HTMLGlLikeButtonElement: {
+    prototype: HTMLGlLikeButtonElement;
+    new (): HTMLGlLikeButtonElement;
+  };
+  interface HTMLElementTagNameMap {
+    'gl-like-button': HTMLGlLikeButtonElement;
+  }
+  interface ElementTagNameMap {
+    'gl-like-button': HTMLGlLikeButtonElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      'gl-like-button': JSXElements.GlLikeButtonAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface GlLikeButtonAttributes extends HTMLAttributes {
+      'feature'?: any;
+      'iconNo'?: string;
+      'iconYes'?: string;
+    }
+  }
+}
+
+
+declare global {
+
+  namespace StencilComponents {
+    interface GlLikeController {
+      'getCount': (feature: any) => number;
+      'getLiked': (feature: any) => boolean;
+      'like': (feature: any) => void;
+      'unlike': (feature: any) => void;
+    }
+  }
+
+  interface HTMLGlLikeControllerElement extends StencilComponents.GlLikeController, HTMLStencilElement {}
+
+  var HTMLGlLikeControllerElement: {
+    prototype: HTMLGlLikeControllerElement;
+    new (): HTMLGlLikeControllerElement;
+  };
+  interface HTMLElementTagNameMap {
+    'gl-like-controller': HTMLGlLikeControllerElement;
+  }
+  interface ElementTagNameMap {
+    'gl-like-controller': HTMLGlLikeControllerElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      'gl-like-controller': JSXElements.GlLikeControllerAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface GlLikeControllerAttributes extends HTMLAttributes {
+
+    }
+  }
+}
+
+
+declare global {
+
+  namespace StencilComponents {
     interface GlMap {
       'getMap': () => Promise<any>;
-      'getStyle': () => Promise<{ version: number; sources: {}; layers: any[]; }>;
+      'getStyle': () => Promise<any>;
       'getStyleElementById': (id: string) => any;
       'latitude': number;
       'longitude': number;
@@ -719,6 +796,8 @@ declare global {
       'minzoom': number;
       'off': (eventName: string, layerName: string, handler: Function) => Promise<void>;
       'on': (eventName: string, layerNameOrHandler: string | Function, handler?: Function) => Promise<void>;
+      'onBehavior': (bType: string, fn: Function) => Promise<void>;
+      'onStyle': (fn: Function) => Promise<void>;
       'queryRenderedFeatures': (geometry?: any, options?: any) => Promise<any>;
       'querySourceFeatures': (sourceId: string, options?: any) => Promise<any>;
       'resizeMap': () => void;

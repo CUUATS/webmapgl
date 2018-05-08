@@ -6,21 +6,24 @@ import { compileTemplates } from '../utils';
   tag: 'gl-feature-list'
 })
 export class GLFeatureList {
+  map?: HTMLGlMapElement;
+
   @Prop({mutable: true}) features: any[];
   @Prop() queryMode: 'source' | 'rendered' | 'manual' = 'source';
   @Prop() styleId: string;
   @Prop() layers: string[] | string;
+  @Prop({connect: 'gl-map'}) lazyMap!: HTMLGlMapElement;
   @Prop() orderBy: string;
   @Prop() order: 'asc' | 'desc' | 'none' = 'asc';
   @Prop() filter: any[];
   @Prop() templateId: string;
+
   private _template: any;
 
   async componentWillLoad() {
-    let map = document.querySelector('gl-map');
-    await map.componentOnReady();
+    this.map = await this.lazyMap.componentOnReady();
     // TODO: Use a timeout to limit the frequency of updates.
-    map.on('render', () => this.getFeatures());
+    this.map.on('render', () => this.getFeatures());
   }
 
   @Watch('filter')
@@ -55,33 +58,31 @@ export class GLFeatureList {
   async getFeatures() {
     if (this.queryMode === 'manual') return;
 
-    const map = document.querySelector('gl-map');
     const layers = this.getLayersArray();
-    await map.componentOnReady();
-    const style = map.getStyleElementById(this.styleId);
+    const style = this.map.getStyleElementById(this.styleId);
     const json = await style.getJSON();
     let features = [];
     this._template = compileTemplates(
-      json.metadata['webmapgl:templates'][this.templateId]);
+      json.metadata['webmapgl:resources'].template[this.templateId]);
 
     if (this.queryMode === 'source') {
       // TODO: Use the source data for geojson sources so that we can list
       // features outside the map extent.
       await Promise.all(json.layers.map(async (layer) => {
         if (layers.indexOf(layer.id) === -1) return;
-        let layerFeatures = await map.querySourceFeatures(layer.source, {
+        let layerFeatures = await this.map.querySourceFeatures(layer.source, {
           sourceLayer: layer['source-layer'] || null,
           filter: this.filter || layer.filter || null
         });
+        layerFeatures.forEach((feature) => feature.layer = layer.id);
         Array.prototype.push.apply(features, layerFeatures);
       }));
     } else {
-      features = await map.queryRenderedFeatures(undefined, {
+      features = await this.map.queryRenderedFeatures(undefined, {
         layers: this.getLayersArray(),
         filter: this.filter
       });
     }
-
     this.features = this.deduplicate(features);
   }
 

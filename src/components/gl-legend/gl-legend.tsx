@@ -1,5 +1,4 @@
-import { Component, Element, State } from '@stencil/core';
-import { eachStyleMetadata } from '../utils';
+import { Component, Element, Prop, State } from '@stencil/core';
 
 
 @Component({
@@ -7,13 +6,17 @@ import { eachStyleMetadata } from '../utils';
   styleUrl: 'gl-legend.scss'
 })
 export class GLLegend {
+  map?: HTMLGlMapElement;
+
   @Element() el: HTMLElement;
+
+  @Prop({connect: 'gl-map'}) lazyMap!: HTMLGlMapElement;
+
   @State() items = [];
 
-  componentDidLoad() {
-    this.updateItems();
-    document.querySelector('gl-map')
-      .addEventListener('styleUpdated', this.updateItems.bind(this));
+  async componentWillLoad() {
+    this.map = await this.lazyMap.componentOnReady();
+    this.map.onStyle(this.update.bind(this));
   }
 
   getLayersVisible(json, layers) {
@@ -27,20 +30,19 @@ export class GLLegend {
     }
   }
 
-  async updateItems() {
+  async update(style: any) {
     let items = [];
-    await eachStyleMetadata('legenditems', (meta, json) => {
-      meta.forEach((item) => {
-        let visible = this.getLayersVisible(json, item.layers);
-        if (item.toggle || visible) items.push({
-          type: item.type,
-          layers: item.layers || [],
-          image: item.image || '',
-          text: item.text || '',
-          visible: (item.toggle) ? visible : undefined
-        });
+    for (let item of style.metadata['webmapgl:behaviors']) {
+      if (item.type !== 'legend') continue;
+      let visible = this.getLayersVisible(style, item.layers);
+      if (item.toggle || visible) items.push({
+        type: item.subtype,
+        layers: item.layers || [],
+        image: item.image || '',
+        text: item.text || '',
+        visible: (item.toggle) ? visible : undefined
       });
-    });
+    }
     this.items = items;
   }
 

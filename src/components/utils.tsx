@@ -24,26 +24,6 @@ export async function presentToast(opts) {
   return toastElement.present();
 }
 
-export function eachStyleJSON(fn: Function) {
-  return Promise.all(
-    Array.from(document.querySelectorAll('gl-style'))
-      .map(async (style) => {
-        await style.componentOnReady();
-        let json = await style.getJSON();
-        if (json) return fn(json, style);
-      })
-  );
-}
-
-export function eachStyleMetadata(key: string, fn: Function) {
-  return eachStyleJSON(async (json, style) => {
-    let metadata = json.metadata;
-    if (!metadata) return;
-    let meta = metadata['webmapgl:' + key];
-    if (meta) return fn(meta, json, style);
-  });
-}
-
 export class Hold {
   public release: Function;
   public promise: Promise<void>;

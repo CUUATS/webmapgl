@@ -6,24 +6,25 @@ import { Component, Element, Prop
   styleUrl: 'gl-legend-item.scss'
 })
 export class GLLegendItem {
+  map?: HTMLGlMapElement;
+
   @Element() el: HTMLElement;
+
   @Prop() itemType: string;
   @Prop() layers: Array<string>;
   @Prop() image: string;
+  @Prop({connect: 'gl-map'}) lazyMap!: HTMLGlMapElement;
   @Prop() text: string;
   @Prop() visible: boolean;
 
-  componentDidLoad() {
-    let toggle = this.el.querySelector('ion-toggle');
-    if (toggle)
-      toggle.addEventListener('ionChange', () => this.toggleVisible());
+  async componentWillLoad() {
+    this.map = await this.lazyMap.componentOnReady();
   }
 
   toggleVisible() {
     let visible = !(this.visible || false);
-    let map = document.querySelector('gl-map');
     this.layers.forEach((layer) => {
-      map.setLayoutProperty(layer, 'visibility',
+      this.map.setLayoutProperty(layer, 'visibility',
         (visible) ? 'visible' : 'none');
     })
   }
@@ -39,7 +40,8 @@ export class GLLegendItem {
       <ion-label>{this.text}</ion-label>
     );
     if (this.visible !== undefined) content.push(
-      <ion-toggle slot="end" checked={this.visible}></ion-toggle>
+      <ion-toggle slot="end" checked={this.visible}
+        onIonChange={() => this.toggleVisible()}></ion-toggle>
     );
     return content;
   }

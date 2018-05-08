@@ -40,44 +40,9 @@ export class GLStyle {
     this.styleElementRemoved.emit(this);
   }
 
-  _prefix(value: string) {
-    return `${this.id}:${value}`;
-  }
-
-  addPrefix(json: any) {
-    if (!json) return;
-
-    if (json.layers)
-      for (let layer of json.layers) {
-        layer.id = this._prefix(layer.id);
-        if (layer.source) layer.source = this._prefix(layer.source);
-      }
-
-    if (json.sources) {
-      let sources = {};
-      for (let sourceName in json.sources)
-        sources[this._prefix(sourceName)] = json.sources[sourceName];
-      json.sources = sources;
-    }
-
-    if (json.metadata) {
-      for (let key in json.metadata) {
-        if (key.slice(0, 9) !== 'webmapgl:') continue;
-        let items = json.metadata[key];
-        if (!(items instanceof Array)) continue;
-        for (let item of items)
-          if (item.layers) item.layers =
-            item.layers.map((l) => this._prefix(l));
-      }
-    }
-
-    return json;
-  }
-
   async fetchJSON() {
     let res = await fetch(this.url);
-    let json = await res.json();
-    this.json = this.addPrefix(json);
+    this.json = await res.json();
   }
 
   @Method()
