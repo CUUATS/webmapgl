@@ -6,67 +6,64 @@ import { Component, Prop, State } from '@stencil/core';
   tag: 'gl-feature-add'
 })
 export class FeatureAdd {
+  drawCtrl?: HTMLGlDrawControllerElement;
   map?: HTMLGlMapElement;
 
-  @Prop() horizontal: 'start' | 'center' | 'end' = 'end';
+  @Prop() confirmComponent: string = 'gl-draw-toolbar';
   @Prop() icon = 'add';
+  @Prop() form: string;
+  @Prop() layers: string | string[];
+  @Prop({connect: 'gl-draw-controller'}) lazyDrawCtrl!:
+    HTMLGlDrawControllerElement;
   @Prop({connect: 'gl-map'}) lazyMap!: HTMLGlMapElement;
-  @Prop() vertical: 'bottom' | 'center' | 'top' = 'bottom';
+  @Prop() url: string;
 
-  @State() behaviors: any[] = [];
-  @State() enabled = true;
-
-  private _drawCtrl: HTMLGlDrawControllerElement;
-  private _drawToolbar: HTMLGlDrawToolbarElement;
+  @State() disabled: boolean = false;
+  @State() drawing: boolean = false;
 
   async componentWillLoad() {
+    this.drawCtrl = await this.lazyDrawCtrl.componentOnReady();
     this.map = await this.lazyMap.componentOnReady();
-    this.map.onBehavior('add-feature', this.update.bind(this));
+    document.addEventListener('drawEnter', () => this.disabled = true);
+    document.addEventListener('drawExit', () => this.disabled = false);
+    document.addEventListener('drawCancel', () => this.cancelDraw());
+    document.addEventListener('drawConfirm', () => this.confirmDraw());
   }
 
-  componentDidLoad() {
-    this._drawCtrl = document.querySelector('gl-draw-controller');
-    this._drawCtrl.addEventListener('drawEnter', () => this.enabled = false);
-    this._drawCtrl.addEventListener('drawExit', () => this.enabled = true);
-    this._drawToolbar = document.querySelector('gl-draw-toolbar');
-    this._drawToolbar.addEventListener('drawCancel', () => this.cancelDraw());
-    this._drawToolbar.addEventListener('drawConfirm', () => this.confirmDraw());
+  removeConfirm() {
+    this.map.parentElement.querySelector(this.confirmComponent).remove();
   }
 
-  async update(behaviors) {
-    this.behaviors = behaviors;
-  }
-
-  showActionSheet() {
-    if (this.behaviors.length > 1) {
-      // TODO: Handle layer choice.
-    } else if (this.behaviors.length === 1) {
-      this.startDraw(this.behaviors[0]);
-    }
-  }
-
-  async startDraw(behavior) {
-    await this._drawCtrl.componentOnReady();
-    this._drawCtrl.enter({}, behavior);
+  async startDraw() {
+    this.drawing = true;
+    let confirm = document.createElement(this.confirmComponent);
+    this.map.parentNode.insertBefore(confirm, this.map.nextSibling);
+    this.drawCtrl.enter();
   }
 
   async cancelDraw() {
-    await this._drawCtrl.componentOnReady();
-    this._drawCtrl.exit();
+    if (!this.drawing) return;
+    this.removeConfirm();
+    this.drawCtrl.exit();
+    this.drawing = false;
   }
 
   async confirmDraw() {
-    await this._drawCtrl.componentOnReady();
-    this._drawCtrl.exit();
+    if (!this.drawing) return;
+    let features = this.drawCtrl.getAll();
+    this.removeConfirm();
+    this.drawCtrl.exit();
+
+    // TODO: Open the form modal.
+    console.log(features);
+    this.drawing = false;
   }
 
   render() {
-    if (this.enabled && this.behaviors.length) return (
-      <ion-fab vertical={this.vertical} horizontal={this.horizontal}>
-        <ion-fab-button onClick={() => this.showActionSheet()}>
-          <ion-icon name={this.icon}></ion-icon>
-        </ion-fab-button>
-      </ion-fab>
+    if (!this.disabled) return (
+      <ion-fab-button onClick={() => this.startDraw()}>
+        <ion-icon name={this.icon}></ion-icon>
+      </ion-fab-button>
     );
   }
 }

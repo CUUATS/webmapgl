@@ -1,4 +1,4 @@
-import { Component, Element, Prop } from '@stencil/core';
+import { Component, Element, Method, Prop } from '@stencil/core';
 
 
 @Component({
@@ -7,16 +7,16 @@ import { Component, Element, Prop } from '@stencil/core';
 })
 export class Form {
   @Element() el: HTMLElement;
-  @Prop() facets: any[];
-  @Prop() fields: any[];
+  @Prop() feature: any;
+  @Prop() facet: string;
 
-  componentDidLoad() {
-    this.el.querySelector('ion-nav').setRoot('gl-form-facets', {
-      facets: this.facets
-    });
+  @Method()
+  getFeatureValue(attribute: string) {
+    if (!this.feature || !this.feature.properties) return;
+    return this.feature.properties[attribute];
   }
 
   render() {
-    return (<ion-nav></ion-nav>);
+    return (this.feature) ? <slot /> : null;
   }
 }

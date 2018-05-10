@@ -165,15 +165,6 @@ export class Map {
     this.el.addEventListener('styleUpdated', (e) => fn((e as any).detail));
   }
 
-  @Method()
-  onBehavior(bType: string, fn: Function) {
-    return this.onStyle((style) => {
-      let behaviors = style.metadata['webmapgl:behaviors']
-        .filter((behavior) => behavior.type === bType);
-      fn(behaviors);
-    });
-  }
-
   getStyleLayers(styleId: string, json: any) {
     if (!json.layers) return [];
     let results = [];
@@ -196,34 +187,6 @@ export class Map {
     return sources;
   }
 
-  getStyleBehaviors(styleId: string, json: any) {
-    if (!json.metadata) return [];
-
-    let results = [];
-    const behaviors = json.metadata['webmapgl:behaviors'];
-    const resources = json.metadata['webmapgl:resources'];
-
-    for (let item of behaviors) {
-      let result = {...item};
-      for (let key in item) {
-        if (['layers', 'sources'].indexOf(key) !== -1)
-          result[key] = item[key].map((l) => this.prefix(styleId, l));
-
-        if (resources && key.slice(0, 9) === 'resource:') {
-          let baseKey = key.slice(9);
-          let library = resources[baseKey];
-          let libraryKey = item[key];
-          if (!library || !library[libraryKey])
-            throw(`Resource does not exist: ${library}['${libraryKey}']`);
-          result[baseKey] = library[libraryKey];
-        }
-      }
-      results.push(result);
-    }
-
-    return results;
-  }
-
   loadStyle() {
     return Promise.all(Array.from(this.el.querySelectorAll('gl-style'))
       .map(async (styleEl) => {
@@ -235,18 +198,13 @@ export class Map {
         };
       }))
       .then((styles) => {
-        let bKey = 'webmapgl:behaviors';
         let style = {
           version: 8,
           metadata: {},
           sources: {},
           layers: []
         };
-        style.metadata[bKey] = [];
         styles.forEach(({id, json}) => {
-          Array.prototype.push.apply(
-            style.metadata[bKey], this.getStyleBehaviors(id, json));
-
           style.layers = this.getStyleLayers(id, json).concat(style.layers);
           style.sources = {
             ...style.sources,

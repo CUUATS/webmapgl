@@ -1,29 +1,5 @@
 import { default as dot } from 'dot';
 
-export async function presentModal(contentEl: HTMLElement) {
-  const modalController = document.querySelector('ion-modal-controller');
-  await modalController.componentOnReady();
-
-  const modalElement = await modalController.create({
-    component: contentEl
-  });
-  modalElement.present();
-}
-
-export async function presentPopover(opts) {
-  const popoverController = document.querySelector('ion-popover-controller');
-  await popoverController.componentOnReady();
-  const popoverElement = await popoverController.create(opts);
-  return await popoverElement.present();
-}
-
-export async function presentToast(opts) {
-  const toastController = document.querySelector('ion-toast-controller');
-  await toastController.componentOnReady();
-  let toastElement = await toastController.create(opts);
-  return toastElement.present();
-}
-
 export class Hold {
   public release: Function;
   public promise: Promise<void>;
@@ -49,4 +25,10 @@ export function compileTemplates(templateObj: any) {
       templateObj[prop], {...dot.templateSettings, varname: 'properties'});
   }
   return compiled;
+}
+
+export function toArray(value: string | string[], sep=',') {
+  if (!value) return [];
+  if (Array.isArray(value)) return value;
+  return value.split(sep);
 }

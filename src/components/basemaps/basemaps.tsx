@@ -1,5 +1,4 @@
-import { Component, Element } from '@stencil/core';
-import { presentPopover } from '../utils';
+import { Component, Element, Prop } from '@stencil/core';
 import { _t } from '../i18n/i18n';
 
 
@@ -9,14 +8,23 @@ import { _t } from '../i18n/i18n';
 export class Basemaps {
   @Element() el: HTMLElement;
 
+  @Prop({connect: 'ion-popover-controller'}) popoverCtrl!:
+    HTMLIonPopoverControllerElement;
+
+  private async openPopover(ev: UIEvent) {
+    const options = {
+      component: 'gl-basemap-switcher',
+      ev: ev
+    };
+    const popover = await this.popoverCtrl.create(options);
+    await popover.present();
+    return popover;
+  }
+
   render() {
     let title = _t('Change basemap');
     return (
-      <ion-button onClick={(e) =>
-          presentPopover({
-            component: 'gl-basemap-switcher',
-            ev: e
-          })} title={title}>
+      <ion-button onClick={(e) => this.openPopover(e)} title={title}>
         <ion-icon slot="icon-only" name='globe'></ion-icon>
       </ion-button>
     );

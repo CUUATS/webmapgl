@@ -1,8 +1,11 @@
+gl-popup {
+  display: none;
+}
 gl-map .mapboxgl-popup-content {
-  & > *:nth-child(2) {
+  gl-template > *:first-child {
     margin-top: 0;
   }
-  & > *:last-child {
+  gl-template > *:last-child {
     margin-bottom: 0;
   }
   h2 {

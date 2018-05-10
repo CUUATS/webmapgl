@@ -1,4 +1,5 @@
-import { Component, Event, EventEmitter, Method } from '@stencil/core';
+import { Component, Event, EventEmitter, Method, Prop } from '@stencil/core';
+import mapboxgl from 'mapbox-gl';
 import MapboxDraw from '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw';
 
 export interface DrawOptions {
@@ -18,35 +19,32 @@ export interface DrawOptions {
   tag: 'gl-draw-controller'
 })
 export class DrawController {
-  @Event() drawCreate: EventEmitter;
-  @Event() drawDelete: EventEmitter;
-  @Event() drawEnter: EventEmitter;
-  @Event() drawExit: EventEmitter;
-  private _behavior: any;
-  private _draw: MapboxDraw;
-  private _defaultOptions: DrawOptions = {
+  draw: MapboxDraw;
+  defaultOptions: DrawOptions = {
     type: 'point',
     multiple: false,
     combine: false,
     delete: false,
     mode: 'draw'
   };
+  map?: mapboxgl.Map;
 
-  async componentDidLoad() {
-    let map = await this.getMap();
-    map.on('draw.create', (e) => this.drawCreate.emit(e));
-    map.on('draw.delete', (e) => this.drawDelete.emit(e));
-  }
+  @Event() drawCreate: EventEmitter;
+  @Event() drawDelete: EventEmitter;
+  @Event() drawEnter: EventEmitter;
+  @Event() drawExit: EventEmitter;
 
-  async getMap() {
-    let mapEl = document.querySelector('gl-map');
-    await mapEl.componentOnReady();
-    let map = await mapEl.getMap();
-    return map;
+  @Prop({connect: 'gl-map'}) lazyMap!: HTMLGlMapElement;
+
+  async componentWillLoad() {
+    let mapEl = await this.lazyMap.componentOnReady();
+    this.map = await mapEl.getMap();
+    this.map.on('draw.create', (e) => this.drawCreate.emit(e));
+    this.map.on('draw.delete', (e) => this.drawDelete.emit(e));
   }
 
   getControlOptions(options?: DrawOptions) {
-    let opts = {...this._defaultOptions, ...(options || {})};
+    let opts = {...this.defaultOptions, ...(options || {})};
 
     let mode = 'simple_select';
     if (opts.mode === 'direct') mode = 'direct_select';
@@ -74,32 +72,24 @@ export class DrawController {
   }
 
   @Method()
-  async enter(options?: DrawOptions, behavior?: any) {
-    if (this._draw) return;
-    this._behavior = behavior;
-    this._draw = new MapboxDraw(this.getControlOptions(options));
-    let map = await this.getMap();
-    map.addControl(this._draw);
+  async enter(options?: DrawOptions) {
+    if (this.draw) return;
+    this.draw = new MapboxDraw(this.getControlOptions(options));
+    this.map.addControl(this.draw);
     this.drawEnter.emit();
   }
 
   @Method()
   async exit() {
-    if (!this._draw) return;
-    let map = await this.getMap();
-    map.removeControl(this._draw);
-    this._draw = null;
+    if (!this.draw) return;
+    this.map.removeControl(this.draw);
+    this.draw = null;
     this.drawExit.emit();
   }
 
   @Method()
   getAll() {
-    if (!this._draw) return;
-    return this._draw.getAll();
-  }
-
-  @Method()
-  getBehavior() {
-    return this._behavior;
+    if (!this.draw) return;
+    return this.draw.getAll();
   }
 }

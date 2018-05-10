@@ -1,5 +1,5 @@
-import { Component, Element, Prop
-  } from '@stencil/core';
+import { Component, Element, Prop, State } from '@stencil/core';
+import { toArray } from '../utils';
 
 @Component({
   tag: 'gl-legend-item',
@@ -10,48 +10,66 @@ export class LegendItem {
 
   @Element() el: HTMLElement;
 
-  @Prop() itemType: string;
-  @Prop() layers: Array<string>;
+  @Prop() layers: string | string[];
   @Prop() image: string;
   @Prop({connect: 'gl-map'}) lazyMap!: HTMLGlMapElement;
-  @Prop() text: string;
-  @Prop() visible: boolean;
+  @Prop() toggle: boolean = false;
+  @Prop() widget: 'divider' | 'item' = 'item';
+
+  @State() visible: boolean;
 
   async componentWillLoad() {
     this.map = await this.lazyMap.componentOnReady();
+    let style = await this.map.getStyle();
+    this.update(style);
+    this.map.addEventListener('styleUpdated',
+      (e) => this.update((e as any).detail));
+  }
+
+  getVisible(json) {
+    const layers = toArray(this.layers);
+    if (!layers || !layers.length) return true;
+    if (!json.layers || !json.layers.length) return false;
+    for (let layer of json.layers) {
+      if (layers.indexOf(layer.id) !== -1) {
+        if (!layer.layout) return true;
+        return layer.layout.visibility !== 'none';
+      }
+    }
   }
 
   toggleVisible() {
     let visible = !(this.visible || false);
-    this.layers.forEach((layer) => {
+    toArray(this.layers).forEach((layer) => {
       this.map.setLayoutProperty(layer, 'visibility',
         (visible) ? 'visible' : 'none');
-    })
+    });
   }
 
-  renderContent() {
-    let content = [];
-    if (this.image) content.push(
-      <ion-thumbnail slot="start">
-        <img src={this.image} alt={this.text} />
-      </ion-thumbnail>
-    );
-    if (this.text) content.push(
-      <ion-label>{this.text}</ion-label>
-    );
-    if (this.visible !== undefined) content.push(
-      <ion-toggle slot="end" checked={this.visible}
-        onIonChange={() => this.toggleVisible()}></ion-toggle>
-    );
-    return content;
+  update(style) {
+    this.visible = this.getVisible(style);
   }
 
   render() {
-    if (this.itemType === 'divider') return (
-      <ion-item-divider>{this.renderContent()}</ion-item-divider>
+    let content = [];
+    if (this.image) content.push(
+      <ion-thumbnail slot="start">
+        <img src={this.image} alt={this.el.textContent} />
+      </ion-thumbnail>
+    );
+    content.push(
+      <ion-label><slot /></ion-label>
+    );
+    if (this.toggle) content.push(
+      <ion-toggle slot="end" checked={this.visible}
+        onIonChange={() => this.toggleVisible()}></ion-toggle>
+    );
+
+    if (this.widget === 'divider') return (
+      <ion-item-divider>{content}</ion-item-divider>
     );
     return (
-      <ion-item>{this.renderContent()}</ion-item>
+      <ion-item>{content}</ion-item>
     );
   }
 }

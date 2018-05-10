@@ -1,5 +1,4 @@
 import { Component, Element, Listen, Prop, State } from '@stencil/core';
-import { presentToast } from '../utils';
 import { _t } from '../i18n/i18n';
 
 
@@ -8,6 +7,7 @@ import { _t } from '../i18n/i18n';
 })
 export class AttributesForm {
   @Element() el: HTMLElement;
+
   @Prop() feature: any;
   @Prop() behavior: any;
   @Prop() heading: string;
@@ -16,6 +16,9 @@ export class AttributesForm {
   @Prop() successMessage: string = _t('Saved successfully.');
   @Prop() failureMessage: string = _t('An error occurred while saving.');
   @Prop() alertDuration = 3000;
+  @Prop({connect: 'ion-toast-controller'}) toastCtrl!:
+    HTMLIonToastControllerElement;
+
   @State() canSubmit = false;
 
   componentDidLoad() {
@@ -24,10 +27,10 @@ export class AttributesForm {
 
   @Listen('fieldValueChanged')
   async updateValidationStatus() {
-    let fields = this.el.querySelector('gl-form-fields');
-    if (!fields) return;
-    await fields.componentOnReady();
-    this.canSubmit = fields.isValid();
+    // let fields = this.el.querySelector('gl-form-fields');
+    // if (!fields) return;
+    // await fields.componentOnReady();
+    // this.canSubmit = fields.isValid();
   }
 
   async dismissModal() {
@@ -41,37 +44,40 @@ export class AttributesForm {
   }
 
   async submit() {
-    let fields = this.el.querySelector('gl-form-fields');
-    if (fields) {
-      let values = fields.getValues();
-      let props = this.feature.properties || {};
-      for (let i in this.behavior.form.fields) {
-        let field = this.behavior.form.fields[i];
-        let value = values[i];
-        if (value !== undefined) props[field.attribute] = value;
-      }
-      this.feature.properties = props;
-      let remote = document.querySelector('gl-remote-controller');
-      let res;
-      try {
-        res = await remote.send(this.behavior, this.feature);
-      } catch(e) {
-        this.alert(false);
-      }
-      if (res) this.alert(res.status === 200);
-    }
-    this.dismissModal();
+    // let fields = this.el.querySelector('gl-form-fields');
+    // if (fields) {
+    //   let values = fields.getValues();
+    //   let props = this.feature.properties || {};
+    //   for (let i in this.behavior.form.fields) {
+    //     let field = this.behavior.form.fields[i];
+    //     let value = values[i];
+    //     if (value !== undefined) props[field.attribute] = value;
+    //   }
+    //   this.feature.properties = props;
+    //   let remote = document.querySelector('gl-remote-controller');
+    //   let res;
+    //   try {
+    //     res = await remote.send(this.behavior, this.feature);
+    //   } catch(e) {
+    //     this.alert(false);
+    //   }
+    //   if (res) this.alert(res.status === 200);
+    // }
+    // this.dismissModal();
   }
 
-  alert(success: boolean) {
+  async alert(success: boolean) {
     let message = (success) ?
       this.behavior.successMessage || this.successMessage :
       this.behavior.failureMessage || this.failureMessage;
 
-    return presentToast({
+    let options = {
       message: message,
       duration: this.alertDuration
-    });
+    };
+    let toast = await this.toastCtrl.create(options);
+    await toast.present();
+    return toast;
   }
 
   render() {
@@ -97,8 +103,6 @@ export class AttributesForm {
         </ion-toolbar>
       </ion-header>,
       <ion-content>
-        <gl-form fields={this.behavior.form.fields}
-          facets={this.behavior.form.facets}></gl-form>
       </ion-content>
     ]);
   }

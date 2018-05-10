@@ -3,9 +3,9 @@ import { getThumbnail } from '../utils';
 
 
 @Component({
-  tag: 'gl-form-facets'
+  tag: 'gl-facet'
 })
-export class FormFacets {
+export class Facet {
   @Prop() facets: any[] = [];
 
   showFields(facetId: string) {

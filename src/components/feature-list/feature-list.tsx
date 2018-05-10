@@ -1,5 +1,5 @@
 import { Component, Prop, Watch } from '@stencil/core';
-import { compileTemplates } from '../utils';
+// import { compileTemplates } from '../utils';
 
 
 @Component({
@@ -56,34 +56,34 @@ export class FeatureList {
   }
 
   async getFeatures() {
-    if (this.queryMode === 'manual') return;
-
-    const layers = this.getLayersArray();
-    const style = this.map.getStyleElementById(this.styleId);
-    const json = await style.getJSON();
-    let features = [];
-    this._template = compileTemplates(
-      json.metadata['webmapgl:resources'].template[this.templateId]);
-
-    if (this.queryMode === 'source') {
-      // TODO: Use the source data for geojson sources so that we can list
-      // features outside the map extent.
-      await Promise.all(json.layers.map(async (layer) => {
-        if (layers.indexOf(layer.id) === -1) return;
-        let layerFeatures = await this.map.querySourceFeatures(layer.source, {
-          sourceLayer: layer['source-layer'] || null,
-          filter: this.filter || layer.filter || null
-        });
-        layerFeatures.forEach((feature) => feature.layer = layer.id);
-        Array.prototype.push.apply(features, layerFeatures);
-      }));
-    } else {
-      features = await this.map.queryRenderedFeatures(undefined, {
-        layers: this.getLayersArray(),
-        filter: this.filter
-      });
-    }
-    this.features = this.deduplicate(features);
+    // if (this.queryMode === 'manual') return;
+    //
+    // const layers = this.getLayersArray();
+    // const style = this.map.getStyleElementById(this.styleId);
+    // const json = await style.getJSON();
+    // let features = [];
+    // this._template = compileTemplates(
+    //   json.metadata['webmapgl:resources'].template[this.templateId]);
+    //
+    // if (this.queryMode === 'source') {
+    //   // TODO: Use the source data for geojson sources so that we can list
+    //   // features outside the map extent.
+    //   await Promise.all(json.layers.map(async (layer) => {
+    //     if (layers.indexOf(layer.id) === -1) return;
+    //     let layerFeatures = await this.map.querySourceFeatures(layer.source, {
+    //       sourceLayer: layer['source-layer'] || null,
+    //       filter: this.filter || layer.filter || null
+    //     });
+    //     layerFeatures.forEach((feature) => feature.layer = layer.id);
+    //     Array.prototype.push.apply(features, layerFeatures);
+    //   }));
+    // } else {
+    //   features = await this.map.queryRenderedFeatures(undefined, {
+    //     layers: this.getLayersArray(),
+    //     filter: this.filter
+    //   });
+    // }
+    // this.features = this.deduplicate(features);
   }
 
   sortFeatures() {

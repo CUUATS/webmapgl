@@ -1,5 +1,6 @@
-import { Component, Method, Prop } from '@stencil/core';
+import { Component, Element, Method, Prop, Watch } from '@stencil/core';
 import mapboxgl from 'mapbox-gl';
+import { toArray } from '../utils';
 
 
 @Component({
@@ -7,44 +8,75 @@ import mapboxgl from 'mapbox-gl';
   tag: 'gl-popup'
 })
 export class Popup {
+  clickCtrl?: HTMLGlClickControllerElement;
+  map?: mapboxgl.Map;
+  popup?: mapboxgl.Popup;
+
+  @Element() el: HTMLGlPopupElement;
+
   @Prop() closeKey = 27;
-  private _map: mapboxgl.Map;
-  private _popup: mapboxgl.Popup;
+  @Prop() layers: string[] | string;
+  @Prop({connect: 'gl-click-controller'}) lazyClickCtrl!:
+    HTMLGlClickControllerElement;
+  @Prop({connect: 'gl-map'}) lazyMap!: HTMLGlMapElement;
 
-  async componentDidLoad() {
-    let mapEl = document.querySelector('gl-map');
-    await mapEl.componentOnReady();
-    this._map = await mapEl.getMap();
+  async componentWillLoad() {
+    let mapEl = await this.lazyMap.componentOnReady();
+    this.map = await mapEl.getMap();
+    this.clickCtrl = await this.lazyClickCtrl.componentOnReady();
 
-    if (this.closeKey !== undefined)
-      document.addEventListener('keyup', (e) => {
-        if (e.keyCode === this.closeKey) this.removePopup();
-      });
+    document.addEventListener('keyup', this.handleKeyup.bind(this));
+    document.addEventListener('glFeatureClick', this.handleClick.bind(this));
   }
 
-  @Method()
-  openPopup(title: string[], body: string[], features: any[]) {
-    // TODO: Handle non-point features.
-    var coordinates = features[0].geometry.coordinates.slice();
-
-    // TODO: Deal with multiple features in popup.
-    let html = (title && title[0]) ?
-      '<h2 class="gl-popup-title">' + title[0] + '</h2>' : '';
-    if (body && body[0]) html += body[0];
-
-    this._popup = new mapboxgl.Popup()
-        .setLngLat(coordinates)
-        .setHTML(html)
-        .addTo(this._map);
+  componentDidLoad() {
+    this.handleLayers(this.layers);
   }
 
   @Method()
   isOpen() {
-    return (this._popup) ? this._popup.isOpen() : false;
+    return (this.popup) ? this.popup.isOpen() : false;
   }
 
   @Method()
   removePopup() {
-    if (this._popup) this._popup.remove();
+    if (this.popup) this.popup.remove();
+  }
+
+  @Watch('layers')
+  handleLayers(newLayers: string[] | string, oldLayers?: string[] | string) {
+    newLayers = toArray(newLayers);
+    oldLayers = toArray(oldLayers);
+
+    // TODO: This logic may not work if there are multiple popups configured
+    // with overlapping layers.
+    for (let layer of oldLayers) this.clickCtrl.setClickable(layer, false);
+    for (let layer of newLayers) this.clickCtrl.setClickable(layer, true);
+  }
+
+  handleClick(e) {
+    let layers = toArray(this.layers);
+    let features = e.detail.features
+      .filter((feature) => layers.indexOf(feature.layer.id) !== -1);
+    if (features.length) this.openPopup(features);
+  }
+
+  handleKeyup(e) {
+    if (e.keyCode === this.closeKey) this.removePopup();
+  }
+
+  openPopup(features: any[]) {
+    // TODO: Handle non-point features.
+    var coordinates = features[0].geometry.coordinates.slice();
+
+    // TODO: Deal with multiple features in popup.
+    let template = document.createElement('gl-template');
+    template.feature = features[0];
+    template.innerHTML = this.el.innerHTML;
+
+    this.popup = new mapboxgl.Popup()
+        .setLngLat(coordinates)
+        .setDOMContent(template)
+        .addTo(this.map);
   }
 }

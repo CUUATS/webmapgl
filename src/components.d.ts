@@ -34,13 +34,9 @@ declare global {
 
   namespace StencilComponents {
     interface GlApp {
-      'basemap': boolean;
-      'featureAdd': boolean;
-      'featureEdit': boolean;
-      'fullscreen': boolean;
-      'legend': boolean;
-      'mapTitle': string;
-      'popup': boolean;
+      'label': string;
+      'menu': boolean;
+      'menuLabel': string;
     }
   }
 
@@ -63,13 +59,9 @@ declare global {
   }
   namespace JSXElements {
     export interface GlAppAttributes extends HTMLAttributes {
-      'basemap'?: boolean;
-      'featureAdd'?: boolean;
-      'featureEdit'?: boolean;
-      'fullscreen'?: boolean;
-      'legend'?: boolean;
-      'mapTitle'?: string;
-      'popup'?: boolean;
+      'label'?: string;
+      'menu'?: boolean;
+      'menuLabel'?: string;
     }
   }
 }
@@ -226,11 +218,43 @@ declare global {
 declare global {
 
   namespace StencilComponents {
+    interface GlClickController {
+      'setClickable': (layer: string, clickable: boolean) => void;
+    }
+  }
+
+  interface HTMLGlClickControllerElement extends StencilComponents.GlClickController, HTMLStencilElement {}
+
+  var HTMLGlClickControllerElement: {
+    prototype: HTMLGlClickControllerElement;
+    new (): HTMLGlClickControllerElement;
+  };
+  interface HTMLElementTagNameMap {
+    'gl-click-controller': HTMLGlClickControllerElement;
+  }
+  interface ElementTagNameMap {
+    'gl-click-controller': HTMLGlClickControllerElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      'gl-click-controller': JSXElements.GlClickControllerAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface GlClickControllerAttributes extends HTMLAttributes {
+      'onGlFeatureClick'?: (event: CustomEvent) => void;
+    }
+  }
+}
+
+
+declare global {
+
+  namespace StencilComponents {
     interface GlDrawController {
-      'enter': (options?: DrawOptions, behavior?: any) => Promise<void>;
+      'enter': (options?: DrawOptions) => Promise<void>;
       'exit': () => Promise<void>;
       'getAll': () => any;
-      'getBehavior': () => any;
     }
   }
 
@@ -377,10 +401,45 @@ declare global {
 declare global {
 
   namespace StencilComponents {
+    interface GlFacet {
+      'facets': any[];
+    }
+  }
+
+  interface HTMLGlFacetElement extends StencilComponents.GlFacet, HTMLStencilElement {}
+
+  var HTMLGlFacetElement: {
+    prototype: HTMLGlFacetElement;
+    new (): HTMLGlFacetElement;
+  };
+  interface HTMLElementTagNameMap {
+    'gl-facet': HTMLGlFacetElement;
+  }
+  interface ElementTagNameMap {
+    'gl-facet': HTMLGlFacetElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      'gl-facet': JSXElements.GlFacetAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface GlFacetAttributes extends HTMLAttributes {
+      'facets'?: any[];
+    }
+  }
+}
+
+
+declare global {
+
+  namespace StencilComponents {
     interface GlFeatureAdd {
-      'horizontal': 'start' | 'center' | 'end';
+      'confirmComponent': string;
+      'form': string;
       'icon': string;
-      'vertical': 'bottom' | 'center' | 'top';
+      'layers': string | string[];
+      'url': string;
     }
   }
 
@@ -403,9 +462,11 @@ declare global {
   }
   namespace JSXElements {
     export interface GlFeatureAddAttributes extends HTMLAttributes {
-      'horizontal'?: 'start' | 'center' | 'end';
+      'confirmComponent'?: string;
+      'form'?: string;
       'icon'?: string;
-      'vertical'?: 'bottom' | 'center' | 'top';
+      'layers'?: string | string[];
+      'url'?: string;
     }
   }
 }
@@ -500,68 +561,46 @@ declare global {
 declare global {
 
   namespace StencilComponents {
-    interface GlFormFacets {
-      'facets': any[];
-    }
-  }
-
-  interface HTMLGlFormFacetsElement extends StencilComponents.GlFormFacets, HTMLStencilElement {}
-
-  var HTMLGlFormFacetsElement: {
-    prototype: HTMLGlFormFacetsElement;
-    new (): HTMLGlFormFacetsElement;
-  };
-  interface HTMLElementTagNameMap {
-    'gl-form-facets': HTMLGlFormFacetsElement;
-  }
-  interface ElementTagNameMap {
-    'gl-form-facets': HTMLGlFormFacetsElement;
-  }
-  namespace JSX {
-    interface IntrinsicElements {
-      'gl-form-facets': JSXElements.GlFormFacetsAttributes;
-    }
-  }
-  namespace JSXElements {
-    export interface GlFormFacetsAttributes extends HTMLAttributes {
-      'facets'?: any[];
-    }
-  }
-}
-
-
-declare global {
-
-  namespace StencilComponents {
-    interface GlFormFields {
-      'facet': string;
-      'getValidationMessages': () => any[];
-      'getValues': () => any[];
+    interface GlField {
+      'attribute': string;
+      'facets': string | string[];
+      'getValue': () => any;
+      'image': string;
       'isValid': () => boolean;
+      'label': string;
+      'required': boolean;
+      'type': any;
+      'widget': string;
     }
   }
 
-  interface HTMLGlFormFieldsElement extends StencilComponents.GlFormFields, HTMLStencilElement {}
+  interface HTMLGlFieldElement extends StencilComponents.GlField, HTMLStencilElement {}
 
-  var HTMLGlFormFieldsElement: {
-    prototype: HTMLGlFormFieldsElement;
-    new (): HTMLGlFormFieldsElement;
+  var HTMLGlFieldElement: {
+    prototype: HTMLGlFieldElement;
+    new (): HTMLGlFieldElement;
   };
   interface HTMLElementTagNameMap {
-    'gl-form-fields': HTMLGlFormFieldsElement;
+    'gl-field': HTMLGlFieldElement;
   }
   interface ElementTagNameMap {
-    'gl-form-fields': HTMLGlFormFieldsElement;
+    'gl-field': HTMLGlFieldElement;
   }
   namespace JSX {
     interface IntrinsicElements {
-      'gl-form-fields': JSXElements.GlFormFieldsAttributes;
+      'gl-field': JSXElements.GlFieldAttributes;
     }
   }
   namespace JSXElements {
-    export interface GlFormFieldsAttributes extends HTMLAttributes {
-      'facet'?: string;
+    export interface GlFieldAttributes extends HTMLAttributes {
+      'attribute'?: string;
+      'facets'?: string | string[];
+      'image'?: string;
+      'label'?: string;
       'onFieldValueChanged'?: (event: CustomEvent) => void;
+      'required'?: boolean;
+      'type'?: any;
+      'widget'?: string;
     }
   }
 }
@@ -571,8 +610,9 @@ declare global {
 
   namespace StencilComponents {
     interface GlForm {
-      'facets': any[];
-      'fields': any[];
+      'facet': string;
+      'feature': any;
+      'getFeatureValue': (attribute: string) => any;
     }
   }
 
@@ -595,8 +635,8 @@ declare global {
   }
   namespace JSXElements {
     export interface GlFormAttributes extends HTMLAttributes {
-      'facets'?: any[];
-      'fields'?: any[];
+      'facet'?: string;
+      'feature'?: any;
     }
   }
 }
@@ -640,10 +680,9 @@ declare global {
   namespace StencilComponents {
     interface GlLegendItem {
       'image': string;
-      'itemType': string;
-      'layers': Array<string>;
-      'text': string;
-      'visible': boolean;
+      'layers': string | string[];
+      'toggle': boolean;
+      'widget': 'divider' | 'item';
     }
   }
 
@@ -667,10 +706,9 @@ declare global {
   namespace JSXElements {
     export interface GlLegendItemAttributes extends HTMLAttributes {
       'image'?: string;
-      'itemType'?: string;
-      'layers'?: Array<string>;
-      'text'?: string;
-      'visible'?: boolean;
+      'layers'?: string | string[];
+      'toggle'?: boolean;
+      'widget'?: 'divider' | 'item';
     }
   }
 }
@@ -796,7 +834,6 @@ declare global {
       'minzoom': number;
       'off': (eventName: string, layerName: string, handler: Function) => Promise<void>;
       'on': (eventName: string, layerNameOrHandler: string | Function, handler?: Function) => Promise<void>;
-      'onBehavior': (bType: string, fn: Function) => Promise<void>;
       'onStyle': (fn: Function) => Promise<void>;
       'queryRenderedFeatures': (geometry?: any, options?: any) => Promise<any>;
       'querySourceFeatures': (sourceId: string, options?: any) => Promise<any>;
@@ -840,31 +877,34 @@ declare global {
 declare global {
 
   namespace StencilComponents {
-    interface GlPopupController {
-
+    interface GlOption {
+      'image': string;
+      'value': any;
     }
   }
 
-  interface HTMLGlPopupControllerElement extends StencilComponents.GlPopupController, HTMLStencilElement {}
+  interface HTMLGlOptionElement extends StencilComponents.GlOption, HTMLStencilElement {}
 
-  var HTMLGlPopupControllerElement: {
-    prototype: HTMLGlPopupControllerElement;
-    new (): HTMLGlPopupControllerElement;
+  var HTMLGlOptionElement: {
+    prototype: HTMLGlOptionElement;
+    new (): HTMLGlOptionElement;
   };
   interface HTMLElementTagNameMap {
-    'gl-popup-controller': HTMLGlPopupControllerElement;
+    'gl-option': HTMLGlOptionElement;
   }
   interface ElementTagNameMap {
-    'gl-popup-controller': HTMLGlPopupControllerElement;
+    'gl-option': HTMLGlOptionElement;
   }
   namespace JSX {
     interface IntrinsicElements {
-      'gl-popup-controller': JSXElements.GlPopupControllerAttributes;
+      'gl-option': JSXElements.GlOptionAttributes;
     }
   }
   namespace JSXElements {
-    export interface GlPopupControllerAttributes extends HTMLAttributes {
-      'onOpenPopup'?: (event: CustomEvent) => void;
+    export interface GlOptionAttributes extends HTMLAttributes {
+      'image'?: string;
+      'onOptionChanged'?: (event: CustomEvent) => void;
+      'value'?: any;
     }
   }
 }
@@ -876,7 +916,7 @@ declare global {
     interface GlPopup {
       'closeKey': number;
       'isOpen': () => any;
-      'openPopup': (title: string[], body: string[], features: any[]) => void;
+      'layers': string[] | string;
       'removePopup': () => void;
     }
   }
@@ -901,6 +941,40 @@ declare global {
   namespace JSXElements {
     export interface GlPopupAttributes extends HTMLAttributes {
       'closeKey'?: number;
+      'layers'?: string[] | string;
+    }
+  }
+}
+
+
+declare global {
+
+  namespace StencilComponents {
+    interface GlProperty {
+      'attribute': string;
+    }
+  }
+
+  interface HTMLGlPropertyElement extends StencilComponents.GlProperty, HTMLStencilElement {}
+
+  var HTMLGlPropertyElement: {
+    prototype: HTMLGlPropertyElement;
+    new (): HTMLGlPropertyElement;
+  };
+  interface HTMLElementTagNameMap {
+    'gl-property': HTMLGlPropertyElement;
+  }
+  interface ElementTagNameMap {
+    'gl-property': HTMLGlPropertyElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      'gl-property': JSXElements.GlPropertyAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface GlPropertyAttributes extends HTMLAttributes {
+      'attribute'?: string;
     }
   }
 }
@@ -982,6 +1056,40 @@ declare global {
       'onStyleElementRemoved'?: (event: CustomEvent) => void;
       'thumbnail'?: string;
       'url'?: string;
+    }
+  }
+}
+
+
+declare global {
+
+  namespace StencilComponents {
+    interface GlTemplate {
+      'feature': any;
+      'getValue': (attribute: string) => any;
+    }
+  }
+
+  interface HTMLGlTemplateElement extends StencilComponents.GlTemplate, HTMLStencilElement {}
+
+  var HTMLGlTemplateElement: {
+    prototype: HTMLGlTemplateElement;
+    new (): HTMLGlTemplateElement;
+  };
+  interface HTMLElementTagNameMap {
+    'gl-template': HTMLGlTemplateElement;
+  }
+  interface ElementTagNameMap {
+    'gl-template': HTMLGlTemplateElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      'gl-template': JSXElements.GlTemplateAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface GlTemplateAttributes extends HTMLAttributes {
+      'feature'?: any;
     }
   }
 }
