@@ -59,7 +59,7 @@ export class FeatureAdd {
         form.innerHTML = script.innerHTML;
 
         let options: ModalFormOptions = {};
-        if (this.el.innerText) options.label = this.el.innerText;
+        if (this.el.textContent) options.label = this.el.textContent;
         let modal = await this.modalFormCtrl.create(form, options);
         await modal.present();
       }

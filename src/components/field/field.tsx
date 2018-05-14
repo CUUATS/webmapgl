@@ -11,7 +11,7 @@ import { _t } from '../i18n/i18n';
 export class Field {
   @Element() el: HTMLElement;
 
-  @Event() fieldValueChanged: EventEmitter;
+  @Event() glFieldValueChanged: EventEmitter;
 
   @Prop() attribute: string;
   @Prop() facets: string | string[];
@@ -71,7 +71,7 @@ export class Field {
   }
 
   changed(value) {
-    this.fieldValueChanged.emit({
+    this.glFieldValueChanged.emit({
       field: this,
       value: value
     });

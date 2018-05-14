@@ -25,16 +25,24 @@ export class ModalForm {
   }
 
   componentDidLoad() {
-    this.updateValidationStatus();
+    this.handleForm();
   }
 
-  @Listen('fieldValueChanged')
+  @Listen('glFieldValueChanged')
   async updateValidationStatus() {
-    this.canSubmit = (this.form) ? this.form.validate().length === 0 : false;
+    let form = await this.form.componentOnReady();
+    this.canSubmit = (form) ? form.validate().length === 0 : false;
+  }
+
+  addForm() {
+    let oldForm = this.el.querySelector('gl-form');
+    if (oldForm) oldForm.remove();
+    this.el.querySelector('ion-content .scroll-inner').appendChild(this.form);
   }
 
   @Watch('form')
   handleForm() {
+    this.addForm();
     this.updateValidationStatus();
   }
 
@@ -66,7 +74,7 @@ export class ModalForm {
           </ion-buttons>
         </ion-toolbar>
       </ion-header>,
-      <ion-content innerHTML={this.form.outerHTML}>
+      <ion-content>
       </ion-content>
     ]);
   }

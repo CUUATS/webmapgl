@@ -17,11 +17,11 @@ export class Form {
   @Prop() feature: any;
   @Prop() formId: string = `gl-form-${formId++}`;
 
-  @Listen('fieldValueChanged')
+  @Listen('glFieldValueChanged')
   setValue(e) {
     if (!this.feature) return;
     this.feature.properties = this.feature.properties || {};
-    this.feature.properites[e.detail.field.attribute] = e.detail.value;
+    this.feature.properties[e.detail.field.attribute] = e.detail.value;
   }
 
   @Method()
@@ -49,11 +49,7 @@ export class Form {
   @Method()
   validate() {
     return Array.from(this.el.querySelectorAll('gl-field'))
-      .map((field) => {
-        let message = field.validate();
-        if (message === null) return message;
-        return `${field.label}: ${message}`;
-      })
+      .map((field) => field.validate())
       .filter((message) => message !== null);
   }
 
@@ -64,7 +60,6 @@ export class Form {
       form: this
     });
   }
-
 
   render() {
     if (!this.feature) return null;

@@ -571,7 +571,7 @@ declare global {
       'facets'?: string | string[];
       'image'?: string;
       'label'?: string;
-      'onFieldValueChanged'?: (event: CustomEvent) => void;
+      'onGlFieldValueChanged'?: (event: CustomEvent) => void;
       'required'?: boolean;
       'type'?: any;
       'widget'?: string;
