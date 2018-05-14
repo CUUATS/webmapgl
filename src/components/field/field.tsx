@@ -1,9 +1,11 @@
 import { Component, Element, Event, EventEmitter, Listen, Method,
   Prop, State } from '@stencil/core';
+import { toArray } from '../utils';
 import { _t } from '../i18n/i18n';
 
 
 @Component({
+  styleUrl: 'field.scss',
   tag: 'gl-field'
 })
 export class Field {
@@ -20,24 +22,46 @@ export class Field {
   @Prop() widget: string;
 
   @State() message: string;
+  @State() visible: boolean = true;
+
+  componentDidLoad() {
+    this.handleFormFacet();
+  }
+
+  @Listen('body:glFormFacet')
+  handleFormFacet(e?: CustomEvent) {
+    let form = this.el.closest('gl-form');
+    if (e && form.formId !== e.detail.form.formId) return;
+
+    let facets = toArray(this.facets);
+    if (!facets.length && !form.facet) {
+      this.visible = true;
+    } else if (facets.indexOf(form.facet) !== -1) {
+      this.visible = true;
+    } else {
+      this.visible = false;
+    }
+  }
+
+  @Listen('optionChanged')
+  optionChanged(e) {
+    this.changed(e.detail);
+  }
 
   @Method()
   isValid() {
-    return this.message === undefined;
+    return this.validate() === null;
   }
 
   @Method()
   getValue() {
     const form = this.el.closest('gl-form');
-    return form.getFeatureValue(this.attribute);
+    return form.getValue(this.attribute);
   }
 
-  getFacets() {
-    return Array.isArray(this.facets) ?
-      this.facets : (this.facets || '').split(',');
-  }
-
-  validate(value) {
+  @Method()
+  validate() {
+    const value = this.getValue();
     if (this.required &&
         (value === undefined || value === null || value === ''))
       return _t('{field} is required.')
@@ -46,17 +70,10 @@ export class Field {
     return null;
   }
 
-  @Listen('optionChanged')
-  optionChanged(e) {
-    this.changed(e.detail);
-  }
-
   changed(value) {
-    this.message = this.validate(value);
     this.fieldValueChanged.emit({
       field: this,
-      value: value,
-      message: this.message
+      value: value
     });
   }
 
@@ -92,11 +109,16 @@ export class Field {
     );
   }
 
+  hostData() {
+    return {
+      class: {
+        'gl-visible': this.visible
+      }
+    };
+  }
+
   render() {
-    const form = this.el.closest('gl-form');
-    const facets = this.getFacets();
-    if (form.facet && facets.length && facets.indexOf(form.facet) === -1)
-      return null;
+    if (!this.visible) return null;
 
     let items = [];
     if (this.widget === 'radio') {

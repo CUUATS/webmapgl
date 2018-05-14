@@ -1,46 +1,40 @@
-import { Component, Prop, State } from '@stencil/core';
+import { Component, Element, Listen, Prop, State } from '@stencil/core';
+import { _t } from '../i18n/i18n';
+import { ModalFormOptions
+  } from '../modal-form-controller/modal-form-controller';
 
 
 @Component({
-  // styleUrl: 'gl-popup.scss',
   tag: 'gl-feature-add'
 })
 export class FeatureAdd {
   drawCtrl?: HTMLGlDrawControllerElement;
   map?: HTMLGlMapElement;
 
+  @Element() el: HTMLGlFeatureAddElement;
+
+  @Prop() alertDuration = 3000;
   @Prop() confirmComponent: string = 'gl-draw-toolbar';
+  @Prop() confirmParent: string = 'ion-footer';
   @Prop() icon = 'add';
-  @Prop() form: string;
+  @Prop() failureMessage: string = _t('An error occurred while saving.');
   @Prop() layers: string | string[];
   @Prop({connect: 'gl-draw-controller'}) lazyDrawCtrl!:
     HTMLGlDrawControllerElement;
   @Prop({connect: 'gl-map'}) lazyMap!: HTMLGlMapElement;
+  @Prop({connect: 'gl-modal-form-controller'}) modalFormCtrl!:
+    HTMLGlModalFormControllerElement;
+  @Prop() successMessage: string = _t('Saved successfully.');
+  @Prop() template: string;
   @Prop() url: string;
 
   @State() disabled: boolean = false;
   @State() drawing: boolean = false;
 
-  async componentWillLoad() {
-    this.drawCtrl = await this.lazyDrawCtrl.componentOnReady();
-    this.map = await this.lazyMap.componentOnReady();
-    document.addEventListener('drawEnter', () => this.disabled = true);
-    document.addEventListener('drawExit', () => this.disabled = false);
-    document.addEventListener('drawCancel', () => this.cancelDraw());
-    document.addEventListener('drawConfirm', () => this.confirmDraw());
-  }
+  @Prop({connect: 'ion-toast-controller'}) toastCtrl!:
+    HTMLIonToastControllerElement;
 
-  removeConfirm() {
-    this.map.parentElement.querySelector(this.confirmComponent).remove();
-  }
-
-  async startDraw() {
-    this.drawing = true;
-    let confirm = document.createElement(this.confirmComponent);
-    this.map.parentNode.insertBefore(confirm, this.map.nextSibling);
-    this.drawCtrl.enter();
-  }
-
+  @Listen('body:drawCancel')
   async cancelDraw() {
     if (!this.drawing) return;
     this.removeConfirm();
@@ -48,15 +42,73 @@ export class FeatureAdd {
     this.drawing = false;
   }
 
+  @Listen('body:drawConfirm')
   async confirmDraw() {
     if (!this.drawing) return;
-    let features = this.drawCtrl.getAll();
+    let featureCollection = this.drawCtrl.getAll();
     this.removeConfirm();
     this.drawCtrl.exit();
 
-    // TODO: Open the form modal.
-    console.log(features);
+    if (featureCollection.features.length) {
+      let script: HTMLElement = document.getElementById(this.template);
+      if (script) {
+        // TODO: Handle multi-feature drawings.
+        let form = document.createElement('gl-form');
+        form.formId = this.template;
+        form.feature = featureCollection.features[0];
+        form.innerHTML = script.innerHTML;
+
+        let options: ModalFormOptions = {};
+        if (this.el.innerText) options.label = this.el.innerText;
+        let modal = await this.modalFormCtrl.create(form, options);
+        await modal.present();
+      }
+    }
+
     this.drawing = false;
+  }
+
+  @Listen('body:drawEnter')
+  enterDraw() {
+    this.disabled = true;
+  }
+
+  @Listen('body:drawExit')
+  exitDraw() {
+    this.disabled = false;
+  }
+
+  @Listen('body:glFormSubmit')
+  submitForm() {
+    this.disabled = false;
+  }
+
+  async componentWillLoad() {
+    this.drawCtrl = await this.lazyDrawCtrl.componentOnReady();
+    this.map = await this.lazyMap.componentOnReady();
+  }
+
+  async alert(success: boolean) {
+    if (this.alertDuration === 0) return;
+    let message = (success) ? this.successMessage : this.failureMessage;
+    let options = {
+      message: message,
+      duration: this.alertDuration
+    };
+    let toast = await this.toastCtrl.create(options);
+    await toast.present();
+    return toast;
+  }
+
+  removeConfirm() {
+    document.querySelector(this.confirmComponent).remove();
+  }
+
+  async startDraw() {
+    this.drawing = true;
+    let confirm = document.createElement(this.confirmComponent);
+    document.querySelector(this.confirmParent).appendChild(confirm);
+    this.drawCtrl.enter();
   }
 
   render() {

@@ -1,0 +1,6 @@
+gl-facet {
+  display: none;
+  &.gl-visible {
+    display: block;
+  }
+}

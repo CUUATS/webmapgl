@@ -1,5 +1,4 @@
 import { Component, Prop, Watch } from '@stencil/core';
-// import { compileTemplates } from '../utils';
 
 
 @Component({

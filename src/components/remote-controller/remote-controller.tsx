@@ -1,21 +1,29 @@
 import { Component, Method } from '@stencil/core';
 
 
+export interface RemoteOptions {
+  url: string;
+  feature: any;
+  token?: string;
+  method?: string;
+  mode?: RequestMode;
+}
+
 @Component({
   tag: 'gl-remote-controller'
 })
 export class RemoteController {
   @Method()
-  send(behavior: any, feature: any) {
+  send(options: RemoteOptions) {
     let headers = {};
     headers['Content-Type'] = 'application/json';
-    if (behavior.token) headers['Authorization'] = 'Bearer ' + behavior.token;
+    if (options.token) headers['Authorization'] = 'Bearer ' + options.token;
 
-    return fetch(behavior.endpoint, {
-      body: JSON.stringify(feature),
+    return fetch(options.url, {
+      body: JSON.stringify(options.feature),
       headers: headers,
-      method: behavior.method || 'POST',
-      mode: behavior.mode || 'cors'
+      method: options.method || 'POST',
+      mode: options.mode || 'cors'
     });
   }
 }

@@ -19,6 +19,7 @@ export class Popup {
   @Prop({connect: 'gl-click-controller'}) lazyClickCtrl!:
     HTMLGlClickControllerElement;
   @Prop({connect: 'gl-map'}) lazyMap!: HTMLGlMapElement;
+  @Prop() template: string = 'gl-popup';
 
   async componentWillLoad() {
     let mapEl = await this.lazyMap.componentOnReady();
@@ -71,8 +72,12 @@ export class Popup {
 
     // TODO: Deal with multiple features in popup.
     let template = document.createElement('gl-template');
-    template.feature = features[0];
-    template.innerHTML = this.el.innerHTML;
+    let script = document.getElementById(this.template);
+
+    if (script) {
+      template.feature = features[0];
+      template.innerHTML = script.innerHTML;
+    }
 
     this.popup = new mapboxgl.Popup()
         .setLngLat(coordinates)
