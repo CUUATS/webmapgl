@@ -1,6 +1,5 @@
 import { Component, Element, Event, EventEmitter, Listen, Method,
   Prop, State } from '@stencil/core';
-import { toArray } from '../utils';
 import { _t } from '../i18n/i18n';
 
 
@@ -19,29 +18,10 @@ export class Field {
   @Prop() label: string;
   @Prop() required: boolean = false;
   @Prop() type: any;
+  @Prop() visible: boolean = true;
   @Prop() widget: string;
 
   @State() message: string;
-  @State() visible: boolean = true;
-
-  componentDidLoad() {
-    this.handleFormFacet();
-  }
-
-  @Listen('body:glFormFacet')
-  handleFormFacet(e?: CustomEvent) {
-    let form = this.el.closest('gl-form');
-    if (e && form.formId !== e.detail.form.formId) return;
-
-    let facets = toArray(this.facets);
-    if (!facets.length && !form.facet) {
-      this.visible = true;
-    } else if (facets.indexOf(form.facet) !== -1) {
-      this.visible = true;
-    } else {
-      this.visible = false;
-    }
-  }
 
   @Listen('optionChanged')
   optionChanged(e) {
@@ -118,17 +98,12 @@ export class Field {
   }
 
   render() {
-    if (!this.visible) return null;
-
-    let items = [];
     if (this.widget === 'radio') {
-      items.push(...this.getRadioField());
+      return this.getRadioField();
     } else if (this.widget === 'select') {
-      items.push(this.getSelectField());
+      return this.getSelectField();
     } else {
-      items.push(this.getInputField());
+      return this.getInputField();
     }
-
-    return items;
   }
 }

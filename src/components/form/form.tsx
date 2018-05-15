@@ -1,6 +1,6 @@
 import { Component, Element, Event, EventEmitter, Listen, Method, Prop, Watch }
   from '@stencil/core';
-
+import { toArray } from '../utils';
 
 @Component({
   tag: 'gl-form',
@@ -16,6 +16,10 @@ export class Form {
   @Prop() facet: string;
   @Prop() feature: any;
   @Prop() formId: string = `gl-form-${formId++}`;
+
+  componentDidLoad() {
+    this.updateChildren();
+  }
 
   @Listen('glFieldValueChanged')
   setValue(e) {
@@ -55,9 +59,26 @@ export class Form {
 
   @Watch('facet')
   facetChanged() {
+    this.updateChildren();
     this.glFormFacet.emit({
       facet: this.facet,
       form: this
+    });
+  }
+
+  updateChildren() {
+    let children: NodeListOf<HTMLGlFieldElement | HTMLGlFacetElement> =
+      this.el.querySelectorAll('gl-field, gl-facet');
+
+    Array.from(children).forEach((child) => {
+      let facets = toArray(child.facets);
+      if (!facets.length && !this.facet) {
+        child.visible = true;
+      } else if (facets.indexOf(this.facet) !== -1) {
+        child.visible = true;
+      } else {
+        child.visible = false;
+      }
     });
   }
 

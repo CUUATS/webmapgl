@@ -329,6 +329,7 @@ declare global {
       'facets': string;
       'image': string;
       'name': string;
+      'visible': boolean;
       'widget': string;
     }
   }
@@ -355,6 +356,7 @@ declare global {
       'facets'?: string;
       'image'?: string;
       'name'?: string;
+      'visible'?: boolean;
       'widget'?: string;
     }
   }
@@ -544,6 +546,7 @@ declare global {
       'required': boolean;
       'type': any;
       'validate': () => string;
+      'visible': boolean;
       'widget': string;
     }
   }
@@ -574,6 +577,7 @@ declare global {
       'onGlFieldValueChanged'?: (event: CustomEvent) => void;
       'required'?: boolean;
       'type'?: any;
+      'visible'?: boolean;
       'widget'?: string;
     }
   }

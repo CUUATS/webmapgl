@@ -1,5 +1,5 @@
-import { Component, Element, Listen, Prop, State } from '@stencil/core';
-import { getThumbnail, toArray } from '../utils';
+import { Component, Element, Prop } from '@stencil/core';
+import { getThumbnail } from '../utils';
 
 
 @Component({
@@ -9,31 +9,11 @@ import { getThumbnail, toArray } from '../utils';
 export class Facet {
   @Element() el: HTMLGlFacetElement;
 
-  @State() visible: boolean = true;
-
   @Prop() facets: string;
   @Prop() image: string;
   @Prop() name: string;
+  @Prop() visible: boolean = true;
   @Prop() widget: string;
-
-  componentDidLoad() {
-    this.handleFormFacet();
-  }
-
-  @Listen('body:glFormFacet')
-  handleFormFacet(e?: CustomEvent) {
-    let form = this.el.closest('gl-form');
-    if (e && form.formId !== e.detail.form.formId) return;
-
-    let facets = toArray(this.facets);
-    if (!facets.length && !form.facet) {
-      this.visible = true;
-    } else if (facets.indexOf(form.facet) !== -1) {
-      this.visible = true;
-    } else {
-      this.visible = false;
-    }
-  }
 
   setFacet() {
     let form = this.el.closest('gl-form');
