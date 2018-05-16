@@ -1,4 +1,5 @@
 import { Component, Prop, Watch } from '@stencil/core';
+import { toArray } from '../utils';
 
 
 @Component({
@@ -9,15 +10,12 @@ export class FeatureList {
 
   @Prop({mutable: true}) features: any[];
   @Prop() queryMode: 'source' | 'rendered' | 'manual' = 'source';
-  @Prop() styleId: string;
   @Prop() layers: string[] | string;
   @Prop({connect: 'gl-map'}) lazyMap!: HTMLGlMapElement;
   @Prop() orderBy: string;
   @Prop() order: 'asc' | 'desc' | 'none' = 'asc';
   @Prop() filter: any[];
-  @Prop() templateId: string;
-
-  private _template: any;
+  @Prop() template: string;
 
   async componentWillLoad() {
     this.map = await this.lazyMap.componentOnReady();
@@ -48,41 +46,32 @@ export class FeatureList {
     });
   }
 
-  getLayersArray() {
-    let layers = (Array.isArray(this.layers)) ?
-      this.layers : (this.layers || '').split(',');
-    return layers.map((layer) => this.styleId + ':' + layer);
-  }
-
   async getFeatures() {
-    // if (this.queryMode === 'manual') return;
-    //
-    // const layers = this.getLayersArray();
-    // const style = this.map.getStyleElementById(this.styleId);
-    // const json = await style.getJSON();
-    // let features = [];
-    // this._template = compileTemplates(
-    //   json.metadata['webmapgl:resources'].template[this.templateId]);
-    //
-    // if (this.queryMode === 'source') {
-    //   // TODO: Use the source data for geojson sources so that we can list
-    //   // features outside the map extent.
-    //   await Promise.all(json.layers.map(async (layer) => {
-    //     if (layers.indexOf(layer.id) === -1) return;
-    //     let layerFeatures = await this.map.querySourceFeatures(layer.source, {
-    //       sourceLayer: layer['source-layer'] || null,
-    //       filter: this.filter || layer.filter || null
-    //     });
-    //     layerFeatures.forEach((feature) => feature.layer = layer.id);
-    //     Array.prototype.push.apply(features, layerFeatures);
-    //   }));
-    // } else {
-    //   features = await this.map.queryRenderedFeatures(undefined, {
-    //     layers: this.getLayersArray(),
-    //     filter: this.filter
-    //   });
-    // }
-    // this.features = this.deduplicate(features);
+    if (this.queryMode === 'manual') return;
+
+    const layers = toArray(this.layers);
+    const style = await this.map.getStyle();
+    let features = [];
+
+    if (this.queryMode === 'source') {
+      // TODO: Use the source data for geojson sources so that we can list
+      // features outside the map extent.
+      await Promise.all(style.layers.map(async (layer) => {
+        if (layers.indexOf(layer.id) === -1) return;
+        let layerFeatures = await this.map.querySourceFeatures(layer.source, {
+          sourceLayer: layer['source-layer'] || null,
+          filter: this.filter || layer.filter || null
+        });
+        layerFeatures.forEach((feature) => feature.layer = layer.id);
+        Array.prototype.push.apply(features, layerFeatures);
+      }));
+    } else {
+      features = await this.map.queryRenderedFeatures(undefined, {
+        layers: layers,
+        filter: this.filter
+      });
+    }
+    this.features = this.deduplicate(features);
   }
 
   sortFeatures() {
@@ -96,20 +85,24 @@ export class FeatureList {
     });
   }
 
-  getListItems() {
-    return (this.features || []).map((feature) => {
-      return (
-        <gl-feature-list-item feature={feature} template={this._template}>
-        </gl-feature-list-item>
-      );
-    });
-  }
-
   render() {
     this.sortFeatures();
+
+    let script: HTMLElement = document.getElementById(this.template);
+    if (!script) return;
+
+    let items = (this.features || []).map((feature) => {
+      return (
+        <ion-item>
+          <gl-template feature={feature} innerHTML={script.innerHTML}>
+          </gl-template>
+        </ion-item>
+      );
+    });
+
     return (
       <ion-list>
-        {this.getListItems()}
+        {items}
       </ion-list>
     );
   }

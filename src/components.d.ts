@@ -456,45 +456,6 @@ declare global {
 declare global {
 
   namespace StencilComponents {
-    interface GlFeatureListItem {
-      'feature': any;
-      'layer': string;
-      'like': boolean;
-      'template': any;
-    }
-  }
-
-  interface HTMLGlFeatureListItemElement extends StencilComponents.GlFeatureListItem, HTMLStencilElement {}
-
-  var HTMLGlFeatureListItemElement: {
-    prototype: HTMLGlFeatureListItemElement;
-    new (): HTMLGlFeatureListItemElement;
-  };
-  interface HTMLElementTagNameMap {
-    'gl-feature-list-item': HTMLGlFeatureListItemElement;
-  }
-  interface ElementTagNameMap {
-    'gl-feature-list-item': HTMLGlFeatureListItemElement;
-  }
-  namespace JSX {
-    interface IntrinsicElements {
-      'gl-feature-list-item': JSXElements.GlFeatureListItemAttributes;
-    }
-  }
-  namespace JSXElements {
-    export interface GlFeatureListItemAttributes extends HTMLAttributes {
-      'feature'?: any;
-      'layer'?: string;
-      'like'?: boolean;
-      'template'?: any;
-    }
-  }
-}
-
-
-declare global {
-
-  namespace StencilComponents {
     interface GlFeatureList {
       'features': any[];
       'filter': any[];
@@ -502,8 +463,7 @@ declare global {
       'order': 'asc' | 'desc' | 'none';
       'orderBy': string;
       'queryMode': 'source' | 'rendered' | 'manual';
-      'styleId': string;
-      'templateId': string;
+      'template': string;
     }
   }
 
@@ -532,8 +492,7 @@ declare global {
       'order'?: 'asc' | 'desc' | 'none';
       'orderBy'?: string;
       'queryMode'?: 'source' | 'rendered' | 'manual';
-      'styleId'?: string;
-      'templateId'?: string;
+      'template'?: string;
     }
   }
 }
