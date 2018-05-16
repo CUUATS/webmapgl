@@ -702,9 +702,14 @@ declare global {
 
   namespace StencilComponents {
     interface GlLikeButton {
-      'feature': any;
+      'attribute': string;
+      'disabled': boolean;
       'iconNo': string;
       'iconYes': string;
+      'method': 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE';
+      'requestMode': RequestMode;
+      'token': string;
+      'url': string;
     }
   }
 
@@ -727,9 +732,14 @@ declare global {
   }
   namespace JSXElements {
     export interface GlLikeButtonAttributes extends HTMLAttributes {
-      'feature'?: any;
+      'attribute'?: string;
+      'disabled'?: boolean;
       'iconNo'?: string;
       'iconYes'?: string;
+      'method'?: 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE';
+      'requestMode'?: RequestMode;
+      'token'?: string;
+      'url'?: string;
     }
   }
 }
@@ -739,8 +749,9 @@ declare global {
 
   namespace StencilComponents {
     interface GlLikeController {
-      'getCount': (feature: any) => number;
+      'clientId': string;
       'getLiked': (feature: any) => boolean;
+      'keyPrefix': string;
       'like': (feature: any) => void;
       'unlike': (feature: any) => void;
     }
@@ -765,7 +776,8 @@ declare global {
   }
   namespace JSXElements {
     export interface GlLikeControllerAttributes extends HTMLAttributes {
-
+      'clientId'?: string;
+      'keyPrefix'?: string;
     }
   }
 }
