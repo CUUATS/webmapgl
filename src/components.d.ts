@@ -373,8 +373,11 @@ declare global {
       'failureMessage': string;
       'icon': string;
       'layers': string | string[];
+      'method': 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE';
+      'requestMode': RequestMode;
       'successMessage': string;
       'template': string;
+      'token': string;
       'url': string;
     }
   }
@@ -404,8 +407,11 @@ declare global {
       'failureMessage'?: string;
       'icon'?: string;
       'layers'?: string | string[];
+      'method'?: 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE';
+      'requestMode'?: RequestMode;
       'successMessage'?: string;
       'template'?: string;
+      'token'?: string;
       'url'?: string;
     }
   }

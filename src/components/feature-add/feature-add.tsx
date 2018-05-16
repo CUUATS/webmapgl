@@ -10,6 +10,7 @@ import { ModalFormOptions
 export class FeatureAdd {
   drawCtrl?: HTMLGlDrawControllerElement;
   map?: HTMLGlMapElement;
+  remoteCtrl?: HTMLGlRemoteControllerElement;
 
   @Element() el: HTMLGlFeatureAddElement;
 
@@ -22,10 +23,15 @@ export class FeatureAdd {
   @Prop({connect: 'gl-draw-controller'}) lazyDrawCtrl!:
     HTMLGlDrawControllerElement;
   @Prop({connect: 'gl-map'}) lazyMap!: HTMLGlMapElement;
+  @Prop({connect: 'gl-remote-controller'}) lazyRemoteCtrl!:
+    HTMLGlRemoteControllerElement;
   @Prop({connect: 'gl-modal-form-controller'}) modalFormCtrl!:
     HTMLGlModalFormControllerElement;
+  @Prop() method: 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE' = 'POST';
+  @Prop() requestMode: RequestMode;
   @Prop() successMessage: string = _t('Saved successfully.');
   @Prop() template: string;
+  @Prop() token: string;
   @Prop() url: string;
 
   @State() disabled: boolean = false;
@@ -79,13 +85,29 @@ export class FeatureAdd {
   }
 
   @Listen('body:glFormSubmit')
-  submitForm() {
+  async submitForm(e: CustomEvent) {
     this.disabled = false;
+    if (e.detail.formId !== this.template || !this.url) return;
+
+    let res;
+    try {
+      res = await this.remoteCtrl.send({
+        url: this.url,
+        feature: e.detail.feature,
+        token: this.token,
+        method: this.method,
+        mode: this.requestMode
+      });
+    } catch(e) {
+      this.alert(false);
+    }
+    if (res) this.alert(res.status === 200);
   }
 
   async componentWillLoad() {
     this.drawCtrl = await this.lazyDrawCtrl.componentOnReady();
     this.map = await this.lazyMap.componentOnReady();
+    this.remoteCtrl = await this.lazyRemoteCtrl.componentOnReady();
   }
 
   async alert(success: boolean) {
