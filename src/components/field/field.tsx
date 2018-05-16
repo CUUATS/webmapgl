@@ -4,7 +4,6 @@ import { _t } from '../i18n/i18n';
 
 
 @Component({
-  styleUrl: 'field.scss',
   tag: 'gl-field'
 })
 export class Field {
@@ -91,8 +90,8 @@ export class Field {
 
   hostData() {
     return {
-      class: {
-        'gl-visible': this.visible
+      style: {
+        'display': (this.visible) ? 'block' : 'none'
       }
     };
   }

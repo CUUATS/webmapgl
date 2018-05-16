@@ -66,24 +66,31 @@ export class Form {
     });
   }
 
+  getVisible(child: HTMLGlFieldElement | HTMLGlFacetElement) {
+    if (!this.feature) return false;
+    let facets = toArray(child.facets);
+    if (!facets.length && !this.facet) return true;
+    if (facets.indexOf(this.facet) !== -1) return true;
+    return false;
+  }
+
   updateChildren() {
     let children: NodeListOf<HTMLGlFieldElement | HTMLGlFacetElement> =
       this.el.querySelectorAll('gl-field, gl-facet');
 
-    Array.from(children).forEach((child) => {
-      let facets = toArray(child.facets);
-      if (!facets.length && !this.facet) {
-        child.visible = true;
-      } else if (facets.indexOf(this.facet) !== -1) {
-        child.visible = true;
-      } else {
-        child.visible = false;
+    Array.from(children).forEach(
+      (child) => child.visible = this.getVisible(child));
+  }
+
+  hostData() {
+    return {
+      style: {
+        'display': (this.feature) ? 'block' : 'none'
       }
-    });
+    };
   }
 
   render() {
-    if (!this.feature) return null;
     return (
       <ion-list>
         <slot />

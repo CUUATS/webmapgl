@@ -3,7 +3,6 @@ import { getThumbnail } from '../utils';
 
 
 @Component({
-  styleUrl: 'facet.scss',
   tag: 'gl-facet'
 })
 export class Facet {
@@ -22,8 +21,8 @@ export class Facet {
 
   hostData() {
     return {
-      class: {
-        'gl-visible': this.visible
+      style: {
+        'display': (this.visible) ? 'block' : 'none'
       }
     };
   }
