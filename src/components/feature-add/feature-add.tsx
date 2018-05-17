@@ -134,10 +134,11 @@ export class FeatureAdd {
   }
 
   render() {
-    if (!this.disabled) return (
+    if (!this.disabled) return ([
+      <div style={{display: 'none'}}><slot /></div>,
       <ion-fab-button onClick={() => this.startDraw()}>
         <ion-icon name={this.icon}></ion-icon>
       </ion-fab-button>
-    );
+    ]);
   }
 }
