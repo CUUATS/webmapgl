@@ -6,8 +6,8 @@ import { _t } from '../i18n/i18n';
   tag: 'gl-draw-toolbar'
 })
 export class DrawToolbar {
-  @Event() drawCancel: EventEmitter;
-  @Event() drawConfirm: EventEmitter;
+  @Event() glDrawCancel: EventEmitter;
+  @Event() glDrawConfirm: EventEmitter;
 
   @Prop() cancelText: string = _t('Cancel');
   @Prop() color = 'primary';
@@ -18,21 +18,21 @@ export class DrawToolbar {
   @State() disabled = false;
 
   componentWillLoad() {
-    document.addEventListener('drawEnter', () => {
+    document.addEventListener('glDrawEnter', () => {
       this.featureCount = 0;
       this.disabled = false;
     });
-    document.addEventListener('drawExit', () => this.disabled = true);
-    document.addEventListener('drawCreate', () => this.featureCount += 1);
-    document.addEventListener('drawDelete', () => this.featureCount -= 1);
+    document.addEventListener('glDrawExit', () => this.disabled = true);
+    document.addEventListener('glDrawCreate', () => this.featureCount += 1);
+    document.addEventListener('glDrawDelete', () => this.featureCount -= 1);
   }
 
   cancel() {
-    this.drawCancel.emit();
+    this.glDrawCancel.emit();
   }
 
   async confirm() {
-    this.drawConfirm.emit();
+    this.glDrawConfirm.emit();
   }
 
   render() {

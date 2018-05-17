@@ -13,7 +13,7 @@ import { Hold } from '../utils';
 })
 export class Map {
   @Element() el: HTMLElement;
-  @Event() styleUpdated: EventEmitter;
+  @Event() glStyleUpdated: EventEmitter;
   @Prop() latitude: number;
   @Prop() longitude: number;
   @Prop() zoom = 10;
@@ -49,7 +49,7 @@ export class Map {
       this._updateStyleTimeout = null;
       this._style = await this.loadStyle();
       this._map.setStyle(this._style);
-      this.styleUpdated.emit(this._style);
+      this.glStyleUpdated.emit(this._style);
     }, 66);
   }
 
@@ -162,7 +162,7 @@ export class Map {
   async onStyle(fn: Function) {
     let style = await this.getStyle();
     fn(style);
-    this.el.addEventListener('styleUpdated', (e) => fn((e as any).detail));
+    this.el.addEventListener('glStyleUpdated', (e) => fn((e as any).detail));
   }
 
   getStyleLayers(styleId: string, json: any) {
