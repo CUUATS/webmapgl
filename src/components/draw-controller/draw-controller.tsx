@@ -29,18 +29,18 @@ export class DrawController {
   };
   map?: mapboxgl.Map;
 
-  @Event() drawCreate: EventEmitter;
-  @Event() drawDelete: EventEmitter;
-  @Event() drawEnter: EventEmitter;
-  @Event() drawExit: EventEmitter;
+  @Event() glDrawCreate: EventEmitter;
+  @Event() glDrawDelete: EventEmitter;
+  @Event() glDrawEnter: EventEmitter;
+  @Event() glDrawExit: EventEmitter;
 
   @Prop({connect: 'gl-map'}) lazyMap!: HTMLGlMapElement;
 
   async componentWillLoad() {
     let mapEl = await this.lazyMap.componentOnReady();
     this.map = await mapEl.getMap();
-    this.map.on('draw.create', (e) => this.drawCreate.emit(e));
-    this.map.on('draw.delete', (e) => this.drawDelete.emit(e));
+    this.map.on('draw.create', (e) => this.glDrawCreate.emit(e));
+    this.map.on('draw.delete', (e) => this.glDrawDelete.emit(e));
   }
 
   getControlOptions(options?: DrawOptions) {
@@ -76,7 +76,7 @@ export class DrawController {
     if (this.draw) return;
     this.draw = new MapboxDraw(this.getControlOptions(options));
     this.map.addControl(this.draw);
-    this.drawEnter.emit();
+    this.glDrawEnter.emit();
   }
 
   @Method()
@@ -84,7 +84,7 @@ export class DrawController {
     if (!this.draw) return;
     this.map.removeControl(this.draw);
     this.draw = null;
-    this.drawExit.emit();
+    this.glDrawExit.emit();
   }
 
   @Method()

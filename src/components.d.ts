@@ -201,10 +201,10 @@ declare global {
   }
   namespace JSXElements {
     export interface GlDrawControllerAttributes extends HTMLAttributes {
-      'onDrawCreate'?: (event: CustomEvent) => void;
-      'onDrawDelete'?: (event: CustomEvent) => void;
-      'onDrawEnter'?: (event: CustomEvent) => void;
-      'onDrawExit'?: (event: CustomEvent) => void;
+      'onGlDrawCreate'?: (event: CustomEvent) => void;
+      'onGlDrawDelete'?: (event: CustomEvent) => void;
+      'onGlDrawEnter'?: (event: CustomEvent) => void;
+      'onGlDrawExit'?: (event: CustomEvent) => void;
     }
   }
 }
@@ -244,8 +244,8 @@ declare global {
       'color'?: string;
       'confirmText'?: string;
       'label'?: string;
-      'onDrawCancel'?: (event: CustomEvent) => void;
-      'onDrawConfirm'?: (event: CustomEvent) => void;
+      'onGlDrawCancel'?: (event: CustomEvent) => void;
+      'onGlDrawConfirm'?: (event: CustomEvent) => void;
     }
   }
 }
@@ -830,7 +830,7 @@ declare global {
       'longitude'?: number;
       'maxzoom'?: number;
       'minzoom'?: number;
-      'onStyleUpdated'?: (event: CustomEvent) => void;
+      'onGlStyleUpdated'?: (event: CustomEvent) => void;
       'zoom'?: number;
     }
   }

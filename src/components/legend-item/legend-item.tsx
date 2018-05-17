@@ -22,7 +22,7 @@ export class LegendItem {
     this.map = await this.lazyMap.componentOnReady();
     let style = await this.map.getStyle();
     this.update(style);
-    this.map.addEventListener('styleUpdated',
+    this.map.addEventListener('glStyleUpdated',
       (e) => this.update((e as any).detail));
   }
 

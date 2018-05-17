@@ -22,7 +22,7 @@ export class Field {
 
   @State() message: string;
 
-  @Listen('optionChanged')
+  @Listen('glOptionChanged')
   optionChanged(e) {
     this.changed(e.detail);
   }

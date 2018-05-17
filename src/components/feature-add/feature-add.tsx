@@ -40,7 +40,7 @@ export class FeatureAdd {
   @Prop({connect: 'ion-toast-controller'}) toastCtrl!:
     HTMLIonToastControllerElement;
 
-  @Listen('body:drawCancel')
+  @Listen('body:glDrawCancel')
   async cancelDraw() {
     if (!this.drawing) return;
     this.removeConfirm();
@@ -48,7 +48,7 @@ export class FeatureAdd {
     this.drawing = false;
   }
 
-  @Listen('body:drawConfirm')
+  @Listen('body:glDrawConfirm')
   async confirmDraw() {
     if (!this.drawing) return;
     let featureCollection = this.drawCtrl.getAll();
@@ -74,12 +74,12 @@ export class FeatureAdd {
     this.drawing = false;
   }
 
-  @Listen('body:drawEnter')
+  @Listen('body:glDrawEnter')
   enterDraw() {
     this.disabled = true;
   }
 
-  @Listen('body:drawExit')
+  @Listen('body:glDrawExit')
   exitDraw() {
     this.disabled = false;
   }

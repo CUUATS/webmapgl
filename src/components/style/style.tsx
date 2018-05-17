@@ -9,9 +9,9 @@ let _nextId = 0;
 })
 export class Style {
   @Element() el: HTMLElement;
-  @Event() styleElementAdded: EventEmitter;
-  @Event() styleElementModified: EventEmitter;
-  @Event() styleElementRemoved: EventEmitter;
+  @Event() glStyleElementAdded: EventEmitter;
+  @Event() glStyleElementModified: EventEmitter;
+  @Event() glStyleElementRemoved: EventEmitter;
   @Prop() basemap = false;
   @Prop() enabled = true;
   @Prop({mutable: true}) id: string;
@@ -29,15 +29,15 @@ export class Style {
   }
 
   componentDidLoad() {
-    this.styleElementAdded.emit(this);
+    this.glStyleElementAdded.emit(this);
   }
 
   componentDidUpdate() {
-    this.styleElementModified.emit(this);
+    this.glStyleElementModified.emit(this);
   }
 
   componentDidUnload() {
-    this.styleElementRemoved.emit(this);
+    this.glStyleElementRemoved.emit(this);
   }
 
   async fetchJSON() {

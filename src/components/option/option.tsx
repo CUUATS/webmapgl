@@ -7,7 +7,7 @@ import { getThumbnail } from '../utils';
 export class Option {
   @Element() el: HTMLElement;
 
-  @Event() optionChanged: EventEmitter;
+  @Event() glOptionChanged: EventEmitter;
 
   @Prop() image: string;
   @Prop() value: any;
@@ -19,7 +19,7 @@ export class Option {
       <ion-item>
         {getThumbnail(this)}
         <ion-label><slot /></ion-label>
-        <ion-radio onIonSelect={() => this.optionChanged.emit(this.value)}
+        <ion-radio onIonSelect={() => this.glOptionChanged.emit(this.value)}
           value={this.value} checked={checked}></ion-radio>
       </ion-item>
     );
