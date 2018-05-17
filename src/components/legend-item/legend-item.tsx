@@ -1,4 +1,4 @@
-import { Component, Element, Prop, State } from '@stencil/core';
+import { Component, Element, Listen, Prop, State } from '@stencil/core';
 import { toArray } from '../utils';
 
 @Component({
@@ -10,20 +10,23 @@ export class LegendItem {
 
   @Element() el: HTMLElement;
 
+  @State() visible: boolean;
+
   @Prop() layers: string | string[];
   @Prop() image: string;
   @Prop({connect: 'gl-map'}) lazyMap!: HTMLGlMapElement;
   @Prop() toggle: boolean = false;
   @Prop() widget: 'divider' | 'item' = 'item';
 
-  @State() visible: boolean;
-
   async componentWillLoad() {
     this.map = await this.lazyMap.componentOnReady();
     let style = await this.map.getStyle();
     this.update(style);
-    this.map.addEventListener('glStyleUpdated',
-      (e) => this.update((e as any).detail));
+  }
+
+  @Listen('body:glStyleUpdated')
+  handleStyleUpdated(e: CustomEvent) {
+    this.update(e.detail);
   }
 
   getVisible(json) {

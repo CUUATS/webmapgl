@@ -797,7 +797,6 @@ declare global {
       'minzoom': number;
       'off': (eventName: string, layerName: string, handler: Function) => Promise<void>;
       'on': (eventName: string, layerNameOrHandler: string | Function, handler?: Function) => Promise<void>;
-      'onStyle': (fn: Function) => Promise<void>;
       'queryRenderedFeatures': (geometry?: any, options?: any) => Promise<any>;
       'querySourceFeatures': (sourceId: string, options?: any) => Promise<any>;
       'resizeMap': () => void;
@@ -940,7 +939,7 @@ declare global {
   namespace JSXElements {
     export interface GlOptionAttributes extends HTMLAttributes {
       'image'?: string;
-      'onOptionChanged'?: (event: CustomEvent) => void;
+      'onGlOptionChanged'?: (event: CustomEvent) => void;
       'value'?: any;
     }
   }
@@ -1090,9 +1089,9 @@ declare global {
       'enabled'?: boolean;
       'id'?: string;
       'name'?: string;
-      'onStyleElementAdded'?: (event: CustomEvent) => void;
-      'onStyleElementModified'?: (event: CustomEvent) => void;
-      'onStyleElementRemoved'?: (event: CustomEvent) => void;
+      'onGlStyleElementAdded'?: (event: CustomEvent) => void;
+      'onGlStyleElementModified'?: (event: CustomEvent) => void;
+      'onGlStyleElementRemoved'?: (event: CustomEvent) => void;
       'thumbnail'?: string;
       'url'?: string;
     }

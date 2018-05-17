@@ -1,4 +1,5 @@
-import { Component, Event, EventEmitter, Prop, State } from '@stencil/core';
+import { Component, Event, EventEmitter, Listen, Prop, State }
+  from '@stencil/core';
 import { _t } from '../i18n/i18n';
 
 
@@ -9,22 +10,33 @@ export class DrawToolbar {
   @Event() glDrawCancel: EventEmitter;
   @Event() glDrawConfirm: EventEmitter;
 
+  @State() featureCount = 0;
+  @State() disabled = false;
+
   @Prop() cancelText: string = _t('Cancel');
   @Prop() color = 'primary';
   @Prop() confirmText: string = _t('Continue');
   @Prop() label: string = _t('Add a Feature');
 
-  @State() featureCount = 0;
-  @State() disabled = false;
+  @Listen('body:glDrawEnter')
+  handleDrawEnter() {
+    this.featureCount = 0;
+    this.disabled = false;
+  }
 
-  componentWillLoad() {
-    document.addEventListener('glDrawEnter', () => {
-      this.featureCount = 0;
-      this.disabled = false;
-    });
-    document.addEventListener('glDrawExit', () => this.disabled = true);
-    document.addEventListener('glDrawCreate', () => this.featureCount += 1);
-    document.addEventListener('glDrawDelete', () => this.featureCount -= 1);
+  @Listen('body:glDrawExit')
+  handleDrawExit() {
+    this.disabled = true;
+  }
+
+  @Listen('body:glDrawCreate')
+  handleDrawCreate() {
+    this.featureCount += 1;
+  }
+
+  @Listen('body:glDrawDelete')
+  handleDrawDelete() {
+    this.featureCount -= 1;
   }
 
   cancel() {

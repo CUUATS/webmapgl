@@ -158,13 +158,6 @@ export class Map {
     this._map.off(eventName, layerName, handler);
   }
 
-  @Method()
-  async onStyle(fn: Function) {
-    let style = await this.getStyle();
-    fn(style);
-    this.el.addEventListener('glStyleUpdated', (e) => fn((e as any).detail));
-  }
-
   getStyleLayers(styleId: string, json: any) {
     if (!json.layers) return [];
     let results = [];

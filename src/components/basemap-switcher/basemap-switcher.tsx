@@ -7,12 +7,6 @@ import { _t } from '../i18n/i18n';
 export class BasemapSwitcher {
   @Element() el: HTMLElement;
 
-  componentDidLoad() {
-    this.el.querySelector('ion-radio-group')
-      .addEventListener('ionChange', (e) =>
-        this.setBasemap((e as any).detail.value));
-  }
-
   getBasemapStyles() {
     return Array.from(document.querySelectorAll('gl-style'))
       .filter((style) => style.basemap);
@@ -38,7 +32,8 @@ export class BasemapSwitcher {
     return (
       <ion-content>
         <ion-list slot="fixed">
-          <ion-radio-group>
+          <ion-radio-group
+              onIonChange={(e: CustomEvent) => this.setBasemap(e.detail.value)}>
             <ion-list-header>{_t('Select a Basemap')}</ion-list-header>
             {items}
           </ion-radio-group>

@@ -1,4 +1,4 @@
-import { Component, Element, Method, Prop, Watch } from '@stencil/core';
+import { Component, Element, Listen, Method, Prop, Watch } from '@stencil/core';
 import mapboxgl from 'mapbox-gl';
 import { toArray } from '../utils';
 
@@ -25,9 +25,19 @@ export class Popup {
     let mapEl = await this.lazyMap.componentOnReady();
     this.map = await mapEl.getMap();
     this.clickCtrl = await this.lazyClickCtrl.componentOnReady();
+  }
 
-    document.addEventListener('keyup', this.handleKeyup.bind(this));
-    document.addEventListener('glFeatureClick', this.handleClick.bind(this));
+  @Listen('body:glFeatureClick')
+  handleFeatureClick(e: CustomEvent) {
+    let layers = toArray(this.layers);
+    let features = e.detail.features
+      .filter((feature) => layers.indexOf(feature.layer.id) !== -1);
+    if (features.length) this.openPopup(features);
+  }
+
+  @Listen('body:keyup')
+  handleKeyup(e) {
+    if (e.keyCode === this.closeKey) this.removePopup();
   }
 
   componentDidLoad() {
@@ -53,17 +63,6 @@ export class Popup {
     // with overlapping layers.
     for (let layer of oldLayers) this.clickCtrl.setClickable(layer, false);
     for (let layer of newLayers) this.clickCtrl.setClickable(layer, true);
-  }
-
-  handleClick(e) {
-    let layers = toArray(this.layers);
-    let features = e.detail.features
-      .filter((feature) => layers.indexOf(feature.layer.id) !== -1);
-    if (features.length) this.openPopup(features);
-  }
-
-  handleKeyup(e) {
-    if (e.keyCode === this.closeKey) this.removePopup();
   }
 
   openPopup(features: any[]) {
