@@ -6,14 +6,22 @@ import { _t } from '../i18n/i18n';
   tag: 'gl-drawer-toggle'
 })
 export class DrawerToggle {
+  drawer?: HTMLGlDrawerElement;
+
   @Element() el: HTMLElement;
+
+  @Prop({connect: 'gl-drawer'}) lazyDrawer!:
+    HTMLGlDrawerElement;
+
   @Prop() icon = 'settings';
   @Prop() buttonTitle: string = _t('Toggle drawer');
 
-  async toggleDrawer() {
-    let drawer = document.querySelector('gl-drawer');
-    await drawer.componentOnReady();
-    drawer.open = !drawer.open;
+  async componentWillLoad() {
+    this.drawer = await this.lazyDrawer.componentOnReady();
+  }
+
+  toggleDrawer() {
+    this.drawer.open = !this.drawer.open;
   }
 
   render() {

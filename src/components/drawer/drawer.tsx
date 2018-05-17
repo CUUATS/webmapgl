@@ -6,20 +6,28 @@ import { Component, Method, Prop, State, Watch } from '@stencil/core';
   tag: 'gl-drawer'
 })
 export class Drawer {
+  map?: HTMLGlMapElement;
+
+  @State() content: string;
+
+  @Prop({connect: 'gl-map'}) lazyMap!:
+    HTMLGlMapElement;
+
   @Prop({mutable: true}) drawerTitle: string;
   @Prop({mutable: true}) open = false;
-  @State() content: string;
+
+  @Watch('open')
+  async openChanged() {
+    this.map.resizeMap();
+  }
+
+  async componentWillLoad() {
+    this.map = await this.lazyMap.componentOnReady();
+  }
 
   @Method()
   toggle() {
     this.open = !this.open;
-  }
-
-  @Watch('open')
-  async openChanged() {
-    let map = document.querySelector('gl-map');
-    await map.componentOnReady();
-    map.resizeMap();
   }
 
   hostData() {
