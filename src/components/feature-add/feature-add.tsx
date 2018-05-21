@@ -15,8 +15,6 @@ export class FeatureAdd {
   @Element() el: HTMLGlFeatureAddElement;
 
   @Prop() alertDuration = 3000;
-  @Prop() confirmComponent: string = 'gl-draw-toolbar';
-  @Prop() confirmParent: string = 'ion-footer';
   @Prop() icon = 'add';
   @Prop() failureMessage: string = _t('An error occurred while saving.');
   @Prop() layers: string | string[];
@@ -123,13 +121,13 @@ export class FeatureAdd {
   }
 
   removeConfirm() {
-    document.querySelector(this.confirmComponent).remove();
+    document.querySelector('gl-draw-toolbar').remove();
   }
 
   async startDraw() {
     this.drawing = true;
-    let confirm = document.createElement(this.confirmComponent);
-    document.querySelector(this.confirmParent).appendChild(confirm);
+    let confirm = document.createElement('gl-draw-toolbar');
+    document.querySelector('ion-footer').appendChild(confirm);
     this.drawCtrl.enter();
   }
 

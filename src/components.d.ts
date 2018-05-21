@@ -371,8 +371,6 @@ declare global {
   namespace StencilComponents {
     interface GlFeatureAdd {
       'alertDuration': number;
-      'confirmComponent': string;
-      'confirmParent': string;
       'failureMessage': string;
       'icon': string;
       'layers': string | string[];
@@ -405,8 +403,6 @@ declare global {
   namespace JSXElements {
     export interface GlFeatureAddAttributes extends HTMLAttributes {
       'alertDuration'?: number;
-      'confirmComponent'?: string;
-      'confirmParent'?: string;
       'failureMessage'?: string;
       'icon'?: string;
       'layers'?: string | string[];
@@ -1136,3 +1132,5 @@ declare global {
 }
 
 declare global { namespace JSX { interface StencilJSX {} } }
+
+export declare function defineCustomElements(window: any): void;

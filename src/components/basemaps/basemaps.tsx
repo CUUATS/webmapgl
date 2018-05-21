@@ -13,7 +13,7 @@ export class Basemaps {
 
   private async openPopover(ev: UIEvent) {
     const options = {
-      component: 'gl-basemap-switcher',
+      component: document.createElement('gl-basemap-switcher'),
       ev: ev
     };
     const popover = await this.popoverCtrl.create(options);
