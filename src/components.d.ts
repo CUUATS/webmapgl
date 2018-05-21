@@ -30,6 +30,9 @@ import {
   DrawOptions,
 } from './components/draw-controller/draw-controller';
 import {
+  Color,
+} from '@ionic/core';
+import {
   ModalFormOptions,
 } from './components/modal-form-controller/modal-form-controller';
 import {
@@ -215,7 +218,7 @@ declare global {
   namespace StencilComponents {
     interface GlDrawToolbar {
       'cancelText': string;
-      'color': string;
+      'color': Color;
       'confirmText': string;
       'label': string;
     }
@@ -241,7 +244,7 @@ declare global {
   namespace JSXElements {
     export interface GlDrawToolbarAttributes extends HTMLAttributes {
       'cancelText'?: string;
-      'color'?: string;
+      'color'?: Color;
       'confirmText'?: string;
       'label'?: string;
       'onGlDrawCancel'?: (event: CustomEvent) => void;

@@ -1,5 +1,6 @@
 import { Component, Event, EventEmitter, Listen, Prop, State }
   from '@stencil/core';
+import { Color } from '@ionic/core';
 import { _t } from '../i18n/i18n';
 
 
@@ -14,7 +15,7 @@ export class DrawToolbar {
   @State() disabled = false;
 
   @Prop() cancelText: string = _t('Cancel');
-  @Prop() color = 'primary';
+  @Prop() color: Color = 'primary';
   @Prop() confirmText: string = _t('Continue');
   @Prop() label: string = _t('Add a Feature');
 
