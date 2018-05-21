@@ -38,8 +38,8 @@
     "type": "git",
     "url": "git+https://github.com/CUUATS/webmapgl.git"
   },
-  "author": "Ionic Team",
-  "license": "MIT",
+  "author": "CUUATS",
+  "license": "BSD-3-Clause",
   "bugs": {
     "url": "https://github.com/CUUATS/webmapgl"
   },
