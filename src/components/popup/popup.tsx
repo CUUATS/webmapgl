@@ -1,6 +1,6 @@
 import { Component, Element, Listen, Method, Prop, Watch } from '@stencil/core';
-import mapboxgl from 'mapbox-gl';
 import { toArray } from '../utils';
+declare const mapboxgl;
 
 
 @Component({
@@ -9,8 +9,8 @@ import { toArray } from '../utils';
 })
 export class Popup {
   clickCtrl?: HTMLGlClickControllerElement;
-  map?: mapboxgl.Map;
-  popup?: mapboxgl.Popup;
+  map?: any;
+  popup?: any;
 
   @Element() el: HTMLGlPopupElement;
 

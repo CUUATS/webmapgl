@@ -1,6 +1,6 @@
 import { Component, Event, EventEmitter, Method, Prop } from '@stencil/core';
-import mapboxgl from 'mapbox-gl';
-import MapboxDraw from '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw';
+declare const MapboxDraw;
+
 
 export interface DrawOptions {
   type?: 'point' | 'line' | 'polygon';
@@ -13,13 +13,10 @@ export interface DrawOptions {
 
 
 @Component({
-  styleUrls: [
-    '../../../node_modules/@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css',
-  ],
   tag: 'gl-draw-controller'
 })
 export class DrawController {
-  draw: MapboxDraw;
+  draw: any;
   defaultOptions: DrawOptions = {
     type: 'point',
     multiple: false,
@@ -27,7 +24,7 @@ export class DrawController {
     delete: false,
     mode: 'draw'
   };
-  map?: mapboxgl.Map;
+  map?: any;
 
   @Event() glDrawCreate: EventEmitter;
   @Event() glDrawDelete: EventEmitter;

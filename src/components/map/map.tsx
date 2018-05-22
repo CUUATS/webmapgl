@@ -1,15 +1,12 @@
 import { Component, Element, Event, EventEmitter, Listen, Method, Prop }
   from '@stencil/core';
-import mapboxgl from 'mapbox-gl';
 import { Hold } from '../utils';
+declare const mapboxgl;
 
 
 @Component({
   tag: 'gl-map',
-  styleUrls: [
-    '../../../node_modules/mapbox-gl/dist/mapbox-gl.css',
-    'map.scss'
-  ]
+  styleUrl: 'map.scss'
 })
 export class Map {
   @Element() el: HTMLElement;
@@ -19,7 +16,7 @@ export class Map {
   @Prop() zoom = 10;
   @Prop() minzoom = 0;
   @Prop() maxzoom = 22;
-  private _map: mapboxgl.Map;
+  private _map: any;
   private _ready = new Hold();
   private _resizeMapTimeout: number;
   private _style: any;
