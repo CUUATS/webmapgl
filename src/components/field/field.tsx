@@ -77,6 +77,17 @@ export class Field {
     );
   }
 
+  getTextareaField() {
+    return (
+      <ion-item>
+        <ion-label position="floating">{this.label}</ion-label>
+        <ion-textarea
+          onIonInput={(e) => this.changed((e.detail.target as any).value)}
+          value={this.getValue() || ''}></ion-textarea>
+      </ion-item>
+    );
+  }
+
   getInputField() {
     return (
       <ion-item>
@@ -101,6 +112,8 @@ export class Field {
       return this.getRadioField();
     } else if (this.widget === 'select') {
       return this.getSelectField();
+    } else if (this.widget == 'textarea') {
+      return this.getTextareaField();
     } else {
       return this.getInputField();
     }
