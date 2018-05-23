@@ -14,10 +14,6 @@ export class FeatureAdd {
 
   @Element() el: HTMLGlFeatureAddElement;
 
-  @Prop() alertDuration = 3000;
-  @Prop() icon = 'add';
-  @Prop() failureMessage: string = _t('An error occurred while saving.');
-  @Prop() layers: string | string[];
   @Prop({connect: 'gl-draw-controller'}) lazyDrawCtrl!:
     HTMLGlDrawControllerElement;
   @Prop({connect: 'gl-map'}) lazyMap!: HTMLGlMapElement;
@@ -25,18 +21,23 @@ export class FeatureAdd {
     HTMLGlRemoteControllerElement;
   @Prop({connect: 'gl-modal-form-controller'}) modalFormCtrl!:
     HTMLGlModalFormControllerElement;
+  @Prop({connect: 'ion-toast-controller'}) toastCtrl!:
+    HTMLIonToastControllerElement;
+
+  @Prop() alertDuration = 3000;
+  @Prop() icon = 'add';
+  @Prop() failureMessage: string = _t('An error occurred while saving.');
+  @Prop() layers: string | string[];
   @Prop() method: 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE' = 'POST';
   @Prop() requestMode: RequestMode;
   @Prop() successMessage: string = _t('Saved successfully.');
   @Prop() template: string;
   @Prop() token: string;
+  @Prop() toolbarLabel: string = _t('Choose a Location');
   @Prop() url: string;
 
   @State() disabled: boolean = false;
   @State() drawing: boolean = false;
-
-  @Prop({connect: 'ion-toast-controller'}) toastCtrl!:
-    HTMLIonToastControllerElement;
 
   @Listen('body:glDrawCancel')
   async cancelDraw() {
@@ -127,6 +128,7 @@ export class FeatureAdd {
   async startDraw() {
     this.drawing = true;
     let confirm = document.createElement('gl-draw-toolbar');
+    confirm.label = this.toolbarLabel;
     document.querySelector('ion-footer').appendChild(confirm);
     this.drawCtrl.enter();
   }

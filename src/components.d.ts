@@ -379,6 +379,7 @@ declare global {
       'successMessage': string;
       'template': string;
       'token': string;
+      'toolbarLabel': string;
       'url': string;
     }
   }
@@ -411,6 +412,7 @@ declare global {
       'successMessage'?: string;
       'template'?: string;
       'token'?: string;
+      'toolbarLabel'?: string;
       'url'?: string;
     }
   }
