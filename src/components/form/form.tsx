@@ -1,6 +1,7 @@
 import { Component, Element, Event, EventEmitter, Listen, Method, Prop, Watch }
   from '@stencil/core';
 import { toArray } from '../utils';
+import minimatch from 'minimatch';
 
 @Component({
   tag: 'gl-form',
@@ -70,7 +71,7 @@ export class Form {
     if (!this.feature) return false;
     let facets = toArray(child.facets);
     if (!facets.length && !this.facet) return true;
-    if (facets.indexOf(this.facet) !== -1) return true;
+    for (let facet of facets) if (minimatch(this.facet, facet)) return true;
     return false;
   }
 
