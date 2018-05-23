@@ -123,6 +123,7 @@ export class FeatureAdd {
 
   removeConfirm() {
     document.querySelector('gl-draw-toolbar').remove();
+    this.map.resizeMap();
   }
 
   async startDraw() {
@@ -130,6 +131,7 @@ export class FeatureAdd {
     let confirm = document.createElement('gl-draw-toolbar');
     confirm.label = this.toolbarLabel;
     document.querySelector('ion-footer').appendChild(confirm);
+    this.map.resizeMap();
     this.drawCtrl.enter();
   }
 
