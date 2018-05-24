@@ -14,9 +14,9 @@
   dependencies:
     netmask "^1.0.6"
 
-"@stencil/core@0.9.3":
-  version "0.9.3"
-  resolved "https://registry.yarnpkg.com/@stencil/core/-/core-0.9.3.tgz#903a4906f038f226ee1466854e62716c1ff7455a"
+"@stencil/core@0.9.4":
+  version "0.9.4"
+  resolved "https://registry.yarnpkg.com/@stencil/core/-/core-0.9.4.tgz#aad59510c588ed78a2c2c3fd4784b913d1141f21"
   dependencies:
     chokidar "2.0.3"
     jsdom "11.5.1"

@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@ionic/core": "4.0.0-alpha.7",
-    "@stencil/core": "0.9.3",
+    "@stencil/core": "0.9.4",
     "@stencil/router": "0.0.25",
     "screenfull": "^3.3.2"
   },
