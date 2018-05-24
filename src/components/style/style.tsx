@@ -17,6 +17,7 @@ export class Style {
   @Prop({mutable: true}) id: string;
   @Prop() name: string;
   @Prop() thumbnail: string;
+  @Prop() token: string;
   @Prop() url: string;
   @State() json: any;
   private _jsonPromise: Promise<any>;
@@ -43,6 +44,12 @@ export class Style {
   async fetchJSON() {
     let res = await fetch(this.url);
     this.json = await res.json();
+    if (this.token && this.json.sources) {
+      for (let srcName in this.json.sources) {
+        let src = this.json.sources[srcName]
+        if (src.data) src.data = src.data.replace(/\$\{TOKEN\}/g, this.token);
+      }
+    }
   }
 
   @Method()

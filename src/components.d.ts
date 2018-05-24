@@ -1063,6 +1063,7 @@ declare global {
       'name': string;
       'setJSON': (json: any) => void;
       'thumbnail': string;
+      'token': string;
       'url': string;
     }
   }
@@ -1094,6 +1095,7 @@ declare global {
       'onGlStyleElementModified'?: (event: CustomEvent) => void;
       'onGlStyleElementRemoved'?: (event: CustomEvent) => void;
       'thumbnail'?: string;
+      'token'?: string;
       'url'?: string;
     }
   }
