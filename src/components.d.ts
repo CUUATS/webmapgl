@@ -874,6 +874,7 @@ declare global {
 
   namespace StencilComponents {
     interface GlModalForm {
+      'backText': string;
       'cancelText': string;
       'feature': any;
       'form': HTMLGlFormElement;
@@ -901,6 +902,7 @@ declare global {
   }
   namespace JSXElements {
     export interface GlModalFormAttributes extends HTMLAttributes {
+      'backText'?: string;
       'cancelText'?: string;
       'feature'?: any;
       'form'?: HTMLGlFormElement;

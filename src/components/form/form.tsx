@@ -1,5 +1,5 @@
-import { Component, Element, Event, EventEmitter, Listen, Method, Prop, Watch }
-  from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Listen, Method, Prop,
+  Watch } from '@stencil/core';
 import { toArray } from '../utils';
 
 
@@ -59,10 +59,11 @@ export class Form {
   }
 
   @Watch('facet')
-  facetChanged() {
+  facetChanged(newValue: string, oldValue: string) {
     this.updateChildren();
     this.glFormFacet.emit({
-      facet: this.facet,
+      facet: newValue,
+      previous: oldValue,
       form: this
     });
   }

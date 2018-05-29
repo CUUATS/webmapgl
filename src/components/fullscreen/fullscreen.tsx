@@ -1,5 +1,5 @@
 import { Component, State } from '@stencil/core';
-import { default as screenfull } from 'screenfull';
+import screenfull from 'screenfull';
 import { _t } from '../i18n/i18n';
 
 

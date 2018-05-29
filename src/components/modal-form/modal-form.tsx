@@ -10,6 +10,10 @@ export class ModalForm {
 
   @Element() el: HTMLElement;
 
+  @State() canSubmit = false;
+  @State() facetHistory: string[] = [];
+
+  @Prop() backText: string = _t('Back');
   @Prop() feature: any;
   @Prop() form: HTMLGlFormElement;
   @Prop() label: string;
@@ -17,8 +21,6 @@ export class ModalForm {
   @Prop() cancelText: string = _t('Cancel');
   @Prop({connect: 'ion-modal-controller'}) lazyModalCtrl!:
     HTMLIonModalControllerElement;
-
-  @State() canSubmit = false;
 
   async componentWillLoad() {
     this.modalCtrl = await this.lazyModalCtrl.componentOnReady();
@@ -32,6 +34,29 @@ export class ModalForm {
   async updateValidationStatus() {
     let form = await this.form.componentOnReady();
     this.canSubmit = (form) ? form.validate().length === 0 : false;
+  }
+
+  @Listen('glFormFacet')
+  async updateFacetHistory(e: CustomEvent) {
+    this.facetHistory = [...this.facetHistory, e.detail.previous];
+  }
+
+  getStartButtons() {
+    if (!this.facetHistory.length) return;
+    return (
+      <ion-buttons slot="start">
+        <ion-button onClick={() => this.popFacet()}>
+          <ion-icon slot="start" name="arrow-back"></ion-icon>
+          {this.backText}
+        </ion-button>
+      </ion-buttons>
+    );
+  }
+
+  popFacet() {
+    let history = [...this.facetHistory];
+    this.form.facet = history.pop();
+    this.facetHistory = history;
   }
 
   addForm() {
@@ -60,6 +85,7 @@ export class ModalForm {
     return ([
       <ion-header>
         <ion-toolbar color="primary">
+          {this.getStartButtons()}
           <ion-title>{this.label}</ion-title>
           <ion-buttons slot="end">
             <ion-button onClick={() => this.cancel()}>
