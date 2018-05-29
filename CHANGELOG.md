@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.1.1] - Unreleased
+## [0.1.1] - 2018-05-29
 - Added TS definitions for screenfull.
 - Added facet back button in modal form.
 
