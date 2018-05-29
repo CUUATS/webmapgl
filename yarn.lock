@@ -70,6 +70,10 @@
   version "10.1.1"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-10.1.1.tgz#ca39d8607fa1fcb146b0530420b93f1dd4802f6c"
 
+"@types/screenfull@^3.3.1":
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/@types/screenfull/-/screenfull-3.3.1.tgz#9d9919025c47327c6012110ebd7880cae9e0913e"
+
 abab@^1.0.3:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/abab/-/abab-1.0.4.tgz#5faad9c2c07f60dd76770f71cf025b62a63cfd4e"
