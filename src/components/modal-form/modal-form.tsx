@@ -3,6 +3,7 @@ import { _t } from '../i18n/i18n';
 
 
 @Component({
+  styleUrl: 'modal-form.scss',
   tag: 'gl-modal-form'
 })
 export class ModalForm {
