@@ -329,6 +329,7 @@ declare global {
 
   namespace StencilComponents {
     interface GlFacet {
+      'detail': boolean;
       'facets': string;
       'image': string;
       'name': string;
@@ -356,6 +357,7 @@ declare global {
   }
   namespace JSXElements {
     export interface GlFacetAttributes extends HTMLAttributes {
+      'detail'?: boolean;
       'facets'?: string;
       'image'?: string;
       'name'?: string;

@@ -8,6 +8,7 @@ import { getThumbnail } from '../utils';
 export class Facet {
   @Element() el: HTMLGlFacetElement;
 
+  @Prop() detail: boolean = true;
   @Prop() facets: string;
   @Prop() image: string;
   @Prop() name: string;
@@ -29,7 +30,8 @@ export class Facet {
 
   render() {
     if (this.visible) return (
-        <ion-item button={true} onClick={() => this.setFacet()}>
+        <ion-item button={true} onClick={() => this.setFacet()}
+            detail={this.detail}>
           {getThumbnail(this)}
           <slot />
         </ion-item>
