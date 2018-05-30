@@ -14,7 +14,7 @@
 
   <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.0.4/mapbox-gl-draw.js'></script>
   <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.0.4/mapbox-gl-draw.css' type='text/css' />
-  
+
   <script src="/build/webmapgl.js"></script>
 
   <link rel="apple-touch-icon" href="/assets/icon/icon.png">
@@ -59,18 +59,18 @@
         template="test-feature-list"></gl-feature-list>
     </gl-drawer>
   </gl-app>
-  <script type="text/webmapgl" id="test-popup">
+  <script type="text/html" id="test-popup">
     <h2><gl-property attribute="title"></gl-property></h2>
     <p><gl-property attribute="description"></gl-property></p>
   </script>
-  <script type="text/webmapgl" id="test-feature-list">
+  <script type="text/html" id="test-feature-list">
     <h2><gl-property attribute="title"></gl-property></h2>
     <p><gl-property attribute="description"></gl-property></p>
     <gl-like-button attribute="_likes"
       url="https://example.com/like"
       layers="test:test-data"></gl-like-button>
   </script>
-  <script type="text/webmapgl" id="areas-of-concern">
+  <script type="text/html" id="areas-of-concern">
     <gl-facet name="large-area"
       image="/styles/large-area.jpg">Large Area</gl-facet>
     <gl-facet name="small-area"
