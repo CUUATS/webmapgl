@@ -1,5 +1,7 @@
 # Changelog
 
+# [0.1.3] - Unreleased
+
 ## [0.1.2] - 2018-05-30
 - Added detail option to facet.
 - Fixed extra height in gl-modal-form scroll area.
