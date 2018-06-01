@@ -1,6 +1,6 @@
 # Changelog
 
-# [0.2.1] - Unreleased
+# [0.2.1] - 2018-06-01
 - Ensure that gl-form-page is loaded by dependent modules.
 
 # [0.2.0] - 2018-06-01

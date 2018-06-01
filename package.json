@@ -1,7 +1,7 @@
 {
   "name": "@cuuats/webmapgl",
   "private": false,
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Web map components using Stencil and Mapbox GL",
   "main": "dist/index.js",
   "module": "dist/esm/index.js",
