@@ -1,6 +1,7 @@
 # Changelog
 
-# [0.1.3] - Unreleased
+# [0.2.0] - 2018-06-01
+- Refactored forms to use a JSON schema file.
 
 ## [0.1.2] - 2018-05-30
 - Added detail option to facet.
