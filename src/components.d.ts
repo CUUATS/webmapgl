@@ -670,6 +670,7 @@ declare global {
       'formId'?: string;
       'label'?: string;
       'onGlFormCancel'?: (event: CustomEvent) => void;
+      'onGlFormFeatureChanged'?: (event: CustomEvent) => void;
       'onGlFormSubmit'?: (event: CustomEvent) => void;
       'schema'?: string;
       'submitText'?: string;

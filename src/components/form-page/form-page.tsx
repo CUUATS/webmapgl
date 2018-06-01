@@ -23,7 +23,7 @@ export class FormPage {
     this.updateValidationStatus();
   }
 
-  @Listen('glFieldValueChanged')
+  @Listen('body:glFormFeatureChanged')
   async updateValidationStatus() {
     this.canSubmit = this.validate().length === 0;
   }

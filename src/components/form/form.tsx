@@ -11,6 +11,7 @@ export class Form {
   @Element() el: HTMLElement;
 
   @Event() glFormCancel: EventEmitter;
+  @Event() glFormFeatureChanged: EventEmitter;
   @Event() glFormSubmit: EventEmitter;
 
   @Prop() cancelText: string;
@@ -44,6 +45,10 @@ export class Form {
     if (!this.feature) return;
     this.feature.properties = this.feature.properties || {};
     this.feature.properties[e.detail.field.attribute] = e.detail.value;
+    this.glFormFeatureChanged.emit({
+      formId: this.formId,
+      feature: this.feature
+    });
   }
 
   @Listen('glFormFacet')
