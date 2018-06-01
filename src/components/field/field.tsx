@@ -41,8 +41,7 @@ export class Field {
     const value = this.getValue();
     if (this.required &&
         (value === undefined || value === null || value === ''))
-      return _t('{field} is required.')
-        .replace('{field}', this.el.textContent);
+      return _t('{field} is required.').replace('{field}', this.label);
 
     return null;
   }
