@@ -1,7 +1,6 @@
-import { Component, Element, Listen, Prop, State } from '@stencil/core';
+import { Component, Listen, Prop, State } from '@stencil/core';
 import { _t } from '../i18n/i18n';
-import { ModalFormOptions
-  } from '../modal-form-controller/modal-form-controller';
+import { FormOptions } from '../form-controller/form-controller';
 
 
 @Component({
@@ -12,26 +11,26 @@ export class FeatureAdd {
   map?: HTMLGlMapElement;
   remoteCtrl?: HTMLGlRemoteControllerElement;
 
-  @Element() el: HTMLGlFeatureAddElement;
-
   @Prop({connect: 'gl-draw-controller'}) lazyDrawCtrl!:
     HTMLGlDrawControllerElement;
   @Prop({connect: 'gl-map'}) lazyMap!: HTMLGlMapElement;
   @Prop({connect: 'gl-remote-controller'}) lazyRemoteCtrl!:
     HTMLGlRemoteControllerElement;
-  @Prop({connect: 'gl-modal-form-controller'}) modalFormCtrl!:
-    HTMLGlModalFormControllerElement;
+  @Prop({connect: 'gl-form-controller'}) formCtrl!:
+    HTMLGlFormControllerElement;
   @Prop({connect: 'ion-toast-controller'}) toastCtrl!:
     HTMLIonToastControllerElement;
 
   @Prop() alertDuration = 3000;
+  @Prop() formId: string = `gl-feature-add-form-${formId++}`;
   @Prop() icon = 'add';
   @Prop() failureMessage: string = _t('An error occurred while saving.');
   @Prop() layers: string | string[];
+  @Prop() label: string = _t('Add a Feature');
   @Prop() method: 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE' = 'POST';
   @Prop() requestMode: RequestMode;
   @Prop() successMessage: string = _t('Saved successfully.');
-  @Prop() template: string;
+  @Prop() schema: string;
   @Prop() token: string;
   @Prop() toolbarLabel: string = _t('Choose a Location');
   @Prop() url: string;
@@ -55,19 +54,12 @@ export class FeatureAdd {
     this.drawCtrl.exit();
 
     if (featureCollection.features.length) {
-      let script: HTMLElement = document.getElementById(this.template);
-      if (script) {
-        // TODO: Handle multi-feature drawings.
-        let form = document.createElement('gl-form');
-        form.formId = this.template;
-        form.feature = featureCollection.features[0];
-        form.innerHTML = script.innerHTML;
-
-        let options: ModalFormOptions = {};
-        if (this.el.textContent) options.label = this.el.textContent;
-        let modal = await this.modalFormCtrl.create(form, options);
-        await modal.present();
-      }
+      let options: FormOptions = {};
+      if (this.label) options.label = this.label;
+      if (this.formId) options.formId = this.formId;
+      let modal = await this.formCtrl.create(
+        this.schema, featureCollection.features[0], options);
+      await modal.present();
     }
 
     this.drawing = false;
@@ -86,7 +78,7 @@ export class FeatureAdd {
   @Listen('body:glFormSubmit')
   async submitForm(e: CustomEvent) {
     this.disabled = false;
-    if (e.detail.formId !== this.template || !this.url) return;
+    if (e.detail.formId !== this.formId || !this.url) return;
 
     let res;
     try {
@@ -145,3 +137,5 @@ export class FeatureAdd {
     return items;
   }
 }
+
+let formId = 0;

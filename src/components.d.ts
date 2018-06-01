@@ -13,9 +13,12 @@ declare global {
   }
   namespace JSXElements {}
 
+  interface HTMLElement {
+    componentOnReady?: () => Promise<this | null>;
+  }
+
   interface HTMLStencilElement extends HTMLElement {
     componentOnReady(): Promise<this>;
-    componentOnReady(done: (ele?: this) => void): void;
 
     forceUpdate(): void;
   }
@@ -33,8 +36,8 @@ import {
   Color,
 } from '@ionic/core';
 import {
-  ModalFormOptions,
-} from './components/modal-form-controller/modal-form-controller';
+  FormOptions,
+} from './components/form-controller/form-controller';
 import {
   RemoteOptions,
 } from './components/remote-controller/remote-controller';
@@ -330,11 +333,9 @@ declare global {
   namespace StencilComponents {
     interface GlFacet {
       'detail': boolean;
-      'facets': string;
       'image': string;
-      'name': string;
-      'visible': boolean;
-      'widget': string;
+      'label': string;
+      'value': string;
     }
   }
 
@@ -358,11 +359,10 @@ declare global {
   namespace JSXElements {
     export interface GlFacetAttributes extends HTMLAttributes {
       'detail'?: boolean;
-      'facets'?: string;
       'image'?: string;
-      'name'?: string;
-      'visible'?: boolean;
-      'widget'?: string;
+      'label'?: string;
+      'onGlFormFacet'?: (event: CustomEvent) => void;
+      'value'?: string;
     }
   }
 }
@@ -374,12 +374,14 @@ declare global {
     interface GlFeatureAdd {
       'alertDuration': number;
       'failureMessage': string;
+      'formId': string;
       'icon': string;
+      'label': string;
       'layers': string | string[];
       'method': 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE';
       'requestMode': RequestMode;
+      'schema': string;
       'successMessage': string;
-      'template': string;
       'token': string;
       'toolbarLabel': string;
       'url': string;
@@ -407,12 +409,14 @@ declare global {
     export interface GlFeatureAddAttributes extends HTMLAttributes {
       'alertDuration'?: number;
       'failureMessage'?: string;
+      'formId'?: string;
       'icon'?: string;
+      'label'?: string;
       'layers'?: string | string[];
       'method'?: 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE';
       'requestMode'?: RequestMode;
+      'schema'?: string;
       'successMessage'?: string;
-      'template'?: string;
       'token'?: string;
       'toolbarLabel'?: string;
       'url'?: string;
@@ -506,7 +510,6 @@ declare global {
   namespace StencilComponents {
     interface GlField {
       'attribute': string;
-      'facets': string | string[];
       'getValue': () => any;
       'image': string;
       'isValid': () => boolean;
@@ -514,7 +517,6 @@ declare global {
       'required': boolean;
       'type': any;
       'validate': () => string;
-      'visible': boolean;
       'widget': string;
     }
   }
@@ -539,14 +541,90 @@ declare global {
   namespace JSXElements {
     export interface GlFieldAttributes extends HTMLAttributes {
       'attribute'?: string;
-      'facets'?: string | string[];
       'image'?: string;
       'label'?: string;
       'onGlFieldValueChanged'?: (event: CustomEvent) => void;
       'required'?: boolean;
       'type'?: any;
-      'visible'?: boolean;
       'widget'?: string;
+    }
+  }
+}
+
+
+declare global {
+
+  namespace StencilComponents {
+    interface GlFormController {
+      'create': (schema: string, feature: any, options?: FormOptions) => Promise<HTMLIonModalElement>;
+    }
+  }
+
+  interface HTMLGlFormControllerElement extends StencilComponents.GlFormController, HTMLStencilElement {}
+
+  var HTMLGlFormControllerElement: {
+    prototype: HTMLGlFormControllerElement;
+    new (): HTMLGlFormControllerElement;
+  };
+  interface HTMLElementTagNameMap {
+    'gl-form-controller': HTMLGlFormControllerElement;
+  }
+  interface ElementTagNameMap {
+    'gl-form-controller': HTMLGlFormControllerElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      'gl-form-controller': JSXElements.GlFormControllerAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface GlFormControllerAttributes extends HTMLAttributes {
+
+    }
+  }
+}
+
+
+declare global {
+
+  namespace StencilComponents {
+    interface GlFormPage {
+      'backText': string;
+      'cancelText': string;
+      'facets': any[];
+      'fields': any[];
+      'label': string;
+      'root': boolean;
+      'submitText': string;
+    }
+  }
+
+  interface HTMLGlFormPageElement extends StencilComponents.GlFormPage, HTMLStencilElement {}
+
+  var HTMLGlFormPageElement: {
+    prototype: HTMLGlFormPageElement;
+    new (): HTMLGlFormPageElement;
+  };
+  interface HTMLElementTagNameMap {
+    'gl-form-page': HTMLGlFormPageElement;
+  }
+  interface ElementTagNameMap {
+    'gl-form-page': HTMLGlFormPageElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      'gl-form-page': JSXElements.GlFormPageAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface GlFormPageAttributes extends HTMLAttributes {
+      'backText'?: string;
+      'cancelText'?: string;
+      'facets'?: any[];
+      'fields'?: any[];
+      'label'?: string;
+      'root'?: boolean;
+      'submitText'?: string;
     }
   }
 }
@@ -557,12 +635,14 @@ declare global {
   namespace StencilComponents {
     interface GlForm {
       'cancel': () => void;
-      'facet': string;
+      'cancelText': string;
       'feature': any;
       'formId': string;
       'getValue': (attribute: string) => any;
+      'label': string;
+      'schema': string;
       'submit': () => void;
-      'validate': () => any[];
+      'submitText': string;
     }
   }
 
@@ -585,12 +665,14 @@ declare global {
   }
   namespace JSXElements {
     export interface GlFormAttributes extends HTMLAttributes {
-      'facet'?: string;
+      'cancelText'?: string;
       'feature'?: any;
       'formId'?: string;
+      'label'?: string;
       'onGlFormCancel'?: (event: CustomEvent) => void;
-      'onGlFormFacet'?: (event: CustomEvent) => void;
       'onGlFormSubmit'?: (event: CustomEvent) => void;
+      'schema'?: string;
+      'submitText'?: string;
     }
   }
 }
@@ -842,84 +924,9 @@ declare global {
 declare global {
 
   namespace StencilComponents {
-    interface GlModalFormController {
-      'create': (form: any, options?: ModalFormOptions) => Promise<HTMLIonModalElement>;
-    }
-  }
-
-  interface HTMLGlModalFormControllerElement extends StencilComponents.GlModalFormController, HTMLStencilElement {}
-
-  var HTMLGlModalFormControllerElement: {
-    prototype: HTMLGlModalFormControllerElement;
-    new (): HTMLGlModalFormControllerElement;
-  };
-  interface HTMLElementTagNameMap {
-    'gl-modal-form-controller': HTMLGlModalFormControllerElement;
-  }
-  interface ElementTagNameMap {
-    'gl-modal-form-controller': HTMLGlModalFormControllerElement;
-  }
-  namespace JSX {
-    interface IntrinsicElements {
-      'gl-modal-form-controller': JSXElements.GlModalFormControllerAttributes;
-    }
-  }
-  namespace JSXElements {
-    export interface GlModalFormControllerAttributes extends HTMLAttributes {
-
-    }
-  }
-}
-
-
-declare global {
-
-  namespace StencilComponents {
-    interface GlModalForm {
-      'backText': string;
-      'cancelText': string;
-      'feature': any;
-      'form': HTMLGlFormElement;
-      'label': string;
-      'submitText': string;
-    }
-  }
-
-  interface HTMLGlModalFormElement extends StencilComponents.GlModalForm, HTMLStencilElement {}
-
-  var HTMLGlModalFormElement: {
-    prototype: HTMLGlModalFormElement;
-    new (): HTMLGlModalFormElement;
-  };
-  interface HTMLElementTagNameMap {
-    'gl-modal-form': HTMLGlModalFormElement;
-  }
-  interface ElementTagNameMap {
-    'gl-modal-form': HTMLGlModalFormElement;
-  }
-  namespace JSX {
-    interface IntrinsicElements {
-      'gl-modal-form': JSXElements.GlModalFormAttributes;
-    }
-  }
-  namespace JSXElements {
-    export interface GlModalFormAttributes extends HTMLAttributes {
-      'backText'?: string;
-      'cancelText'?: string;
-      'feature'?: any;
-      'form'?: HTMLGlFormElement;
-      'label'?: string;
-      'submitText'?: string;
-    }
-  }
-}
-
-
-declare global {
-
-  namespace StencilComponents {
     interface GlOption {
       'image': string;
+      'label': string;
       'value': any;
     }
   }
@@ -944,6 +951,7 @@ declare global {
   namespace JSXElements {
     export interface GlOptionAttributes extends HTMLAttributes {
       'image'?: string;
+      'label'?: string;
       'onGlOptionChanged'?: (event: CustomEvent) => void;
       'value'?: any;
     }

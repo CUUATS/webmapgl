@@ -1,4 +1,4 @@
-import { Component, Element, Prop } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Prop } from '@stencil/core';
 import { getThumbnail } from '../utils';
 
 
@@ -8,33 +8,27 @@ import { getThumbnail } from '../utils';
 export class Facet {
   @Element() el: HTMLGlFacetElement;
 
+  @Event() glFormFacet: EventEmitter;
+
   @Prop() detail: boolean = true;
-  @Prop() facets: string;
   @Prop() image: string;
-  @Prop() name: string;
-  @Prop() visible: boolean = true;
-  @Prop() widget: string;
+  @Prop() label: string;
+  @Prop() value: string;
 
   setFacet() {
-    let form = this.el.closest('gl-form');
-    if (form) form.facet = this.name;
-  }
-
-  hostData() {
-    return {
-      style: {
-        'display': (this.visible) ? 'block' : 'none'
-      }
-    };
+    this.glFormFacet.emit({
+      label: this.label,
+      value: this.value
+    });
   }
 
   render() {
-    if (this.visible) return (
-        <ion-item button={true} onClick={() => this.setFacet()}
-            detail={this.detail}>
-          {getThumbnail(this)}
-          <slot />
-        </ion-item>
-      );
+    return (
+      <ion-item button={true} onClick={() => this.setFacet()}
+          detail={this.detail}>
+        {getThumbnail(this)}
+        {this.label}
+      </ion-item>
+    );
   }
 }

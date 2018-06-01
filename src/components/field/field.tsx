@@ -11,16 +11,14 @@ export class Field {
 
   @Event() glFieldValueChanged: EventEmitter;
 
+  @State() message: string;
+
   @Prop() attribute: string;
-  @Prop() facets: string | string[];
   @Prop() image: string;
   @Prop() label: string;
   @Prop() required: boolean = false;
   @Prop() type: any;
-  @Prop() visible: boolean = true;
   @Prop() widget: string;
-
-  @State() message: string;
 
   @Listen('glOptionChanged')
   optionChanged(e) {
@@ -97,14 +95,6 @@ export class Field {
           type="text" value={this.getValue()}></ion-input>
       </ion-item>
     );
-  }
-
-  hostData() {
-    return {
-      style: {
-        'display': (this.visible) ? 'block' : 'none'
-      }
-    };
   }
 
   render() {

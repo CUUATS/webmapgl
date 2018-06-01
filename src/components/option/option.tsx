@@ -10,6 +10,7 @@ export class Option {
   @Event() glOptionChanged: EventEmitter;
 
   @Prop() image: string;
+  @Prop() label: string;
   @Prop() value: any;
 
   getRadio() {
@@ -18,7 +19,7 @@ export class Option {
     return (
       <ion-item>
         {getThumbnail(this)}
-        <ion-label><slot /></ion-label>
+        <ion-label>{this.label}</ion-label>
         <ion-radio onIonSelect={() => this.glOptionChanged.emit(this.value)}
           value={this.value} checked={checked}></ion-radio>
       </ion-item>
@@ -28,7 +29,7 @@ export class Option {
   getSelectOption() {
     return (
       <ion-select-option value={this.value}>
-        <slot />
+        {this.label}
       </ion-select-option>
     );
   }

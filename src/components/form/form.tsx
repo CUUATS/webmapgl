@@ -1,25 +1,42 @@
 import { Component, Element, Event, EventEmitter, Listen, Method, Prop,
-  Watch } from '@stencil/core';
-import { toArray } from '../utils';
+ } from '@stencil/core';
 
 
 @Component({
-  tag: 'gl-form',
-  styleUrl: 'form.scss'
+  tag: 'gl-form'
 })
 export class Form {
+  _schema: any;
+
   @Element() el: HTMLElement;
 
   @Event() glFormCancel: EventEmitter;
-  @Event() glFormFacet: EventEmitter;
   @Event() glFormSubmit: EventEmitter;
 
-  @Prop() facet: string;
+  @Prop() cancelText: string;
   @Prop() feature: any;
   @Prop() formId: string = `gl-form-${formId++}`;
+  @Prop() label: string;
+  @Prop() schema: string;
+  @Prop() submitText: string;
+
+  async componentWillLoad() {
+    let res = await fetch(this.schema);
+    this._schema = await res.json();
+  }
 
   componentDidLoad() {
-    this.updateChildren();
+    let options = {
+      facets: this.filter(this._schema.facets),
+      fields: this.filter(this._schema.fields),
+      root: true
+    };
+
+    if (this.label) options['label'] = this.label;
+    if (this.submitText) options['submitText'] = this.submitText;
+    if (this.cancelText) options['cancelText'] = this.cancelText;
+
+    this.el.querySelector('ion-nav').setRoot('gl-form-page', options);
   }
 
   @Listen('glFieldValueChanged')
@@ -27,6 +44,20 @@ export class Form {
     if (!this.feature) return;
     this.feature.properties = this.feature.properties || {};
     this.feature.properties[e.detail.field.attribute] = e.detail.value;
+  }
+
+  @Listen('glFormFacet')
+  handleFacet(e: CustomEvent) {
+    let options = {
+      facets: this.filter(this._schema.facets, e.detail.value),
+      fields: this.filter(this._schema.fields, e.detail.value),
+      label: e.detail.label
+    };
+
+    if (this.submitText) options['submitText'] = this.submitText;
+    if (this.cancelText) options['cancelText'] = this.cancelText;
+
+    this.el.querySelector('ion-nav').push('gl-form-page', options);
   }
 
   @Method()
@@ -51,57 +82,28 @@ export class Form {
     });
   }
 
-  @Method()
-  validate() {
-    return Array.from(this.el.querySelectorAll('gl-field'))
-      .map((field) => field.validate())
-      .filter((message) => message !== null);
-  }
-
-  @Watch('facet')
-  facetChanged(newValue: string, oldValue: string) {
-    this.updateChildren();
-    this.glFormFacet.emit({
-      facet: newValue,
-      previous: oldValue,
-      form: this
+  filter(items: any[], formFacet?: string) {
+    return items.filter((item) => {
+      let facets = item.facets || [];
+      if (!facets.length && !formFacet) return true;
+      for (let facet of facets) {
+        let escaped = facet.replace(/[.?+^$[\]\\(){}|-]/g, '\\$&');
+        let re = new RegExp('^' + escaped.split('*').join('.*') + '$');
+        if (re.test(formFacet)) return true;
+      }
+      return false;
+    }).map((item) => {
+      if (item.options) {
+        let result = {...item};
+        result.options = this.filter(item.options, formFacet);
+        return result;
+      }
+      return item;
     });
   }
 
-  getVisible(child: HTMLGlFieldElement | HTMLGlFacetElement) {
-    if (!this.feature) return false;
-    let facets = toArray(child.facets);
-    if (!facets.length && !this.facet) return true;
-    for (let facet of facets) {
-      let escaped = facet.replace(/[.?+^$[\]\\(){}|-]/g, '\\$&');
-      let re = new RegExp('^' + escaped.split('*').join('.*') + '$');
-      if (re.test(this.facet)) return true;
-    }
-    return false;
-  }
-
-  updateChildren() {
-    let children: NodeListOf<HTMLGlFieldElement | HTMLGlFacetElement> =
-      this.el.querySelectorAll('gl-field, gl-facet');
-
-    Array.from(children).forEach(
-      (child) => child.visible = this.getVisible(child));
-  }
-
-  hostData() {
-    return {
-      style: {
-        'display': (this.feature) ? 'block' : 'none'
-      }
-    };
-  }
-
   render() {
-    return (
-      <ion-list>
-        <slot />
-      </ion-list>
-    );
+    return (<ion-nav></ion-nav>);
   }
 }
 

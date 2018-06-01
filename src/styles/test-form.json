@@ -1,0 +1,72 @@
+{
+  "facets": [
+    {
+      "label": "Large Area",
+      "value": "large-area",
+      "image": "/styles/large-area.jpg"
+    },
+    {
+      "label": "Small Area",
+      "value": "small-area",
+      "image": "/styles/small-area.jpg"
+    }
+  ],
+  "fields": [
+    {
+      "attribute": "concern",
+      "label": "Type of Concern",
+      "widget": "radio",
+      "facets": ["large-area", "small-area"],
+      "options": [
+        {
+          "label": "Sink Hole",
+          "value": "sinkhole",
+          "facets": ["large-area"]
+        },
+        {
+          "label": "Poor Condition",
+          "value": "condition",
+          "facets": ["large-area"]
+        },
+        {
+          "label": "Faded Markings",
+          "value": "markings",
+          "facets": ["large-area"]
+        },
+        {
+          "label": "General Wear",
+          "value": "wear",
+          "facets": ["large-area"]
+        },
+        {
+          "label": "Pothole",
+          "value": "pothole",
+          "facets": ["small-area"]
+        },
+        {
+          "label": "Dirt on Roadway",
+          "value": "diirt",
+          "facets": ["small-area"]
+        },
+        {
+          "label": "Grass on Roadway",
+          "value": "grass",
+          "facets": ["small-area"]
+        },
+        {
+          "label": "Other Problems",
+          "value": "other",
+          "facets": ["small-area"]
+        }
+      ]
+    },
+    {
+      "attribute": "description",
+      "type": "text",
+      "widget": "textarea",
+      "required": true,
+      "label": "Description",
+      "facets": ["large-area", "small-area"]
+    }
+  ]
+}
