@@ -27,17 +27,8 @@ export class Form {
   }
 
   componentDidLoad() {
-    let options = {
-      facets: this.filter(this._schema.facets),
-      fields: this.filter(this._schema.fields),
-      root: true
-    };
-
-    if (this.label) options['label'] = this.label;
-    if (this.submitText) options['submitText'] = this.submitText;
-    if (this.cancelText) options['cancelText'] = this.cancelText;
-
-    this.el.querySelector('ion-nav').setRoot('gl-form-page', options);
+    let page = this.createFormPage(this.label);
+    this.el.querySelector('ion-nav').setRoot(page);
   }
 
   @Listen('glFieldValueChanged')
@@ -53,16 +44,8 @@ export class Form {
 
   @Listen('glFormFacet')
   handleFacet(e: CustomEvent) {
-    let options = {
-      facets: this.filter(this._schema.facets, e.detail.value),
-      fields: this.filter(this._schema.fields, e.detail.value),
-      label: e.detail.label
-    };
-
-    if (this.submitText) options['submitText'] = this.submitText;
-    if (this.cancelText) options['cancelText'] = this.cancelText;
-
-    this.el.querySelector('ion-nav').push('gl-form-page', options);
+    let page = this.createFormPage(e.detail.label, e.detail.value);
+    this.el.querySelector('ion-nav').push(page);
   }
 
   @Method()
@@ -85,6 +68,19 @@ export class Form {
       formId: this.formId,
       feature: this.feature
     });
+  }
+
+  createFormPage(label?: string, formFacet?: string) {
+    let page = document.createElement('gl-form-page');
+    page.facets = this.filter(this._schema.facets, formFacet);
+    page.fields = this.filter(this._schema.fields, formFacet);
+    page.root = !formFacet;
+
+    if (label) page.label = label;
+    if (this.submitText) page.submitText = this.submitText;
+    if (this.cancelText) page.cancelText = this.cancelText;
+
+    return page;
   }
 
   filter(items: any[], formFacet?: string) {

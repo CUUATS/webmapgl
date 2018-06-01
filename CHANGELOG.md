@@ -1,5 +1,8 @@
 # Changelog
 
+# [0.2.1] - Unreleased
+- Ensure that gl-form-page is loaded by dependent modules.
+
 # [0.2.0] - 2018-06-01
 - Refactored forms to use a JSON schema file.
 
