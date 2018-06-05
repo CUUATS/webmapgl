@@ -11,7 +11,6 @@ export class LikeButton {
   @Element() el: HTMLGlLikeButtonElement;
 
   @State() count: number = 0;
-  @State() feature: any;
   @State() liked: boolean = false;
 
   @Prop({connect: 'gl-like-controller'}) lazyLikeCtrl!:
@@ -21,6 +20,7 @@ export class LikeButton {
 
   @Prop() attribute: string = '_likes';
   @Prop() disabled: boolean = false;
+  @Prop({mutable: true}) feature: any;
   @Prop() iconNo: string = 'star-outline';
   @Prop() iconYes: string = 'star';
   @Prop() method: 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE' = 'POST';
@@ -31,11 +31,16 @@ export class LikeButton {
   async componentWillLoad() {
     this.likeCtrl = await this.lazyLikeCtrl.componentOnReady();
     this.remoteCtrl = await this.lazyRemoteCtrl.componentOnReady();
-    const template = this.el.closest('gl-template');
-    if (!template) return null;
 
-    this.feature = template.feature;
-    this.count = template.getValue(this.attribute);
+    if (!this.feature) {
+      const template = this.el.closest('gl-template');
+      if (!template) return null;
+      this.feature = template.feature;
+      this.count = template.getValue(this.attribute);
+    } else {
+      this.count = this.feature.properties[this.attribute];
+    }
+
     this.liked = this.likeCtrl.getLiked(this.feature);
   }
 
@@ -52,6 +57,7 @@ export class LikeButton {
       await this.remoteCtrl.send({
         url: this.url,
         feature: {
+          type: 'Feature',
           properties: {
             action: (this.liked) ? 'like' : 'unlike',
             feature_id: this.feature.id,

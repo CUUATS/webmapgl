@@ -790,6 +790,7 @@ declare global {
     interface GlLikeButton {
       'attribute': string;
       'disabled': boolean;
+      'feature': any;
       'iconNo': string;
       'iconYes': string;
       'method': 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE';
@@ -820,6 +821,7 @@ declare global {
     export interface GlLikeButtonAttributes extends HTMLAttributes {
       'attribute'?: string;
       'disabled'?: boolean;
+      'feature'?: any;
       'iconNo'?: string;
       'iconYes'?: string;
       'method'?: 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE';
