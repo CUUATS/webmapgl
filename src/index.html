@@ -39,7 +39,6 @@
         thumbnail="http://tile.stamen.com/watercolor/13/2087/3098.png"
         name="Watercolor" enabled="false"></gl-style>
     </gl-map>
-    <gl-popup layers="test:test-data" template="test-popup"></gl-popup>
     <gl-feature-buttons vertical="bottom" horizontal="end">
       <gl-feature-add layers="test:test-data"
         url="https://example.com/add"
@@ -55,21 +54,8 @@
         Area of Concern
       </gl-legend-item>
     </gl-legend>
-    <gl-drawer slot="after-content" open="true" drawer-title="Options">
-      <gl-feature-list layers="test:test-data" order-by="title"
-        template="test-feature-list"></gl-feature-list>
+    <gl-drawer slot="after-content" open="false" drawer-title="Options">
     </gl-drawer>
   </gl-app>
-  <script type="text/html" id="test-popup">
-    <h2><gl-property attribute="title"></gl-property></h2>
-    <p><gl-property attribute="description"></gl-property></p>
-  </script>
-  <script type="text/html" id="test-feature-list">
-    <h2><gl-property attribute="title"></gl-property></h2>
-    <p><gl-property attribute="description"></gl-property></p>
-    <gl-like-button attribute="_likes"
-      url="https://example.com/like"
-      layers="test:test-data"></gl-like-button>
-  </script>
 </body>
 </html>

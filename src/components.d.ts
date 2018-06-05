@@ -971,10 +971,11 @@ declare global {
   namespace StencilComponents {
     interface GlPopup {
       'closeKey': number;
+      'component': string;
+      'componentOptions': any;
       'isOpen': () => any;
       'layers': string[] | string;
       'removePopup': () => void;
-      'template': string;
     }
   }
 
@@ -998,41 +999,9 @@ declare global {
   namespace JSXElements {
     export interface GlPopupAttributes extends HTMLAttributes {
       'closeKey'?: number;
+      'component'?: string;
+      'componentOptions'?: any;
       'layers'?: string[] | string;
-      'template'?: string;
-    }
-  }
-}
-
-
-declare global {
-
-  namespace StencilComponents {
-    interface GlProperty {
-      'attribute': string;
-    }
-  }
-
-  interface HTMLGlPropertyElement extends StencilComponents.GlProperty, HTMLStencilElement {}
-
-  var HTMLGlPropertyElement: {
-    prototype: HTMLGlPropertyElement;
-    new (): HTMLGlPropertyElement;
-  };
-  interface HTMLElementTagNameMap {
-    'gl-property': HTMLGlPropertyElement;
-  }
-  interface ElementTagNameMap {
-    'gl-property': HTMLGlPropertyElement;
-  }
-  namespace JSX {
-    interface IntrinsicElements {
-      'gl-property': JSXElements.GlPropertyAttributes;
-    }
-  }
-  namespace JSXElements {
-    export interface GlPropertyAttributes extends HTMLAttributes {
-      'attribute'?: string;
     }
   }
 }
@@ -1120,40 +1089,4 @@ declare global {
   }
 }
 
-
-declare global {
-
-  namespace StencilComponents {
-    interface GlTemplate {
-      'feature': any;
-      'getValue': (attribute: string) => any;
-    }
-  }
-
-  interface HTMLGlTemplateElement extends StencilComponents.GlTemplate, HTMLStencilElement {}
-
-  var HTMLGlTemplateElement: {
-    prototype: HTMLGlTemplateElement;
-    new (): HTMLGlTemplateElement;
-  };
-  interface HTMLElementTagNameMap {
-    'gl-template': HTMLGlTemplateElement;
-  }
-  interface ElementTagNameMap {
-    'gl-template': HTMLGlTemplateElement;
-  }
-  namespace JSX {
-    interface IntrinsicElements {
-      'gl-template': JSXElements.GlTemplateAttributes;
-    }
-  }
-  namespace JSXElements {
-    export interface GlTemplateAttributes extends HTMLAttributes {
-      'feature'?: any;
-    }
-  }
-}
-
 declare global { namespace JSX { interface StencilJSX {} } }
-
-export declare function defineCustomElements(window: any): void;

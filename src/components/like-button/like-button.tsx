@@ -32,16 +32,10 @@ export class LikeButton {
     this.likeCtrl = await this.lazyLikeCtrl.componentOnReady();
     this.remoteCtrl = await this.lazyRemoteCtrl.componentOnReady();
 
-    if (!this.feature) {
-      const template = this.el.closest('gl-template');
-      if (!template) return null;
-      this.feature = template.feature;
-      this.count = template.getValue(this.attribute);
-    } else {
+    if (this.feature) {
       this.count = this.feature.properties[this.attribute];
+      this.liked = this.likeCtrl.getLiked(this.feature);
     }
-
-    this.liked = this.likeCtrl.getLiked(this.feature);
   }
 
   async toggle() {

@@ -15,11 +15,12 @@ export class Popup {
   @Element() el: HTMLGlPopupElement;
 
   @Prop() closeKey = 27;
+  @Prop() component: string;
+  @Prop() componentOptions: any;
   @Prop() layers: string[] | string;
   @Prop({connect: 'gl-click-controller'}) lazyClickCtrl!:
     HTMLGlClickControllerElement;
   @Prop({connect: 'gl-map'}) lazyMap!: HTMLGlMapElement;
-  @Prop() template: string = 'gl-popup';
 
   async componentWillLoad() {
     let mapEl = await this.lazyMap.componentOnReady();
@@ -70,17 +71,13 @@ export class Popup {
     var coordinates = features[0].geometry.coordinates.slice();
 
     // TODO: Deal with multiple features in popup.
-    let template = document.createElement('gl-template');
-    let script = document.getElementById(this.template);
-
-    if (script) {
-      template.feature = features[0];
-      template.innerHTML = script.innerHTML;
-    }
+    let ComponentTag = this.component;
+    let component = <ComponentTag features={features}
+      {...this.componentOptions}></ComponentTag>;
 
     this.popup = new mapboxgl.Popup()
         .setLngLat(coordinates)
-        .setDOMContent(template)
+        .setDOMContent(component)
         .addTo(this.map);
   }
 }
