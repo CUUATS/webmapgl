@@ -1,6 +1,6 @@
 # Changelog
 
-# [0.3.0] - Unreleased
+# [0.3.0] - 2018-06-05
 - Made feature a property of the like button.
 - Changed feature list to be source-based.
 - Added easeTo and flyTo methods to gl-map.
