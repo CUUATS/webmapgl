@@ -1,10 +1,11 @@
 gl-drawer {
+  flex-direction: column;
   height: 50%;
   &.gl-drawer-closed {
     display: none;
   }
   &.gl-drawer-open {
-    display: block;
+    display: flex;
   }
   ion-content {
     height: 100%;

@@ -5,6 +5,8 @@
 - Changed feature list to be source-based.
 - Added easeTo and flyTo methods to gl-map.
 - Removed gl-property and gl-template components.
+- Added glFeatureAdd event.
+- Use flexbox for gl-drawer.
 
 # [0.2.1] - 2018-06-01
 - Ensure that gl-form-page is loaded by dependent modules.
