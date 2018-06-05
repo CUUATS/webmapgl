@@ -1,5 +1,9 @@
 # Changelog
 
+# [0.3.0] - Unreleased
+- Made feature a property of the like button.
+- Changed feature list to be source-based.
+
 # [0.2.1] - 2018-06-01
 - Ensure that gl-form-page is loaded by dependent modules.
 

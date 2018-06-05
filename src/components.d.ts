@@ -464,13 +464,14 @@ declare global {
 
   namespace StencilComponents {
     interface GlFeatureList {
+      'component': string;
+      'componentOptions': any;
+      'display': 'all' | 'visible';
       'features': any[];
-      'filter': any[];
-      'layers': string[] | string;
+      'item': boolean;
       'order': 'asc' | 'desc' | 'none';
       'orderBy': string;
-      'queryMode': 'source' | 'rendered' | 'manual';
-      'template': string;
+      'source': string;
     }
   }
 
@@ -493,13 +494,14 @@ declare global {
   }
   namespace JSXElements {
     export interface GlFeatureListAttributes extends HTMLAttributes {
+      'component'?: string;
+      'componentOptions'?: any;
+      'display'?: 'all' | 'visible';
       'features'?: any[];
-      'filter'?: any[];
-      'layers'?: string[] | string;
+      'item'?: boolean;
       'order'?: 'asc' | 'desc' | 'none';
       'orderBy'?: string;
-      'queryMode'?: 'source' | 'rendered' | 'manual';
-      'template'?: string;
+      'source'?: string;
     }
   }
 }
@@ -1151,3 +1153,5 @@ declare global {
 }
 
 declare global { namespace JSX { interface StencilJSX {} } }
+
+export declare function defineCustomElements(window: any): void;
