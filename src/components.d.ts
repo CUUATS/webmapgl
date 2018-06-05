@@ -414,6 +414,7 @@ declare global {
       'label'?: string;
       'layers'?: string | string[];
       'method'?: 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE';
+      'onGlFeatureAdd'?: (event: CustomEvent) => void;
       'requestMode'?: RequestMode;
       'schema'?: string;
       'successMessage'?: string;
@@ -1090,3 +1091,5 @@ declare global {
 }
 
 declare global { namespace JSX { interface StencilJSX {} } }
+
+export declare function defineCustomElements(window: any): void;

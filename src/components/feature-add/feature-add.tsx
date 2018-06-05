@@ -1,4 +1,5 @@
-import { Component, Listen, Prop, State } from '@stencil/core';
+import { Component, Event, EventEmitter, Listen, Prop, State }
+  from '@stencil/core';
 import { _t } from '../i18n/i18n';
 import { FormOptions } from '../form-controller/form-controller';
 
@@ -10,6 +11,9 @@ export class FeatureAdd {
   drawCtrl?: HTMLGlDrawControllerElement;
   map?: HTMLGlMapElement;
   remoteCtrl?: HTMLGlRemoteControllerElement;
+
+  @State() disabled: boolean = false;
+  @State() drawing: boolean = false;
 
   @Prop({connect: 'gl-draw-controller'}) lazyDrawCtrl!:
     HTMLGlDrawControllerElement;
@@ -35,8 +39,7 @@ export class FeatureAdd {
   @Prop() toolbarLabel: string = _t('Choose a Location');
   @Prop() url: string;
 
-  @State() disabled: boolean = false;
-  @State() drawing: boolean = false;
+  @Event() glFeatureAdd: EventEmitter;
 
   @Listen('body:glDrawCancel')
   async cancelDraw() {
@@ -90,9 +93,9 @@ export class FeatureAdd {
         mode: this.requestMode
       });
     } catch(e) {
-      this.alert(false);
+      this.alert(false, e.detail.feature);
     }
-    if (res) this.alert(res.status === 200);
+    if (res) this.alert(res.status === 200, e.detail.feature);
   }
 
   async componentWillLoad() {
@@ -101,13 +104,20 @@ export class FeatureAdd {
     this.remoteCtrl = await this.lazyRemoteCtrl.componentOnReady();
   }
 
-  async alert(success: boolean) {
+  async alert(success: boolean, feature: any) {
+    this.glFeatureAdd.emit({
+      success: success,
+      feature: feature
+    });
+
     if (this.alertDuration === 0) return;
+
     let message = (success) ? this.successMessage : this.failureMessage;
     let options = {
       message: message,
       duration: this.alertDuration
     };
+    
     let toast = await this.toastCtrl.create(options);
     await toast.present();
     return toast;
