@@ -877,6 +877,8 @@ declare global {
 
   namespace StencilComponents {
     interface GlMap {
+      'easeTo': (options: any) => Promise<void>;
+      'flyTo': (options: any) => Promise<void>;
       'getMap': () => Promise<any>;
       'getStyle': () => Promise<any>;
       'getStyleElementById': (id: string) => any;

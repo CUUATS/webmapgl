@@ -84,6 +84,18 @@ export class Map {
   }
 
   @Method()
+  async easeTo(options: any) {
+    await this.mapReady();
+    this._map.easeTo(options);
+  }
+
+  @Method()
+  async flyTo(options: any) {
+    await this.mapReady();
+    this._map.flyTo(options);
+  }
+
+  @Method()
   async getMap() {
     await this.mapReady();
     return this._map;
