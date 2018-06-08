@@ -1,5 +1,8 @@
 # Changelog
 
+# [0.3.1] - 2018-06-08
+- Prevent form submission if there are no fields in the page.
+
 # [0.3.0] - 2018-06-05
 - Made feature a property of the like button.
 - Changed feature list to be source-based.

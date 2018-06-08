@@ -25,7 +25,11 @@ export class FormPage {
 
   @Listen('body:glFormFeatureChanged')
   async updateValidationStatus() {
-    this.canSubmit = this.validate().length === 0;
+    if (this.el.querySelectorAll('gl-field').length === 0) {
+      this.canSubmit = false;
+    } else {
+      this.canSubmit = this.validate().length === 0;
+    }
   }
 
   validate() {
