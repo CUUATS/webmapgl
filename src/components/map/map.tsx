@@ -77,7 +77,6 @@ export class Map {
     }, 66);
   }
 
-
   @Method()
   mapReady() {
     return this._ready.promise;
@@ -102,6 +101,18 @@ export class Map {
   }
 
   @Method()
+  async getMaxZoom() {
+    await this.mapReady();
+    return this._map.getMaxZoom();
+  }
+
+  @Method()
+  async getMinZoom() {
+    await this.mapReady();
+    return this._map.getMinZoom();
+  }
+
+  @Method()
   async getStyle() {
     await this.mapReady();
     return this._style;
@@ -114,6 +125,12 @@ export class Map {
       let style = styles[i];
       if (style.id === id) return style;
     }
+  }
+
+  @Method()
+  async getZoom() {
+    await this.mapReady();
+    return this._map.getZoom();
   }
 
   @Method()

@@ -881,8 +881,11 @@ declare global {
       'easeTo': (options: any) => Promise<void>;
       'flyTo': (options: any) => Promise<void>;
       'getMap': () => Promise<any>;
+      'getMaxZoom': () => Promise<any>;
+      'getMinZoom': () => Promise<any>;
       'getStyle': () => Promise<any>;
       'getStyleElementById': (id: string) => any;
+      'getZoom': () => Promise<any>;
       'latitude': number;
       'longitude': number;
       'mapReady': () => Promise<void>;
