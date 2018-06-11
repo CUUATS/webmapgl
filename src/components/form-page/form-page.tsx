@@ -68,27 +68,31 @@ export class FormPage {
   }
 
   render() {
+    let small = screen.width <= 640;
     return ([
       <ion-header>
         <ion-toolbar color="primary">
           {(!this.root) ? <ion-buttons slot="start">
             <ion-nav-pop>
               <ion-button>
-                <ion-icon slot="start" name="arrow-back"></ion-icon>
-                {this.backText}
+                <ion-icon slot={(small) ? 'icon-only' : 'start'}
+                  name="arrow-back"></ion-icon>
+                {(small) ? null : this.backText}
               </ion-button>
             </ion-nav-pop>
           </ion-buttons> : null }
           <ion-title>{this.label}</ion-title>
           <ion-buttons slot="end">
             <ion-button onClick={() => this.cancel()}>
-              <ion-icon slot="start" name="close"></ion-icon>
-              {this.cancelText}
+              <ion-icon slot={(small) ? 'icon-only' : 'start'}
+                name="close"></ion-icon>
+              {(small) ? null : this.cancelText}
             </ion-button>
             <ion-button onClick={() => this.submit()}
                 disabled={!this.canSubmit}>
-              <ion-icon slot="start" name="checkmark"></ion-icon>
-              {this.submitText}
+              <ion-icon slot={(small) ? 'icon-only' : 'start'}
+                name="checkmark"></ion-icon>
+              {(small) ? null : this.submitText}
             </ion-button>
           </ion-buttons>
         </ion-toolbar>

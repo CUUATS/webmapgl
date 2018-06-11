@@ -49,18 +49,21 @@ export class DrawToolbar {
   }
 
   render() {
+    let small = screen.width <= 640;
     return (
       <ion-toolbar color={this.color}>
         <ion-title>{this.label}</ion-title>
         <ion-buttons slot="end">
           <ion-button onClick={() => this.cancel()} disabled={this.disabled}>
-            <ion-icon slot="start" name="close"></ion-icon>
-            {this.cancelText}
+            <ion-icon slot={(small) ? 'icon-only' : 'start'} name="close">
+            </ion-icon>
+            {(small) ? null : this.cancelText}
           </ion-button>
           <ion-button onClick={() => this.confirm()}
               disabled={this.disabled || this.featureCount === 0}>
-            <ion-icon slot="start" name="checkmark"></ion-icon>
-            {this.confirmText}
+            <ion-icon slot={(small) ? 'icon-only' : 'start'} name="checkmark">
+            </ion-icon>
+            {(small) ? null : this.confirmText}
           </ion-button>
         </ion-buttons>
       </ion-toolbar>
