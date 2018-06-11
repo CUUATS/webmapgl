@@ -17,7 +17,7 @@ export class Option {
     const field = this.el.closest('gl-field');
     const checked = field.getValue() === this.value;
     return (
-      <ion-item>
+      <ion-item text-wrap>
         {getThumbnail(this)}
         <ion-label>{this.label}</ion-label>
         <ion-radio onIonSelect={() => this.glOptionChanged.emit(this.value)}

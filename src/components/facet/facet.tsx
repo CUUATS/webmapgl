@@ -25,9 +25,9 @@ export class Facet {
   render() {
     return (
       <ion-item button={true} onClick={() => this.setFacet()}
-          detail={this.detail}>
+          detail={this.detail} text-wrap>
         {getThumbnail(this)}
-        {this.label}
+        <ion-label>{this.label}</ion-label>
       </ion-item>
     );
   }

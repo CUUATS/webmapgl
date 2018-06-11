@@ -76,7 +76,7 @@ export class Field {
 
   getTextareaField() {
     return (
-      <ion-item>
+      <ion-item text-wrap>
         <ion-label position="floating">{this.label}</ion-label>
         <ion-textarea
           onIonInput={(e) => this.changed((e.detail.target as any).value)}
@@ -87,7 +87,7 @@ export class Field {
 
   getInputField() {
     return (
-      <ion-item>
+      <ion-item text-wrap>
         <ion-label position="floating">{this.label}</ion-label>
         <ion-input
           onIonInput={(e) => this.changed((e.detail.target as any).value)}
