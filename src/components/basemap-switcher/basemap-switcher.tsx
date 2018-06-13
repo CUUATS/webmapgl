@@ -20,7 +20,7 @@ export class BasemapSwitcher {
   render() {
     let items = this.getBasemapStyles()
       .map((style) => (
-        <ion-item>
+        <ion-item text-wrap>
           {(style.thumbnail)  ?
             <ion-thumbnail slot="start">
               <img src={style.thumbnail} alt={style.name} />
