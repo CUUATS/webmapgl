@@ -828,6 +828,7 @@ declare global {
       'iconNo'?: string;
       'iconYes'?: string;
       'method'?: 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE';
+      'onGlLike'?: (event: CustomEvent) => void;
       'requestMode'?: RequestMode;
       'token'?: string;
       'url'?: string;

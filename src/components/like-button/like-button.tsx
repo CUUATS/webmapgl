@@ -1,4 +1,5 @@
-import { Component, Element, Prop, State } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Prop, State }
+  from '@stencil/core';
 
 
 @Component({
@@ -28,6 +29,8 @@ export class LikeButton {
   @Prop() token: string;
   @Prop() url: string;
 
+  @Event() glLike: EventEmitter;
+
   async componentWillLoad() {
     this.likeCtrl = await this.lazyLikeCtrl.componentOnReady();
     this.remoteCtrl = await this.lazyRemoteCtrl.componentOnReady();
@@ -47,6 +50,7 @@ export class LikeButton {
       this.likeCtrl.unlike(this.feature);
 
     // Fail silently if request fails.
+    let success = false;
     try {
       await this.remoteCtrl.send({
         url: this.url,
@@ -62,7 +66,15 @@ export class LikeButton {
         method: this.method,
         mode: this.requestMode
       });
+      success = true;
     } catch(e) {}
+
+    this.glLike.emit({
+      success: success,
+      feature: this.feature,
+      action: (this.liked) ? 'like' : 'unlike',
+      client_id: this.likeCtrl.clientId
+    });
   }
 
   render() {
