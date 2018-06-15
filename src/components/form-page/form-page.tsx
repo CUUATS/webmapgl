@@ -51,7 +51,7 @@ export class FormPage {
   renderFacets() {
     return this.facets.map((facet) =>
       (<gl-facet label={facet.label} value={facet.value}
-        image={facet.image}></gl-facet>));
+        image={facet.image} widget={facet.widget}></gl-facet>));
   }
 
   renderFields() {

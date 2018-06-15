@@ -14,6 +14,7 @@ export class Facet {
   @Prop() image: string;
   @Prop() label: string;
   @Prop() value: string;
+  @Prop() widget: 'header' | 'item' = 'item';
 
   setFacet() {
     this.glFormFacet.emit({
@@ -23,6 +24,9 @@ export class Facet {
   }
 
   render() {
+    if (this.widget === 'header')
+      return (<ion-list-header>{this.label}</ion-list-header>);
+
     return (
       <ion-item button={true} onClick={() => this.setFacet()}
           detail={this.detail} text-wrap>

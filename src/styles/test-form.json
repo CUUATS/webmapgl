@@ -1,6 +1,10 @@
 {
   "facets": [
     {
+      "widget": "header",
+      "label": "Type of Area"
+    },
+    {
       "label": "Large Area",
       "value": "large-area",
       "image": "/styles/large-area.jpg"

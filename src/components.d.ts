@@ -336,6 +336,7 @@ declare global {
       'image': string;
       'label': string;
       'value': string;
+      'widget': 'header' | 'item';
     }
   }
 
@@ -363,6 +364,7 @@ declare global {
       'label'?: string;
       'onGlFormFacet'?: (event: CustomEvent) => void;
       'value'?: string;
+      'widget'?: 'header' | 'item';
     }
   }
 }
