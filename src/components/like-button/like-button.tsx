@@ -79,7 +79,8 @@ export class LikeButton {
 
   render() {
     return (
-      <ion-button fill="clear" onClick={() => this.toggle()}
+      <ion-button fill="clear"
+          onClick={() => {if (!this.disabled) this.toggle(); }}
           disabled={this.disabled}>
         <ion-icon slot="start"
           name={(this.liked) ? this.iconYes : this.iconNo}></ion-icon>

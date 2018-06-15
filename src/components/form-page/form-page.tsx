@@ -95,7 +95,7 @@ export class FormPage {
                 name="close"></ion-icon>
               {(small) ? null : this.cancelText}
             </ion-button>
-            <ion-button onClick={() => this.submit()}
+            <ion-button onClick={() => { if (this.canSubmit) this.submit(); }}
                 disabled={!this.canSubmit}>
               <ion-icon slot={(small) ? 'icon-only' : 'start'}
                 name="checkmark"></ion-icon>
