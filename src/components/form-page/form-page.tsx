@@ -14,6 +14,7 @@ export class FormPage {
   @Prop() backText: string = _t('Back');
   @Prop() facets: any[];
   @Prop() fields: any[];
+  @Prop() formFacet: string;
   @Prop() label: string;
   @Prop() root: boolean = false;
   @Prop() submitText: string = _t('Save');
@@ -65,6 +66,12 @@ export class FormPage {
     if (!options) return;
     return options.map((option) => (<gl-option image={option.image}
       label={option.label} value={option.value}></gl-option>));
+  }
+
+  hostData() {
+    return {
+      class: `gl-form-page-facet-${this.formFacet || 'none'}`
+    };
   }
 
   render() {

@@ -598,6 +598,7 @@ declare global {
       'cancelText': string;
       'facets': any[];
       'fields': any[];
+      'formFacet': string;
       'label': string;
       'root': boolean;
       'submitText': string;
@@ -627,6 +628,7 @@ declare global {
       'cancelText'?: string;
       'facets'?: any[];
       'fields'?: any[];
+      'formFacet'?: string;
       'label'?: string;
       'root'?: boolean;
       'submitText'?: string;

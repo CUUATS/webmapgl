@@ -7,6 +7,7 @@
 - Trigger an event on gl-like-button click.
 - Wrap basemap names in switcher.
 - Added header facet widget.
+- Added facet class to form page.
 
 # [0.3.1] - 2018-06-08
 - Prevent form submission if there are no fields in the page.
