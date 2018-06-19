@@ -11,14 +11,14 @@ export class FormPage {
 
   @State() canSubmit = false;
 
-  @Prop() backText: string = _t('Back');
+  @Prop() backText: string = _t('webmapgl.form-page.back');
   @Prop() facets: any[];
   @Prop() fields: any[];
   @Prop() formFacet: string;
   @Prop() label: string;
   @Prop() root: boolean = false;
-  @Prop() submitText: string = _t('Save');
-  @Prop() cancelText: string = _t('Cancel');
+  @Prop() submitText: string = _t('webmapgl.form-page.submit');
+  @Prop() cancelText: string = _t('webmapgl.form-page.cancel');
 
   componentDidLoad() {
     this.updateValidationStatus();

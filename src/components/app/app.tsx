@@ -11,7 +11,7 @@ export class App {
   @Element() el: HTMLElement;
   @Prop() label: string;
   @Prop() menu: boolean = true;
-  @Prop() menuLabel: string = _t('Legend');
+  @Prop() menuLabel: string = _t('webmapgl.app.menulabel');
 
   componentDidLoad() {
     this.el.querySelector('gl-map').resizeMap();

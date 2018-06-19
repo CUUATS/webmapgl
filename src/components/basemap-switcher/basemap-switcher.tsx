@@ -18,6 +18,7 @@ export class BasemapSwitcher {
   }
 
   render() {
+    const header = _t('webmapgl.basemap-switcher.header');
     let items = this.getBasemapStyles()
       .map((style) => (
         <ion-item text-wrap>
@@ -34,7 +35,7 @@ export class BasemapSwitcher {
         <ion-list slot="fixed">
           <ion-radio-group
               onIonChange={(e: CustomEvent) => this.setBasemap(e.detail.value)}>
-            <ion-list-header>{_t('Select a Basemap')}</ion-list-header>
+            <ion-list-header>{ header }</ion-list-header>
             {items}
           </ion-radio-group>
         </ion-list>

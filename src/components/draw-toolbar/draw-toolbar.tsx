@@ -14,10 +14,10 @@ export class DrawToolbar {
   @State() featureCount = 0;
   @State() disabled = false;
 
-  @Prop() cancelText: string = _t('Cancel');
+  @Prop() cancelText: string = _t('webmapgl.draw-toolbar.cancel');
   @Prop() color: Color = 'primary';
-  @Prop() confirmText: string = _t('Continue');
-  @Prop() label: string = _t('Add a Feature');
+  @Prop() confirmText: string = _t('webmapgl.draw-toolbar.confirm');
+  @Prop() label: string = _t('webmapgl.draw-toolbar.label');
 
   @Listen('body:glDrawEnter')
   handleDrawEnter() {

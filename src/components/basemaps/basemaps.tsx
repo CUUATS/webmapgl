@@ -22,7 +22,7 @@ export class Basemaps {
   }
 
   render() {
-    let title = _t('Change basemap');
+    let title = _t('webmapgl.basemaps.title');
     return (
       <ion-button onClick={(e) => this.openPopover(e)} title={title}>
         <ion-icon slot="icon-only" name='globe'></ion-icon>

@@ -28,15 +28,15 @@ export class FeatureAdd {
   @Prop() alertDuration = 3000;
   @Prop() formId: string = `gl-feature-add-form-${formId++}`;
   @Prop() icon = 'add';
-  @Prop() failureMessage: string = _t('An error occurred while saving.');
+  @Prop() failureMessage: string = _t('webmapgl.feature-add.failure');
   @Prop() layers: string | string[];
-  @Prop() label: string = _t('Add a Feature');
+  @Prop() label: string = _t('webmapgl.feature-add.label');
   @Prop() method: 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE' = 'POST';
   @Prop() requestMode: RequestMode;
-  @Prop() successMessage: string = _t('Saved successfully.');
+  @Prop() successMessage: string = _t('webmapgl.feature-add.success');
   @Prop() schema: string;
   @Prop() token: string;
-  @Prop() toolbarLabel: string = _t('Choose a Location');
+  @Prop() toolbarLabel: string;
   @Prop() url: string;
 
   @Event() glFeatureAdd: EventEmitter;
@@ -117,7 +117,7 @@ export class FeatureAdd {
       message: message,
       duration: this.alertDuration
     };
-    
+
     let toast = await this.toastCtrl.create(options);
     await toast.present();
     return toast;
@@ -131,7 +131,7 @@ export class FeatureAdd {
   async startDraw() {
     this.drawing = true;
     let confirm = document.createElement('gl-draw-toolbar');
-    confirm.label = this.toolbarLabel;
+    if (this.toolbarLabel) confirm.label = this.toolbarLabel;
     document.querySelector('ion-footer').appendChild(confirm);
     this.map.resizeMap();
     this.drawCtrl.enter();

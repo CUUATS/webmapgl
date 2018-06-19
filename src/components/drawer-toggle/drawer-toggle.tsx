@@ -14,7 +14,7 @@ export class DrawerToggle {
     HTMLGlDrawerElement;
 
   @Prop() icon = 'settings';
-  @Prop() buttonTitle: string = _t('Toggle drawer');
+  @Prop() buttonTitle: string = _t('webmapgl.drawer-toggle.label');
 
   async componentWillLoad() {
     this.drawer = await this.lazyDrawer.componentOnReady();

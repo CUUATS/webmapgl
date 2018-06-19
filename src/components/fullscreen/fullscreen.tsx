@@ -19,7 +19,7 @@ export class Fullscreen {
 
   render() {
     let title = (this.fullscreen) ?
-      _t('Exit fullscreen mode') : _t('Enter fullscreen mode');
+      _t('webmapgl.fullscreen.exit') : _t('webmapgl.fullscreen.enter');
     if (screenfull.enabled) return (
       <ion-button onClick={this.toggleFullscreen.bind(this)} title={title}>
         <ion-icon slot="icon-only"
