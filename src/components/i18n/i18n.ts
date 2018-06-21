@@ -1,12 +1,19 @@
 import Polyglot from 'node-polyglot';
 
 import { phrases as enPhrases } from './en';
+import { phrases as esPhrases } from './es';
 const phraseMap = {
-  en: enPhrases
+  en: enPhrases,
+  es: esPhrases
 };
 
+function getLang(defaultLang: string) {
+  if (!document) return defaultLang;
+  return document.querySelector('html').lang || defaultLang;
+}
+
 (window as any).polyglot =
-  (window as any).polyglot || new Polyglot({locale: 'en'});
+  (window as any).polyglot || new Polyglot({locale: getLang('en')});
 const polyglot = (window as any).polyglot;
 const locale = polyglot.locale();
 
