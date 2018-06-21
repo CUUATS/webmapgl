@@ -35,6 +35,7 @@ export class FeatureAdd {
   @Prop() requestMode: RequestMode;
   @Prop() successMessage: string = _t('webmapgl.feature-add.success');
   @Prop() schema: string;
+  @Prop() translateForm: boolean = false;
   @Prop() token: string;
   @Prop() toolbarLabel: string;
   @Prop() url: string;
@@ -58,6 +59,7 @@ export class FeatureAdd {
 
     if (featureCollection.features.length) {
       let options: FormOptions = {};
+      options.translate = this.translateForm;
       if (this.label) options.label = this.label;
       if (this.formId) options.formId = this.formId;
       let modal = await this.formCtrl.create(

@@ -6,6 +6,7 @@ export interface FormOptions {
   formId?: string;
   submitText?: string;
   cancelText?: string;
+  translate?: boolean;
 }
 
 
@@ -21,6 +22,7 @@ export class FormController {
     let form = document.createElement('gl-form');
     form.schema = schema;
     form.feature = feature;
+    if (options.translate) form.translate = options.translate;
     if (options.label) form.label = options.label;
     if (options.formId) form.formId = options.formId;
     if (options.submitText) form.submitText = options.submitText;

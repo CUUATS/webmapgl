@@ -386,6 +386,7 @@ declare global {
       'successMessage': string;
       'token': string;
       'toolbarLabel': string;
+      'translateForm': boolean;
       'url': string;
     }
   }
@@ -422,6 +423,7 @@ declare global {
       'successMessage'?: string;
       'token'?: string;
       'toolbarLabel'?: string;
+      'translateForm'?: boolean;
       'url'?: string;
     }
   }
@@ -650,6 +652,7 @@ declare global {
       'schema': string;
       'submit': () => void;
       'submitText': string;
+      'translate': boolean;
     }
   }
 
@@ -681,6 +684,7 @@ declare global {
       'onGlFormSubmit'?: (event: CustomEvent) => void;
       'schema'?: string;
       'submitText'?: string;
+      'translate'?: boolean;
     }
   }
 }

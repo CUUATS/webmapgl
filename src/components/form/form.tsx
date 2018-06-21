@@ -1,5 +1,6 @@
 import { Component, Element, Event, EventEmitter, Listen, Method, Prop,
  } from '@stencil/core';
+import { _t } from '../i18n/i18n';
 
 
 @Component({
@@ -20,6 +21,7 @@ export class Form {
   @Prop() label: string;
   @Prop() schema: string;
   @Prop() submitText: string;
+  @Prop() translate: boolean = false;
 
   async componentWillLoad() {
     let res = await fetch(this.schema);
@@ -95,12 +97,11 @@ export class Form {
       }
       return false;
     }).map((item) => {
-      if (item.options) {
-        let result = {...item};
+      let result = {...item};
+      if (this.translate) result.label = _t(item.label);
+      if (item.options)
         result.options = this.filter(item.options, formFacet);
-        return result;
-      }
-      return item;
+      return result;
     });
   }
 
