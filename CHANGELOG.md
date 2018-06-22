@@ -12,6 +12,7 @@
 - Use polyglot for translation.
 - Added Spanish translation.
 - Made forms translatable.
+- Fixed map resize on drawer close.
 
 # [0.3.1] - 2018-06-08
 - Prevent form submission if there are no fields in the page.

@@ -1,4 +1,4 @@
-import { Component, Method, Prop, State, Watch } from '@stencil/core';
+import { Component, Method, Prop, State } from '@stencil/core';
 
 
 @Component({
@@ -16,13 +16,12 @@ export class Drawer {
   @Prop({mutable: true}) drawerTitle: string;
   @Prop({mutable: true}) open = false;
 
-  @Watch('open')
-  async openChanged() {
-    this.map.resizeMap();
-  }
-
   async componentWillLoad() {
     this.map = await this.lazyMap.componentOnReady();
+  }
+
+  componentDidUpdate() {
+    this.map.resizeMap();
   }
 
   @Method()
