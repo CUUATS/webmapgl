@@ -39,6 +39,10 @@ import {
   FormOptions,
 } from './components/form-controller/form-controller';
 import {
+  ForwardGeocodeOptions,
+  ReverseGeocodeOptions,
+} from './components/geocode-controller/geocode-interface';
+import {
   RemoteOptions,
 } from './components/remote-controller/remote-controller';
 
@@ -718,6 +722,43 @@ declare global {
   namespace JSXElements {
     export interface GlFullscreenAttributes extends HTMLAttributes {
 
+    }
+  }
+}
+
+
+declare global {
+
+  namespace StencilComponents {
+    interface GlGeocodeController {
+      'defaultClient': string;
+      'forward': (options: ForwardGeocodeOptions, clientOptions?: any) => Promise<void>;
+      'reverse': (options: ReverseGeocodeOptions, clientOptions?: any) => Promise<void>;
+    }
+  }
+
+  interface HTMLGlGeocodeControllerElement extends StencilComponents.GlGeocodeController, HTMLStencilElement {}
+
+  var HTMLGlGeocodeControllerElement: {
+    prototype: HTMLGlGeocodeControllerElement;
+    new (): HTMLGlGeocodeControllerElement;
+  };
+  interface HTMLElementTagNameMap {
+    'gl-geocode-controller': HTMLGlGeocodeControllerElement;
+  }
+  interface ElementTagNameMap {
+    'gl-geocode-controller': HTMLGlGeocodeControllerElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      'gl-geocode-controller': JSXElements.GlGeocodeControllerAttributes;
+    }
+  }
+  namespace JSXElements {
+    export interface GlGeocodeControllerAttributes extends HTMLAttributes {
+      'defaultClient'?: string;
+      'onGlForwardGeocode'?: (event: CustomEvent) => void;
+      'onGlReverseGeocode'?: (event: CustomEvent) => void;
     }
   }
 }

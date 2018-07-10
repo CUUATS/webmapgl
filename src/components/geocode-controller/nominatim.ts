@@ -3,7 +3,7 @@ import { ForwardGeocodeOptions, ReverseGeocodeOptions, GeocodeResponse }
 
 
 export class NominatimClient {
-  async forward(options: ForwardGeocodeOptions, clientOptions?: any) {
+  async forward(options: ForwardGeocodeOptions, clientOptions: any = {}) {
     let params = {
       format: 'jsonv2',
       addressdetails: clientOptions.addressdetails || '1'
@@ -25,11 +25,12 @@ export class NominatimClient {
     let res = await fetch(this.addParams(options.url, params), {
       mode: clientOptions.mode || 'cors'
     });
+    let json = await res.json();
 
-    return this.formatResponse(res, options.jobId, 'forward');
+    return this.formatResponse(json, options.jobId, 'forward');
   }
 
-  async reverse(options: ReverseGeocodeOptions, clientOptions?: any) {
+  async reverse(options: ReverseGeocodeOptions, clientOptions: any = {}) {
     let params = {
       format: 'jsonv2',
       addressdetails: clientOptions.addressdetails || '1',
@@ -42,8 +43,9 @@ export class NominatimClient {
     let res = await fetch(this.addParams(options.url, params), {
       mode: clientOptions.mode || 'cors'
     });
+    let json = await res.json();
 
-    return this.formatResponse(res, options.jobId, 'reverse');
+    return this.formatResponse(json, options.jobId, 'reverse');
   }
 
   formatResponse(res: any, jobId: string, queryType: string) {
