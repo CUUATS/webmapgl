@@ -1,4 +1,5 @@
 import '@ionic/core';
+import 'ionicons';
 import { Component, Element, Prop } from '@stencil/core';
 import { _t } from '../i18n/i18n';
 
@@ -62,7 +63,7 @@ export class App {
                 <ion-title>{this.label}</ion-title>
               </ion-toolbar>
             </ion-header>
-            <ion-content class="map-content">
+            <ion-content scrollEnabled={false} class="map-content">
               <div class="fixed-content" slot="fixed">
                 <slot />
               </div>

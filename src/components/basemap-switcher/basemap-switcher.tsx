@@ -31,7 +31,7 @@ export class BasemapSwitcher {
           <ion-radio checked={style.enabled} value={style.url}></ion-radio>
         </ion-item>));
     return (
-      <ion-content>
+      <ion-content scrollEnabled={false}>
         <ion-list slot="fixed">
           <ion-radio-group
               onIonChange={(e: CustomEvent) => this.setBasemap(e.detail.value)}>

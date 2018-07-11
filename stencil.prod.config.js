@@ -9,5 +9,7 @@ exports.config = {
   ],
   plugins: [
     sass()
-  ]
+  ],
+  globalScript: 'src/global/webmapgl.ts',
+  globalStyle: 'src/global/webmapgl.css'
 };

@@ -8,23 +8,16 @@ gl-app {
     width: 100%;
   }
   .map-content {
-    & > ion-scroll {
-      display: none;
-    }
     .fixed-content {
       display: block;
       height: 100%;
+      left: 0;
+      position: absolute;
+      top: 0;
       width: 100%;
     }
     ion-fab.fab-vertical-bottom {
       bottom: 30px;
     }
-  }
-
-  // TODO: Remove bug fix hacks below
-  ion-toggle input[type="checkbox"],
-  ion-radio input[type="radio"] {
-    -moz-appearance: none;
-    -webkit-appearance: none;
   }
 }

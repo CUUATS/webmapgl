@@ -12,15 +12,13 @@
   ],
   "scripts": {
     "build": "stencil build --config stencil.prod.config.js",
-    "dev": "sd concurrent \"stencil build --dev --watch\" \"stencil-dev-server\" ",
-    "serve": "stencil-dev-server",
-    "start": "npm run dev",
-    "test": "jest --no-cache",
-    "test.watch": "jest --watch --no-cache"
+    "start": "stencil build --dev --watch --serve",
+    "test": "jest",
+    "test.watch": "jest --watch"
   },
   "dependencies": {
-    "@ionic/core": "4.0.0-alpha.7",
-    "@stencil/core": "0.9.7",
+    "@ionic/core": "4.0.0-alpha.9",
+    "@stencil/core": "0.10.2",
     "@stencil/router": "0.0.25",
     "@types/node-polyglot": "^0.4.31",
     "@types/screenfull": "^3.3.1",
@@ -28,9 +26,7 @@
     "screenfull": "^3.3.2"
   },
   "devDependencies": {
-    "@stencil/dev-server": "latest",
-    "@stencil/sass": "^0.0.2",
-    "@stencil/utils": "latest",
+    "@stencil/sass": "0.0.5",
     "@types/dot": "^1.1.2",
     "@types/jest": "^21.1.1",
     "jest": "^21.2.1"

@@ -16,10 +16,7 @@ exports.config = {
   plugins: [
     sass()
   ],
-  watch: true
-};
-
-exports.devServer = {
-  root: 'www',
-  watchGlob: '**/**'
+  watch: true,
+  globalScript: 'src/global/webmapgl.ts',
+  globalStyle: 'src/global/webmapgl.css'
 };
