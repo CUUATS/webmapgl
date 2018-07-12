@@ -1,5 +1,3 @@
-import '@ionic/core';
-import 'ionicons';
 import { Component, Element, Prop } from '@stencil/core';
 import { _t } from '../i18n/i18n';
 
