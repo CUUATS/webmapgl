@@ -1,4 +1,4 @@
-import { Component, Element, Event, EventEmitter, Prop, State }
+import { Component, Element, Event, EventEmitter, Prop, State, Watch }
   from '@stencil/core';
 
 
@@ -34,7 +34,11 @@ export class LikeButton {
   async componentWillLoad() {
     this.likeCtrl = await this.lazyLikeCtrl.componentOnReady();
     this.remoteCtrl = await this.lazyRemoteCtrl.componentOnReady();
+    this.setState();
+  }
 
+  @Watch('feature')
+  setState() {
     if (this.feature) {
       this.count = this.feature.properties[this.attribute];
       this.liked = this.likeCtrl.getLiked(this.feature);
