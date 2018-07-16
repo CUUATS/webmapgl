@@ -20,7 +20,7 @@ export class GeocodeController {
     let result = await client.forward(options, clientOptions);
     this.glForwardGeocode.emit({
       options: options,
-      result: result
+      results: result
     });
   }
 
@@ -30,7 +30,7 @@ export class GeocodeController {
     let result = await client.reverse(options, clientOptions);
     this.glReverseGeocode.emit({
       options: options,
-      result: result
+      results: result
     });
   }
 
