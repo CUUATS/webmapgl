@@ -89,6 +89,12 @@ export class Map {
   }
 
   @Method()
+  async fitBounds(bounds: any, options: any) {
+    await this.mapReady();
+    return this._map.fitBounds(bounds, options);
+  }
+
+  @Method()
   async flyTo(options: any) {
     await this.mapReady();
     this._map.flyTo(options);

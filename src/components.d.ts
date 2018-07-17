@@ -928,6 +928,7 @@ declare global {
   namespace StencilComponents {
     interface GlMap {
       'easeTo': (options: any) => Promise<void>;
+      'fitBounds': (bounds: any, options: any) => Promise<any>;
       'flyTo': (options: any) => Promise<void>;
       'getMap': () => Promise<any>;
       'getMaxZoom': () => Promise<any>;
