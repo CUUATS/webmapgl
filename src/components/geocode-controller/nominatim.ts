@@ -27,7 +27,7 @@ export class NominatimClient {
     });
     let json = await res.json();
 
-    return this.formatResponse(json, options.jobId, 'forward');
+    return this.formatResponse(json, options.jobId);
   }
 
   async reverse(options: ReverseGeocodeOptions, clientOptions: any = {}) {
@@ -45,21 +45,22 @@ export class NominatimClient {
     });
     let json = await res.json();
 
-    return this.formatResponse(json, options.jobId, 'reverse');
+    return this.formatResponse(json, options.jobId);
   }
 
-  formatResponse(res: any, jobId: string, queryType: string) {
-    console.log(res, jobId, queryType);
+  formatResponse(res: any, jobId: string) {
     return res.map((item) => {
       let gr: GeocodeResponse = {
         address: {
           name: item.address[item.type] ||
             item.address[item.type + '_number'] || null,
+          housenumber: item.address.house_number || null,
           street: item.address.road || null,
           city: item.address.city || null,
           county: item.address.county || null,
           state: item.address.state || null,
           country: item.address.country || null,
+          countrycode: item.address.country_code || null,
           postalcode: item.address.postcode || null
         },
         bbox: (item.boundingbox) ?

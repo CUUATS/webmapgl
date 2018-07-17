@@ -1,10 +1,12 @@
 export interface Address {
   name?: string;
+  housenumber?: string;
   street?: string;
   city?: string;
   county?: string;
   state?: string;
   country?: string;
+  countrycode?: string;
   postalcode?: string;
 }
 
