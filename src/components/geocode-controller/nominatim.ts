@@ -50,6 +50,11 @@ export class NominatimClient {
 
   formatResponse(res: any, jobId: string) {
     return res.map((item) => {
+      let bbox = null;
+      if (item.boundingbox) {
+        let coords = item.boundingbox.map((coord) => parseFloat(coord));
+        bbox = [coords[2], coords[0], coords[3], coords[1]];
+      }
       let gr: GeocodeResponse = {
         address: {
           name: item.address[item.type] ||
@@ -63,8 +68,7 @@ export class NominatimClient {
           countrycode: item.address.country_code || null,
           postalcode: item.address.postcode || null
         },
-        bbox: (item.boundingbox) ?
-          item.boundingbox.map((coord) => parseFloat(coord)) : null,
+        bbox: bbox,
         client: {
           osm_id: item.osm_id || null,
           osm_type: item.osm_type || null,
