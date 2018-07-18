@@ -57,8 +57,7 @@ export class NominatimClient {
       }
       let gr: GeocodeResponse = {
         address: {
-          name: item.address[item.type] ||
-            item.address[item.type + '_number'] || null,
+          name: item.address[item.type] || item.address[item.category] || null,
           housenumber: item.address.house_number || null,
           street: item.address.road || null,
           city: item.address.city || null,
