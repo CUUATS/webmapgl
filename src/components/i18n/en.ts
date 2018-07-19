@@ -22,6 +22,9 @@ export const phrases = {
       "failure": "An error occurred while saving.",
       "label": "Add a Feature"
     },
+    "feature-list": {
+      "loading": "Loading..."
+    },
     "field": {
       "required": "%{field} is required."
     },

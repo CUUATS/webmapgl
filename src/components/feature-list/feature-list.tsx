@@ -1,4 +1,5 @@
 import { Component, Listen, Prop, State, Watch } from '@stencil/core';
+import { _t } from '../i18n/i18n';
 
 
 @Component({
@@ -19,7 +20,7 @@ export class FeatureList {
   @Prop({mutable: true}) features: any[] = [];
   @Prop() item: boolean = true;
   @Prop() loadingSpinner: string = 'bubbles';
-  @Prop() loadingText: string = 'Loading...';
+  @Prop() loadingText: string = _t('webmapgl.feature-list.loading');
   @Prop() orderBy: string;
   @Prop() order: 'asc' | 'desc' | 'none' = 'asc';
   @Prop() source: string;
