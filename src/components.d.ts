@@ -472,11 +472,14 @@ declare global {
 
   namespace StencilComponents {
     interface GlFeatureList {
+      'batchSize': number;
       'component': string;
       'componentOptions': any;
       'display': 'all' | 'visible';
       'features': any[];
       'item': boolean;
+      'loadingSpinner': string;
+      'loadingText': string;
       'order': 'asc' | 'desc' | 'none';
       'orderBy': string;
       'source': string;
@@ -502,11 +505,14 @@ declare global {
   }
   namespace JSXElements {
     export interface GlFeatureListAttributes extends HTMLAttributes {
+      'batchSize'?: number;
       'component'?: string;
       'componentOptions'?: any;
       'display'?: 'all' | 'visible';
       'features'?: any[];
       'item'?: boolean;
+      'loadingSpinner'?: string;
+      'loadingText'?: string;
       'order'?: 'asc' | 'desc' | 'none';
       'orderBy'?: string;
       'source'?: string;

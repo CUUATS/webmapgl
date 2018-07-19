@@ -1,4 +1,4 @@
-import { Component, Prop, Watch } from '@stencil/core';
+import { Component, Listen, Prop, State, Watch } from '@stencil/core';
 
 
 @Component({
@@ -8,13 +8,18 @@ export class FeatureList {
   data: any;
   map?: HTMLGlMapElement;
 
+  @State() limit: number;
+
   @Prop({connect: 'gl-map'}) lazyMap!: HTMLGlMapElement;
 
+  @Prop() batchSize: number = 20;
   @Prop() component: string;
   @Prop() componentOptions: any;
   @Prop() display: 'all' | 'visible' = 'visible';
   @Prop({mutable: true}) features: any[] = [];
   @Prop() item: boolean = true;
+  @Prop() loadingSpinner: string = 'bubbles';
+  @Prop() loadingText: string = 'Loading...';
   @Prop() orderBy: string;
   @Prop() order: 'asc' | 'desc' | 'none' = 'asc';
   @Prop() source: string;
@@ -23,6 +28,12 @@ export class FeatureList {
     this.map = await this.lazyMap.componentOnReady();
     await this.handleSource();
     this.map.on('moveend', () => this.filter());
+  }
+
+  @Listen('ionInfinite')
+  handleInfiniteScroll(e) {
+    this.limit += this.batchSize;
+    e.target.complete();
   }
 
   @Watch('display')
@@ -58,6 +69,7 @@ export class FeatureList {
       });
     }
 
+    this.limit = this.batchSize;
     this.features = this.sort(features);
   }
 
@@ -77,16 +89,26 @@ export class FeatureList {
 
   render() {
     let ComponentTag = this.component;
-    let items = (this.features).map((feature) => {
+    let features = (this.limit) ?
+      this.features.slice(0, this.limit) : this.features;
+    let hasMore = features.length < this.features.length;
+
+    let items = features.map((feature) => {
       let component = <ComponentTag feature={feature}
         {...this.componentOptions}></ComponentTag>;
       return (this.item) ? <ion-item>{component}</ion-item> : component;
     });
 
-    return (
+    return ([
       <ion-list>
         {items}
-      </ion-list>
-    );
+      </ion-list>,
+      <ion-infinite-scroll disabled={!hasMore}>
+        <ion-infinite-scroll-content
+          loading-spinner={this.loadingSpinner}
+          loading-text={this.loadingText}>
+        </ion-infinite-scroll-content>
+      </ion-infinite-scroll>
+    ]);
   }
 }
