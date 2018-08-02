@@ -101,6 +101,12 @@ export class Map {
   }
 
   @Method()
+  async getCenter() {
+    await this.mapReady();
+    return this._map.getCenter();
+  }
+
+  @Method()
   async getMap() {
     await this.mapReady();
     return this._map;
@@ -164,6 +170,12 @@ export class Map {
         return;
       }
     }
+  }
+
+  @Method()
+  async setCenter(center: any, eventData: any) {
+    await this.mapReady();
+    return this._map.setCenter(center, eventData);
   }
 
   @Method()

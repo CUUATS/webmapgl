@@ -936,6 +936,7 @@ declare global {
       'easeTo': (options: any) => Promise<void>;
       'fitBounds': (bounds: any, options: any) => Promise<any>;
       'flyTo': (options: any) => Promise<void>;
+      'getCenter': () => Promise<any>;
       'getMap': () => Promise<any>;
       'getMaxZoom': () => Promise<any>;
       'getMinZoom': () => Promise<any>;
@@ -952,6 +953,7 @@ declare global {
       'queryRenderedFeatures': (geometry?: any, options?: any) => Promise<any>;
       'querySourceFeatures': (sourceId: string, options?: any) => Promise<any>;
       'resizeMap': () => void;
+      'setCenter': (center: any, eventData: any) => Promise<any>;
       'setCursor': (cursor: string) => Promise<void>;
       'setLayoutProperty': (layerName: string, propName: string, propValue: any) => Promise<void>;
       'zoom': number;
