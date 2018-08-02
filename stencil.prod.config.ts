@@ -1,22 +1,15 @@
-const sass = require('@stencil/sass');
+import { sass } from '@stencil/sass';
 
-exports.config = {
+export const config = {
   namespace: 'webmapgl',
-  copy: [
-    {
-      src: 'styles'
-    }
-  ],
   outputTargets: [
     {
-      type: 'www',
-      serviceWorker: null
+      type: 'dist'
     }
   ],
   plugins: [
     sass()
   ],
-  watch: true,
   globalScript: 'src/global/webmapgl.ts',
   globalStyle: 'src/global/webmapgl.css'
 };

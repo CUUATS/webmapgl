@@ -11,14 +11,14 @@
     "dist/"
   ],
   "scripts": {
-    "build": "stencil build --config stencil.prod.config.js",
-    "start": "stencil build --dev --watch --serve",
+    "build": "npx stencil build --config stencil.prod.config.ts",
+    "start": "npx stencil build --dev --watch --serve",
     "test": "jest",
     "test.watch": "jest --watch"
   },
   "dependencies": {
-    "@ionic/core": "4.0.0-beta.0",
-    "@stencil/core": "0.10.10",
+    "@ionic/core": "4.0.0-beta.1",
+    "@stencil/core": "0.11.0",
     "@stencil/router": "0.0.25",
     "@types/node-polyglot": "^0.4.31",
     "@types/screenfull": "^3.3.1",
@@ -26,7 +26,7 @@
     "screenfull": "^3.3.2"
   },
   "devDependencies": {
-    "@stencil/sass": "0.0.5",
+    "@stencil/sass": "0.1.0",
     "@types/dot": "^1.1.2",
     "@types/jest": "^21.1.1",
     "jest": "^21.2.1"

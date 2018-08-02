@@ -2,15 +2,15 @@
 # yarn lockfile v1
 
 
-"@ionic/core@4.0.0-beta.0":
-  version "4.0.0-beta.0"
-  resolved "https://registry.yarnpkg.com/@ionic/core/-/core-4.0.0-beta.0.tgz#44905a763975b222218dd08fbb6a446d841c487e"
+"@ionic/core@4.0.0-beta.1":
+  version "4.0.0-beta.1"
+  resolved "https://registry.yarnpkg.com/@ionic/core/-/core-4.0.0-beta.1.tgz#90173c466083e394615eaae6cd1e9795a6bda079"
   dependencies:
-    ionicons "4.2.5"
+    ionicons "4.2.6"
 
-"@stencil/core@0.10.10":
-  version "0.10.10"
-  resolved "https://registry.yarnpkg.com/@stencil/core/-/core-0.10.10.tgz#d5e35470f22c2b05dc9da7441003c463e6d8b7bd"
+"@stencil/core@0.11.0":
+  version "0.11.0"
+  resolved "https://registry.yarnpkg.com/@stencil/core/-/core-0.11.0.tgz#eed0919372d11bf053ec8af11898ad0106267521"
   dependencies:
     chokidar "2.0.3"
     jsdom "11.11.0"
@@ -21,16 +21,15 @@
     rollup-plugin-node-resolve "3.3.0"
     rollup-pluginutils "2.3.0"
     typescript "~2.9.1"
-    uglify-es "3.3.9"
     workbox-build "^3.1.0"
 
 "@stencil/router@0.0.25":
   version "0.0.25"
   resolved "https://registry.yarnpkg.com/@stencil/router/-/router-0.0.25.tgz#9894e4c15e942f0897d503ce95545294fb514668"
 
-"@stencil/sass@0.0.5":
-  version "0.0.5"
-  resolved "https://registry.yarnpkg.com/@stencil/sass/-/sass-0.0.5.tgz#eaa5145c2b46c64a6fce9629a3f3fca43a0bd1ab"
+"@stencil/sass@0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@stencil/sass/-/sass-0.1.0.tgz#ecf53bc732b20577935e8de0fe53995649735b95"
   dependencies:
     node-sass "4.9.0"
 
@@ -782,10 +781,6 @@ combined-stream@1.0.6, combined-stream@^1.0.5, combined-stream@~1.0.5:
 commander@^2.9.0:
   version "2.15.1"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.15.1.tgz#df46e867d0fc2aec66a34662b406a9ccafff5b0f"
-
-commander@~2.13.0:
-  version "2.13.0"
-  resolved "https://registry.yarnpkg.com/commander/-/commander-2.13.0.tgz#6964bca67685df7c1f1430c584f07d7597885b9c"
 
 common-tags@^1.4.0:
   version "1.7.2"
@@ -1729,9 +1724,9 @@ invert-kv@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/invert-kv/-/invert-kv-1.0.0.tgz#104a8e4aaca6d3d8cd157a8ef8bfab2d7a3ffdb6"
 
-ionicons@4.2.5:
-  version "4.2.5"
-  resolved "https://registry.yarnpkg.com/ionicons/-/ionicons-4.2.5.tgz#1665e8e08458ffa1a74aaf9f33ed00bce65f1a3c"
+ionicons@4.2.6:
+  version "4.2.6"
+  resolved "https://registry.yarnpkg.com/ionicons/-/ionicons-4.2.6.tgz#ee08270fe54c82a3ee0a672c7eb862808868dc0b"
 
 is-accessor-descriptor@^0.1.6:
   version "0.1.6"
@@ -4114,13 +4109,6 @@ typedarray@^0.0.6:
 typescript@~2.9.1:
   version "2.9.2"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.9.2.tgz#1cbf61d05d6b96269244eb6a3bce4bd914e0f00c"
-
-uglify-es@3.3.9:
-  version "3.3.9"
-  resolved "https://registry.yarnpkg.com/uglify-es/-/uglify-es-3.3.9.tgz#0c1c4f0700bed8dbc124cdb304d2592ca203e677"
-  dependencies:
-    commander "~2.13.0"
-    source-map "~0.6.1"
 
 uglify-js@^2.6:
   version "2.8.29"
