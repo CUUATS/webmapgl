@@ -18,6 +18,7 @@
 - Fixed map content area display when multiple components are present.
 - Use infinite scroll to limit the number of items rendered in a feature list.
 - Added `getCenter` and `setCenter` methods to map component.
+- Fixed response for Nominatim reverse geocoding.
 
 # [0.3.1] - 2018-06-08
 - Prevent form submission if there are no fields in the page.

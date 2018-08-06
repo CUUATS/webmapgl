@@ -737,8 +737,8 @@ declare global {
   namespace StencilComponents {
     interface GlGeocodeController {
       'defaultClient': string;
-      'forward': (options: ForwardGeocodeOptions, clientOptions?: any) => Promise<void>;
-      'reverse': (options: ReverseGeocodeOptions, clientOptions?: any) => Promise<void>;
+      'forward': (options: ForwardGeocodeOptions, clientOptions?: any) => Promise<any>;
+      'reverse': (options: ReverseGeocodeOptions, clientOptions?: any) => Promise<any>;
     }
   }
 

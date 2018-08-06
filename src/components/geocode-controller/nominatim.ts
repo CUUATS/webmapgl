@@ -27,7 +27,7 @@ export class NominatimClient {
     });
     let json = await res.json();
 
-    return this.formatResponse(json, options.jobId);
+    return this.formatResponse(json);
   }
 
   async reverse(options: ReverseGeocodeOptions, clientOptions: any = {}) {
@@ -45,48 +45,49 @@ export class NominatimClient {
     });
     let json = await res.json();
 
-    return this.formatResponse(json, options.jobId);
+    return this.formatResponseItem(json);
   }
 
-  formatResponse(res: any, jobId: string) {
-    return res.map((item) => {
-      let bbox = null;
-      if (item.boundingbox) {
-        let coords = item.boundingbox.map((coord) => parseFloat(coord));
-        bbox = [coords[2], coords[0], coords[3], coords[1]];
-      }
-      let gr: GeocodeResponse = {
-        address: {
-          name: item.address[item.type] || item.address[item.category] || null,
-          housenumber: item.address.house_number || null,
-          street: item.address.road || null,
-          city: item.address.city || null,
-          county: item.address.county || null,
-          state: item.address.state || null,
-          country: item.address.country || null,
-          countrycode: item.address.country_code || null,
-          postalcode: item.address.postcode || null
-        },
-        bbox: bbox,
-        client: {
-          osm_id: item.osm_id || null,
-          osm_type: item.osm_type || null,
-          category: item.category || null,
-          type: item.type || null,
-          importance: item.importance || null,
-          place_id: item.place_id || null,
-          place_rank: item.place_rank || null
-        },
-        display: item.display_name || null,
-        jobId: jobId,
-        location: {
-          lon: parseFloat(item.lon),
-          lat: parseFloat(item.lat)
-        },
-        polygon: item.geojson || null
-      };
-      return gr;
-    });
+  formatResponse(res: any) {
+    return res.map((item) => this.formatResponseItem(item));
+  }
+
+  formatResponseItem(item: any) {
+    let bbox = null;
+    if (item.boundingbox) {
+      let coords = item.boundingbox.map((coord) => parseFloat(coord));
+      bbox = [coords[2], coords[0], coords[3], coords[1]];
+    }
+    let gr: GeocodeResponse = {
+      address: {
+        name: item.address[item.type] || item.address[item.category] || null,
+        housenumber: item.address.house_number || null,
+        street: item.address.road || null,
+        city: item.address.city || null,
+        county: item.address.county || null,
+        state: item.address.state || null,
+        country: item.address.country || null,
+        countrycode: item.address.country_code || null,
+        postalcode: item.address.postcode || null
+      },
+      bbox: bbox,
+      client: {
+        osm_id: item.osm_id || null,
+        osm_type: item.osm_type || null,
+        category: item.category || null,
+        type: item.type || null,
+        importance: item.importance || null,
+        place_id: item.place_id || null,
+        place_rank: item.place_rank || null
+      },
+      display: item.display_name || null,
+      location: {
+        lon: parseFloat(item.lon),
+        lat: parseFloat(item.lat)
+      },
+      polygon: item.geojson || null
+    };
+    return gr;
   }
 
   addParams(endpoint: string, params: any) {

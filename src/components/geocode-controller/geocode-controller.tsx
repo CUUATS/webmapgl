@@ -22,6 +22,7 @@ export class GeocodeController {
       options: options,
       results: result
     });
+    return result;
   }
 
   @Method()
@@ -32,6 +33,7 @@ export class GeocodeController {
       options: options,
       results: result
     });
+    return result;
   }
 
   getClient(id?: string) {

@@ -37,7 +37,6 @@ export interface GeocodeResponse {
   bbox: [number, number, number, number];
   client?: any;
   display: string;
-  jobId: string;
   location: Location;
   polygon: any;
 }
