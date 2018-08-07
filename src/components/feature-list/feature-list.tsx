@@ -26,7 +26,7 @@ export class FeatureList {
   async componentWillLoad() {
     await this.handleSource();
     const map = this.getMap();
-    if (map) this.map.on('moveend', () => this.filter());
+    if (map) map.on('moveend', () => this.filter());
   }
 
   @Listen('ionInfinite')
