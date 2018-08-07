@@ -11,8 +11,6 @@ export class FeatureList {
 
   @State() limit: number;
 
-  @Prop({connect: 'gl-map'}) lazyMap!: HTMLGlMapElement;
-
   @Prop() batchSize: number = 20;
   @Prop() component: string;
   @Prop() componentOptions: any;
@@ -26,9 +24,9 @@ export class FeatureList {
   @Prop() source: string;
 
   async componentWillLoad() {
-    this.map = await this.lazyMap.componentOnReady();
     await this.handleSource();
-    this.map.on('moveend', () => this.filter());
+    const map = this.getMap();
+    if (map) this.map.on('moveend', () => this.filter());
   }
 
   @Listen('ionInfinite')
@@ -44,7 +42,10 @@ export class FeatureList {
 
   @Watch('source')
   async handleSource() {
-    const style = await this.map.getStyle();
+    if (!this.source) return;
+
+    const map = this.getMap();
+    const style = await map.getStyle();
     const data = style.sources[this.source].data;
 
     if (typeof data === 'string') {
@@ -55,6 +56,10 @@ export class FeatureList {
     }
   }
 
+  getMap() {
+    return document.querySelector('gl-map');
+  }
+
   async filter() {
     if (!this.data) return;
 
@@ -62,7 +67,8 @@ export class FeatureList {
     if (this.display === 'all') {
       features = this.data.features;
     } else {
-      let bounds = (await this.map.getMap()).getBounds();
+      const map = this.getMap();
+      let bounds = (await map.getMap()).getBounds();
       features = this.data.features.filter((feature) => {
         let [lng, lat] = feature.geometry.coordinates;
         return lng >= bounds.getWest() && lng <= bounds.getEast() &&
@@ -102,7 +108,9 @@ export class FeatureList {
 
     return ([
       <ion-list>
+        <slot name="start" />
         {items}
+        <slot name="end" />
       </ion-list>,
       <ion-infinite-scroll disabled={!hasMore}>
         <ion-infinite-scroll-content
