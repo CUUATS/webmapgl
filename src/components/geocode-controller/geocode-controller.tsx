@@ -17,23 +17,23 @@ export class GeocodeController {
   @Method()
   async forward(options: ForwardGeocodeOptions, clientOptions?: any) {
     let client = this.getClient(options.client);
-    let result = await client.forward(options, clientOptions);
+    let res = await client.forward(options, clientOptions);
     this.glForwardGeocode.emit({
       options: options,
-      results: result
+      response: res
     });
-    return result;
+    return res;
   }
 
   @Method()
   async reverse(options: ReverseGeocodeOptions, clientOptions?: any) {
     let client = this.getClient(options.client);
-    let result = await client.reverse(options, clientOptions);
+    let res = await client.reverse(options, clientOptions);
     this.glReverseGeocode.emit({
       options: options,
-      results: result
+      response: res
     });
-    return result;
+    return res;
   }
 
   getClient(id?: string) {

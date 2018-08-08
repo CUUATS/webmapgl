@@ -27,6 +27,7 @@ export class NominatimClient {
     });
     let json = await res.json();
 
+    if (json.error) return json;
     return this.formatResponse(json);
   }
 
@@ -45,6 +46,7 @@ export class NominatimClient {
     });
     let json = await res.json();
 
+    if (json.error) return json;
     return this.formatResponseItem(json);
   }
 
