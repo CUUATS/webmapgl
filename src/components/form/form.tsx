@@ -75,8 +75,8 @@ export class Form {
   createFormPage(label?: string, formFacet?: string) {
     let page = document.createElement('gl-form-page');
     page.formFacet = formFacet;
-    page.facets = this.filter(this._schema.facets, formFacet);
-    page.fields = this.filter(this._schema.fields, formFacet);
+    page.facets = this.filter(this._schema.facets || [], formFacet);
+    page.fields = this.filter(this._schema.fields || [], formFacet);
     page.root = !formFacet;
 
     if (label) page.label = label;

@@ -20,6 +20,7 @@
 - Added `getCenter` and `setCenter` methods to map component.
 - Fixed response for Nominatim reverse geocoding.
 - Changed gl-feature-list to work without a map component.
+- Handle form schemas without facets or fields.
 
 # [0.3.1] - 2018-06-08
 - Prevent form submission if there are no fields in the page.
