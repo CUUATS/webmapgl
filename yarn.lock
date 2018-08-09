@@ -2,19 +2,19 @@
 # yarn lockfile v1
 
 
-"@ionic/core@4.0.0-beta.1":
-  version "4.0.0-beta.1"
-  resolved "https://registry.yarnpkg.com/@ionic/core/-/core-4.0.0-beta.1.tgz#90173c466083e394615eaae6cd1e9795a6bda079"
+"@ionic/core@4.0.0-beta.2":
+  version "4.0.0-beta.2"
+  resolved "https://registry.yarnpkg.com/@ionic/core/-/core-4.0.0-beta.2.tgz#6059141f5d7d90031457a9194c2a7511766082e0"
   dependencies:
-    ionicons "4.2.6"
+    ionicons "4.3.0"
 
-"@stencil/core@0.11.0":
-  version "0.11.0"
-  resolved "https://registry.yarnpkg.com/@stencil/core/-/core-0.11.0.tgz#eed0919372d11bf053ec8af11898ad0106267521"
+"@stencil/core@0.11.3":
+  version "0.11.3"
+  resolved "https://registry.yarnpkg.com/@stencil/core/-/core-0.11.3.tgz#ef7c5e8d2d2af442a5af6873ed02d28e64003531"
   dependencies:
     chokidar "2.0.3"
     jsdom "11.11.0"
-    rollup "^0.59.4"
+    rollup "0.63.5"
     rollup-plugin-commonjs "9.1.3"
     rollup-plugin-node-builtins "2.1.2"
     rollup-plugin-node-globals "1.2.1"
@@ -1724,9 +1724,9 @@ invert-kv@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/invert-kv/-/invert-kv-1.0.0.tgz#104a8e4aaca6d3d8cd157a8ef8bfab2d7a3ffdb6"
 
-ionicons@4.2.6:
-  version "4.2.6"
-  resolved "https://registry.yarnpkg.com/ionicons/-/ionicons-4.2.6.tgz#ee08270fe54c82a3ee0a672c7eb862808868dc0b"
+ionicons@4.3.0:
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/ionicons/-/ionicons-4.3.0.tgz#89a7060e6bde412275a7083a029e010b66da897d"
 
 is-accessor-descriptor@^0.1.6:
   version "0.1.6"
@@ -3607,9 +3607,9 @@ rollup-pluginutils@^2.0.1:
     estree-walker "^0.5.2"
     micromatch "^2.3.11"
 
-rollup@^0.59.4:
-  version "0.59.4"
-  resolved "https://registry.yarnpkg.com/rollup/-/rollup-0.59.4.tgz#6f80f7017c22667ff1bf3e62adf8624a44cc44aa"
+rollup@0.63.5:
+  version "0.63.5"
+  resolved "https://registry.yarnpkg.com/rollup/-/rollup-0.63.5.tgz#5543eecac9a1b83b7e1be598b5be84c9c0a089db"
   dependencies:
     "@types/estree" "0.0.39"
     "@types/node" "*"
