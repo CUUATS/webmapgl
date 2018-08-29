@@ -1,6 +1,6 @@
 # Changelog
 
-# [0.4.0] - Unreleased
+# [0.4.0] - 2018-08-29
 - Added zoom methods to gl-map.
 - Made gl-form-page and gl-draw-toolbar responsive.
 - Wrap text in form elements.
