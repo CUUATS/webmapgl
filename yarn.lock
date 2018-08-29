@@ -24,10 +24,6 @@
     typescript "~2.9.1"
     workbox-build "^3.1.0"
 
-"@stencil/router@0.0.25":
-  version "0.0.25"
-  resolved "https://registry.yarnpkg.com/@stencil/router/-/router-0.0.25.tgz#9894e4c15e942f0897d503ce95545294fb514668"
-
 "@stencil/sass@0.1.0":
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/@stencil/sass/-/sass-0.1.0.tgz#ecf53bc732b20577935e8de0fe53995649735b95"

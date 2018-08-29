@@ -1,7 +1,7 @@
 {
   "name": "@cuuats/webmapgl",
   "private": false,
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Web map components using Stencil and Mapbox GL",
   "main": "dist/index.js",
   "module": "dist/esm/index.js",
@@ -19,7 +19,6 @@
   "dependencies": {
     "@ionic/core": "4.0.0-beta.5",
     "@stencil/core": "0.12.2",
-    "@stencil/router": "0.0.25",
     "@types/node-polyglot": "^0.4.31",
     "@types/screenfull": "^3.3.1",
     "node-polyglot": "^2.2.2",

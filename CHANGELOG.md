@@ -1,4 +1,6 @@
 # Changelog
+# [0.4.1] - Unreleased
+- Removed unused dependency on `@stencil/router`.
 
 # [0.4.0] - 2018-08-29
 - Added zoom methods to gl-map.
