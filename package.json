@@ -17,8 +17,8 @@
     "test.watch": "jest --watch"
   },
   "dependencies": {
-    "@ionic/core": "4.0.0-beta.2",
-    "@stencil/core": "0.11.3",
+    "@ionic/core": "4.0.0-beta.5",
+    "@stencil/core": "0.12.2",
     "@stencil/router": "0.0.25",
     "@types/node-polyglot": "^0.4.31",
     "@types/screenfull": "^3.3.1",

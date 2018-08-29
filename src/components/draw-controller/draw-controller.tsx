@@ -1,15 +1,6 @@
 import { Component, Event, EventEmitter, Method, Prop } from '@stencil/core';
+import { DrawOptions } from './interface';
 declare const MapboxDraw;
-
-
-export interface DrawOptions {
-  type?: 'point' | 'line' | 'polygon';
-  multiple?: boolean;
-  combine?: boolean;
-  delete?: boolean;
-  mode?: 'draw' | 'simple' | 'direct';
-  styles?: any[];
-}
 
 
 @Component({

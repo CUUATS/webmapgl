@@ -1,7 +1,7 @@
 import { Component, Event, EventEmitter, Listen, Prop, State }
   from '@stencil/core';
 import { _t } from '../i18n/i18n';
-import { FormOptions } from '../form-controller/form-controller';
+import { FormOptions } from '../form-controller/interface';
 
 
 @Component({

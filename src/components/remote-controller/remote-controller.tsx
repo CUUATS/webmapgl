@@ -1,13 +1,6 @@
 import { Component, Method } from '@stencil/core';
+import { RemoteOptions } from './interface';
 
-
-export interface RemoteOptions {
-  url: string;
-  feature: any;
-  token?: string;
-  method?: 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE';
-  mode?: RequestMode;
-}
 
 @Component({
   tag: 'gl-remote-controller'

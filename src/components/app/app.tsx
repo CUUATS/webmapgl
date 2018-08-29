@@ -61,7 +61,7 @@ export class App {
                 <ion-title>{this.label}</ion-title>
               </ion-toolbar>
             </ion-header>
-            <ion-content scrollEnabled={false} class="map-content">
+            <ion-content scrollX={false} scrollY={false} class="map-content">
               <div class="fixed-content" slot="fixed">
                 <slot />
               </div>

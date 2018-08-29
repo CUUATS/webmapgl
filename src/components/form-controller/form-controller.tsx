@@ -1,13 +1,5 @@
 import { Component, Method, Prop } from '@stencil/core';
-
-
-export interface FormOptions {
-  label?: string;
-  formId?: string;
-  submitText?: string;
-  cancelText?: string;
-  translate?: boolean;
-}
+import { FormOptions } from './interface';
 
 
 @Component({
