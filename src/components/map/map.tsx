@@ -107,6 +107,12 @@ export class Map {
   }
 
   @Method()
+  async getLayoutProperty(layerName: string, propName: string) {
+    let {layer} = await this.getLayerInfo(layerName);
+    if (layer) return (layer.layer || {})[propName];
+  }
+
+  @Method()
   async getMap() {
     await this.mapReady();
     return this._map;
@@ -122,6 +128,12 @@ export class Map {
   async getMinZoom() {
     await this.mapReady();
     return this._map.getMinZoom();
+  }
+
+  @Method()
+  async getPaintProperty(layerName: string, propName: string) {
+    let {layer} = await this.getLayerInfo(layerName);
+    if (layer) return (layer.paint || {})[propName];
   }
 
   @Method()
@@ -159,16 +171,21 @@ export class Map {
 
   @Method()
   async setLayoutProperty(layerName: string, propName: string, propValue: any) {
-    let layerParts = layerName.split(':', 2);
-    let style = this.getStyleElementById(layerParts[0]);
-    let json = await (style as HTMLGlStyleElement).getJSON();
-    for (let layer of json.layers) {
-      if (layer.id === layerParts[1]) {
-        layer.layout = layer.layer || {};
-        layer.layout[propName] = propValue;
-        style.setJSON(json);
-        return;
-      }
+    let {layer, style, styleJson} = await this.getLayerInfo(layerName);
+    if (layer) {
+      layer.layout = layer.layout || {};
+      layer.layout[propName] = propValue;
+      style.setJSON(styleJson);
+    }
+  }
+
+  @Method()
+  async setPaintProperty(layerName: string, propName: string, propValue: any) {
+    let {layer, style, styleJson} = await this.getLayerInfo(layerName);
+    if (layer) {
+      layer.paint = layer.paint || {};
+      layer.paint[propName] = propValue;
+      style.setJSON(styleJson);
     }
   }
 
@@ -200,6 +217,21 @@ export class Map {
   async off(eventName: string, layerName: string, handler: Function) {
     await this.mapReady();
     this._map.off(eventName, layerName, handler);
+  }
+
+  async getLayerInfo(layerName: string) {
+    let layerParts = layerName.split(':', 2);
+    let style = this.getStyleElementById(layerParts[0]);
+    let json = await (style as HTMLGlStyleElement).getJSON();
+    for (let layer of json.layers) {
+      if (layer.id === layerParts[1]) {
+        return {
+          layer: layer,
+          style: style,
+          styleJson: json
+        };
+      }
+    }
   }
 
   getStyleLayers(styleId: string, json: any) {

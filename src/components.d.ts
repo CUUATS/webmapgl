@@ -327,9 +327,11 @@ export namespace Components {
     'fitBounds': (bounds: any, options: any) => Promise<any>;
     'flyTo': (options: any) => Promise<void>;
     'getCenter': () => Promise<any>;
+    'getLayoutProperty': (layerName: string, propName: string) => Promise<any>;
     'getMap': () => Promise<any>;
     'getMaxZoom': () => Promise<any>;
     'getMinZoom': () => Promise<any>;
+    'getPaintProperty': (layerName: string, propName: string) => Promise<any>;
     'getStyle': () => Promise<any>;
     'getStyleElementById': (id: string) => any;
     'getZoom': () => Promise<any>;
@@ -346,6 +348,7 @@ export namespace Components {
     'setCenter': (center: any, eventData: any) => Promise<any>;
     'setCursor': (cursor: string) => Promise<void>;
     'setLayoutProperty': (layerName: string, propName: string, propValue: any) => Promise<void>;
+    'setPaintProperty': (layerName: string, propName: string, propValue: any) => Promise<void>;
     'zoom': number;
   }
   interface GlMapAttributes extends StencilHTMLAttributes {
