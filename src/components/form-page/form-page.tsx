@@ -29,14 +29,16 @@ export class FormPage {
     if (this.el.querySelectorAll('gl-field').length === 0) {
       this.canSubmit = false;
     } else {
-      this.canSubmit = this.validate().length === 0;
+      this.canSubmit = (await this.validate()).length === 0;
     }
   }
 
-  validate() {
-    return Array.from(this.el.querySelectorAll('gl-field'))
-      .map((field) => field.validate())
-      .filter((message) => message !== null);
+  async validate() {
+    let messages = await Promise.all(
+        Array.from(this.el.querySelectorAll('gl-field'))
+      .map(async (field) => await field.validate()));
+
+    return messages.filter((message) => message !== null);
   }
 
   cancel() {

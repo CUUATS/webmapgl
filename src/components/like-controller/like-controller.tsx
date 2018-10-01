@@ -19,20 +19,20 @@ export class LikeController {
   }
 
   @Method()
-  getLiked(feature: any): boolean {
+  async getLiked(feature: any): Promise<boolean> {
     let likes = this.getArray(feature.layer);
     return likes.indexOf(feature.id) !== -1;
   }
 
   @Method()
-  like(feature: any) {
+  async like(feature: any) {
     let likes = this.getArray(feature.layer);
     if (likes.indexOf(feature.id) === -1) likes.push(feature.id);
     this.setArray(feature.layer, likes);
   }
 
   @Method()
-  unlike(feature: any) {
+  async unlike(feature: any) {
     let likes = this.getArray(feature.layer);
     let idx = likes.indexOf(feature.id);
     if (idx !== -1) likes.splice(idx, 1);

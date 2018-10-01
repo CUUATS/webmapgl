@@ -5,10 +5,10 @@
   You can comment out any of these imports if you do not need that css. For example, if you have your own
   global font family css then you can comment out the typography.css import.
 */
+ @import "~@ionic/core/css/core.css";
  @import "~@ionic/core/css/normalize.css";
  @import "~@ionic/core/css/structure.css";
  @import "~@ionic/core/css/typography.css";
- @import "~@ionic/core/css/colors.css";
 
  @import "~@ionic/core/css/padding.css";
  @import "~@ionic/core/css/float-elements.css";

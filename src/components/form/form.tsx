@@ -51,7 +51,7 @@ export class Form {
   }
 
   @Method()
-  cancel() {
+  async cancel() {
     this.glFormCancel.emit({
       formId: this.formId,
       feature: this.feature
@@ -59,13 +59,7 @@ export class Form {
   }
 
   @Method()
-  getValue(attribute: string) {
-    if (!this.feature || !this.feature.properties) return;
-    return this.feature.properties[attribute];
-  }
-
-  @Method()
-  submit() {
+  async submit() {
     this.glFormSubmit.emit({
       formId: this.formId,
       feature: this.feature

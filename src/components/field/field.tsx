@@ -25,20 +25,25 @@ export class Field {
     this.changed(e.detail);
   }
 
+  _getValue() {
+    const form = this.el.closest('gl-form');
+    if (!form.feature || !form.feature.properties) return;
+    return form.feature.properties[this.attribute];
+  }
+
   @Method()
-  isValid() {
+  async isValid() {
     return this.validate() === null;
   }
 
   @Method()
-  getValue() {
-    const form = this.el.closest('gl-form');
-    return form.getValue(this.attribute);
+  async getValue() {
+    return this._getValue();
   }
 
   @Method()
-  validate() {
-    const value = this.getValue();
+  async validate() {
+    const value = await this.getValue();
     if (this.required &&
         (value === undefined || value === null || value === ''))
       return _t('webmapgl.field.required', {field: this.label});
@@ -80,7 +85,7 @@ export class Field {
         <ion-label position="floating">{this.label}</ion-label>
         <ion-textarea
           onIonInput={(e) => this.changed((e.detail.target as any).value)}
-          value={this.getValue() || ''}></ion-textarea>
+          value={this._getValue() || ''}></ion-textarea>
       </ion-item>
     );
   }
@@ -91,7 +96,7 @@ export class Field {
         <ion-label position="floating">{this.label}</ion-label>
         <ion-input
           onIonInput={(e) => this.changed((e.detail.target as any).value)}
-          type="text" value={this.getValue()}></ion-input>
+          type="text" value={this._getValue()}></ion-input>
       </ion-item>
     );
   }

@@ -53,7 +53,7 @@ export class FeatureAdd {
   @Listen('body:glDrawConfirm')
   async confirmDraw() {
     if (!this.drawing) return;
-    let featureCollection = this.drawCtrl.getAll();
+    let featureCollection = await this.drawCtrl.getAll();
     this.removeConfirm();
     this.drawCtrl.exit();
 

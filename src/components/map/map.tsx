@@ -143,7 +143,7 @@ export class Map {
   }
 
   @Method()
-  getStyleElementById(id: string): HTMLGlStyleElement {
+  async getStyleElementById(id: string): Promise<HTMLGlStyleElement> {
     let styles = document.querySelectorAll('gl-style');
     for (let i = 0; i < styles.length; i++) {
       let style = styles[i];
@@ -221,7 +221,7 @@ export class Map {
 
   async getLayerInfo(layerName: string) {
     let layerParts = layerName.split(':', 2);
-    let style = this.getStyleElementById(layerParts[0]);
+    let style = await this.getStyleElementById(layerParts[0]);
     let json = await (style as HTMLGlStyleElement).getJSON();
     for (let layer of json.layers) {
       if (layer.id === layerParts[1]) {

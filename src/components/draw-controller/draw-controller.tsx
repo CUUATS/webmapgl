@@ -76,7 +76,7 @@ export class DrawController {
   }
 
   @Method()
-  getAll() {
+  async getAll() {
     if (!this.draw) return;
     return this.draw.getAll();
   }

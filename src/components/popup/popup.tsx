@@ -46,12 +46,12 @@ export class Popup {
   }
 
   @Method()
-  isOpen() {
+  async isOpen() {
     return (this.popup) ? this.popup.isOpen() : false;
   }
 
   @Method()
-  removePopup() {
+  async removePopup() {
     if (this.popup) this.popup.remove();
   }
 

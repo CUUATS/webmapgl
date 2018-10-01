@@ -38,10 +38,10 @@ export class LikeButton {
   }
 
   @Watch('feature')
-  setState() {
+  async setState() {
     if (this.feature) {
       this.count = this.feature.properties[this.attribute];
-      this.liked = this.likeCtrl.getLiked(this.feature);
+      this.liked = await this.likeCtrl.getLiked(this.feature);
     }
   }
 
