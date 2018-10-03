@@ -1,5 +1,4 @@
-import { Component, Element, Event, EventEmitter, Method, Prop, State
-  } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Prop } from '@stencil/core';
 
 
 let _nextId = 0;
@@ -19,14 +18,14 @@ export class Style {
   @Prop() thumbnail: string;
   @Prop() token: string;
   @Prop() url: string;
-  @State() json: any;
-  private _jsonPromise: Promise<any>;
+  @Prop({mutable: true}) json: any = {};
 
   componentWillLoad() {
     if (this.id === undefined) {
       this.id = 'style-' + _nextId.toString();
       _nextId += 1;
     }
+    this.fetchJSON()
   }
 
   componentDidLoad() {
@@ -50,27 +49,5 @@ export class Style {
         if (src.data) src.data = src.data.replace(/\$\{TOKEN\}/g, this.token);
       }
     }
-  }
-
-  @Method()
-  async getJSON() {
-    if (!this.enabled) return {};
-    if (this.json) return this.json;
-    if (this._jsonPromise) return this._jsonPromise;
-
-    this._jsonPromise = new Promise((resolve) => {
-      this.fetchJSON()
-        .then(() => resolve(this.json))
-        .catch(() => {
-          this.json = {};
-          resolve(this.json);
-        });
-    });
-    return this._jsonPromise;
-  }
-
-  @Method()
-  setJSON(json: any) {
-    this.json = {...json};
   }
 }

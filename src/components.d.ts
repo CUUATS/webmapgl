@@ -395,10 +395,9 @@ export namespace Components {
   interface GlStyle {
     'basemap': boolean;
     'enabled': boolean;
-    'getJSON': () => Promise<any>;
     'id': string;
+    'json': any;
     'name': string;
-    'setJSON': (json: any) => void;
     'thumbnail': string;
     'token': string;
     'url': string;
@@ -407,6 +406,7 @@ export namespace Components {
     'basemap'?: boolean;
     'enabled'?: boolean;
     'id'?: string;
+    'json'?: any;
     'name'?: string;
     'onGlStyleElementAdded'?: (event: CustomEvent) => void;
     'onGlStyleElementModified'?: (event: CustomEvent) => void;

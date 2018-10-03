@@ -23,7 +23,7 @@ export class Map {
   private _updateStyleTimeout: number;
 
   async componentDidLoad() {
-    this._style = await this.loadStyle();
+    this._style = this.loadStyle();
     this._map = new mapboxgl.Map({
       container: this.el,
       center: [this.longitude, this.latitude],
@@ -171,21 +171,21 @@ export class Map {
 
   @Method()
   async setLayoutProperty(layerName: string, propName: string, propValue: any) {
-    let {layer, style, styleJson} = await this.getLayerInfo(layerName);
+    let {layer} = await this.getLayerInfo(layerName);
     if (layer) {
       layer.layout = layer.layout || {};
       layer.layout[propName] = propValue;
-      style.setJSON(styleJson);
+      // style.setJSON(styleJson);
     }
   }
 
   @Method()
   async setPaintProperty(layerName: string, propName: string, propValue: any) {
-    let {layer, style, styleJson} = await this.getLayerInfo(layerName);
+    let {layer} = await this.getLayerInfo(layerName);
     if (layer) {
       layer.paint = layer.paint || {};
       layer.paint[propName] = propValue;
-      style.setJSON(styleJson);
+      // style.setJSON(styleJson);
     }
   }
 
@@ -222,7 +222,7 @@ export class Map {
   async getLayerInfo(layerName: string) {
     let layerParts = layerName.split(':', 2);
     let style = await this.getStyleElementById(layerParts[0]);
-    let json = await (style as HTMLGlStyleElement).getJSON();
+    let json = (style as HTMLGlStyleElement).json;
     for (let layer of json.layers) {
       if (layer.id === layerParts[1]) {
         return {
@@ -257,38 +257,33 @@ export class Map {
   }
 
   loadStyle() {
-    return Promise.all(Array.from(this.el.querySelectorAll('gl-style'))
-      .map(async (styleEl) => {
-        await styleEl.componentOnReady();
-        let json = await styleEl.getJSON();
-        return {
-          id: styleEl.id,
-          json: json
-        };
-      }))
-      .then((styles) => {
-        let style = {
-          version: 8,
-          metadata: {},
-          sources: {},
-          layers: []
-        };
-        styles.forEach(({id, json}) => {
-          style.layers = this.getStyleLayers(id, json).concat(style.layers);
-          style.sources = {
-            ...style.sources,
-            ...this.getStyleSources(id, json)
-          };
+    let style = {
+      version: 8,
+      metadata: {},
+      sources: {},
+      layers: []
+    };
 
-          // TODO: Deal with multiple styles that each have their own glyphs
-          // or sprites. See:
-          // https://github.com/mapbox/mapbox-gl-js/issues/4086
-          // https://github.com/mapbox/mapbox-gl-js/issues/4000
-          if (json.glyphs) (style as any).glyphs = json.glyphs;
-          if (json.sprite) (style as any).sprite = json.sprite;
-        });
-        return style;
-      });
+    Array.from(this.el.querySelectorAll('gl-style')).forEach((styleEl) => {
+      if (!styleEl.enabled) return;
+
+      let id = styleEl.id;
+      let json = styleEl.json;
+
+      style.layers = this.getStyleLayers(id, json).concat(style.layers);
+      style.sources = {
+        ...style.sources,
+        ...this.getStyleSources(id, json)
+      };
+
+      // TODO: Deal with multiple styles that each have their own glyphs
+      // or sprites. See:
+      // https://github.com/mapbox/mapbox-gl-js/issues/4086
+      // https://github.com/mapbox/mapbox-gl-js/issues/4000
+      if (json.glyphs) (style as any).glyphs = json.glyphs;
+      if (json.sprite) (style as any).sprite = json.sprite;
+    });
+    return style;
   }
 
   prefix(styleId: string, value: string) {
