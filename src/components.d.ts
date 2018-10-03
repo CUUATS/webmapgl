@@ -328,16 +328,13 @@ export namespace Components {
     'flyTo': (options: any) => Promise<void>;
     'getCenter': () => Promise<any>;
     'getLayoutProperty': (layerName: string, propName: string) => Promise<any>;
-    'getMap': () => Promise<any>;
-    'getMaxZoom': () => Promise<any>;
-    'getMinZoom': () => Promise<any>;
     'getPaintProperty': (layerName: string, propName: string) => Promise<any>;
     'getStyle': () => Promise<any>;
     'getStyleElementById': (id: string) => Promise<any>;
     'getZoom': () => Promise<any>;
     'latitude': number;
     'longitude': number;
-    'mapReady': () => Promise<void>;
+    'map': any;
     'maxzoom': number;
     'minzoom': number;
     'off': (eventName: string, layerName: string, handler: Function) => Promise<void>;
@@ -354,6 +351,7 @@ export namespace Components {
   interface GlMapAttributes extends StencilHTMLAttributes {
     'latitude'?: number;
     'longitude'?: number;
+    'map'?: any;
     'maxzoom'?: number;
     'minzoom'?: number;
     'onGlStyleUpdated'?: (event: CustomEvent) => void;

@@ -1,6 +1,5 @@
 import { Component, Element, Event, EventEmitter, Listen, Method, Prop }
   from '@stencil/core';
-import { Hold } from '../utils';
 declare const mapboxgl;
 
 
@@ -16,15 +15,14 @@ export class Map {
   @Prop() zoom = 10;
   @Prop() minzoom = 0;
   @Prop() maxzoom = 22;
-  private _map: any;
-  private _ready = new Hold();
+  @Prop({mutable: true}) map: any;
   private _resizeMapTimeout: number;
   private _style: any;
   private _updateStyleTimeout: number;
 
-  async componentDidLoad() {
+  async componentWillLoad() {
     this._style = this.loadStyle();
-    this._map = new mapboxgl.Map({
+    this.map = new mapboxgl.Map({
       container: this.el,
       center: [this.longitude, this.latitude],
       zoom: this.zoom,
@@ -32,7 +30,6 @@ export class Map {
       maxZoom: this.maxzoom,
       style: this._style
     });
-    this._ready.release();
     window.addEventListener('resize', this.resizeMap.bind(this));
   }
 
@@ -45,26 +42,23 @@ export class Map {
     this._updateStyleTimeout = window.setTimeout(async () => {
       this._updateStyleTimeout = null;
       this._style = await this.loadStyle();
-      this._map.setStyle(this._style);
+      this.map.setStyle(this._style);
       this.glStyleUpdated.emit(this._style);
     }, 66);
   }
 
   @Listen('glStyleElementAdded')
   async handleStyleAdded() {
-    await this.mapReady();
     this.updateStyle();
   }
 
   @Listen('glStyleElementModified')
   async handleStyleModified() {
-    await this.mapReady();
     this.updateStyle();
   }
 
   @Listen('glStyleElementRemoved')
   async handleStyleRemoved() {
-    await this.mapReady();
     this.updateStyle();
   }
 
@@ -73,61 +67,34 @@ export class Map {
     if (this._resizeMapTimeout) return;
     this._resizeMapTimeout = window.setTimeout(async () => {
       this._resizeMapTimeout = null;
-      if (this._map) this._map.resize();
+      if (this.map) this.map.resize();
     }, 66);
   }
 
   @Method()
-  mapReady() {
-    return this._ready.promise;
-  }
-
-  @Method()
   async easeTo(options: any) {
-    await this.mapReady();
-    this._map.easeTo(options);
+    this.map.easeTo(options);
   }
 
   @Method()
   async fitBounds(bounds: any, options: any) {
-    await this.mapReady();
-    return this._map.fitBounds(bounds, options);
+    return this.map.fitBounds(bounds, options);
   }
 
   @Method()
   async flyTo(options: any) {
-    await this.mapReady();
-    this._map.flyTo(options);
+    this.map.flyTo(options);
   }
 
   @Method()
   async getCenter() {
-    await this.mapReady();
-    return this._map.getCenter();
+    return this.map.getCenter();
   }
 
   @Method()
   async getLayoutProperty(layerName: string, propName: string) {
     let {layer} = await this.getLayerInfo(layerName);
     if (layer) return (layer.layer || {})[propName];
-  }
-
-  @Method()
-  async getMap() {
-    await this.mapReady();
-    return this._map;
-  }
-
-  @Method()
-  async getMaxZoom() {
-    await this.mapReady();
-    return this._map.getMaxZoom();
-  }
-
-  @Method()
-  async getMinZoom() {
-    await this.mapReady();
-    return this._map.getMinZoom();
   }
 
   @Method()
@@ -138,7 +105,6 @@ export class Map {
 
   @Method()
   async getStyle() {
-    await this.mapReady();
     return this._style;
   }
 
@@ -153,20 +119,17 @@ export class Map {
 
   @Method()
   async getZoom() {
-    await this.mapReady();
-    return this._map.getZoom();
+    return this.map.getZoom();
   }
 
   @Method()
   async queryRenderedFeatures(geometry? , options?) {
-    await this.mapReady();
-    return this._map.queryRenderedFeatures(geometry, options);
+    return this.map.queryRenderedFeatures(geometry, options);
   }
 
   @Method()
   async querySourceFeatures(sourceId: string, options?: any) {
-    await this.mapReady();
-    return this._map.querySourceFeatures(sourceId, options);
+    return this.map.querySourceFeatures(sourceId, options);
   }
 
   @Method()
@@ -191,14 +154,12 @@ export class Map {
 
   @Method()
   async setCenter(center: any, eventData: any) {
-    await this.mapReady();
-    return this._map.setCenter(center, eventData);
+    return this.map.setCenter(center, eventData);
   }
 
   @Method()
   async setCursor(cursor: string) {
-    await this.mapReady();
-    this._map.getCanvas().style.cursor = cursor;
+    this.map.getCanvas().style.cursor = cursor;
   }
 
   on(eventName: string, layerNameOrHandler: string, handler: Function): void;
@@ -207,16 +168,14 @@ export class Map {
   @Method()
   async on(eventName: string, layerNameOrHandler: string | Function,
       handler?: Function) {
-    await this.mapReady();
     (handler) ?
-      this._map.on(eventName, layerNameOrHandler, handler) :
-      this._map.on(eventName, layerNameOrHandler);
+      this.map.on(eventName, layerNameOrHandler, handler) :
+      this.map.on(eventName, layerNameOrHandler);
   }
 
   @Method()
   async off(eventName: string, layerName: string, handler: Function) {
-    await this.mapReady();
-    this._map.off(eventName, layerName, handler);
+    this.map.off(eventName, layerName, handler);
   }
 
   async getLayerInfo(layerName: string) {

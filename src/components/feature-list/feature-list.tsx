@@ -68,7 +68,7 @@ export class FeatureList {
       features = this.data.features;
     } else {
       const map = this.getMap();
-      let bounds = (await map.getMap()).getBounds();
+      let bounds = map.map.getBounds();
       features = this.data.features.filter((feature) => {
         let [lng, lat] = feature.geometry.coordinates;
         return lng >= bounds.getWest() && lng <= bounds.getEast() &&

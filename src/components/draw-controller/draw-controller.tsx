@@ -26,7 +26,7 @@ export class DrawController {
 
   async componentWillLoad() {
     let mapEl = await this.lazyMap.componentOnReady();
-    this.map = await mapEl.getMap();
+    this.map = mapEl.map;
     this.map.on('draw.create', (e) => this.glDrawCreate.emit(e));
     this.map.on('draw.delete', (e) => this.glDrawDelete.emit(e));
   }

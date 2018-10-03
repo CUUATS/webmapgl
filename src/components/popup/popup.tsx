@@ -24,7 +24,7 @@ export class Popup {
 
   async componentWillLoad() {
     let mapEl = await this.lazyMap.componentOnReady();
-    this.map = await mapEl.getMap();
+    this.map = mapEl.map;
     this.clickCtrl = await this.lazyClickCtrl.componentOnReady();
   }
 
