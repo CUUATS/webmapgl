@@ -48,7 +48,7 @@ export class App {
       <ion-app>
         <ion-split-pane>
           {this.getMenu()}
-          <ion-page main>
+          <div class="pane-main" main>
             <ion-header>
               <ion-toolbar>
                 <ion-buttons slot="start">
@@ -68,7 +68,7 @@ export class App {
             </ion-content>
             <slot name="after-content" />
             <ion-footer><slot name="footer" /></ion-footer>
-          </ion-page>
+          </div>
         </ion-split-pane>
       </ion-app>
     ];
