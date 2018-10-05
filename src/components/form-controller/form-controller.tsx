@@ -1,4 +1,4 @@
-import { Component, Method, Prop } from '@stencil/core';
+import { Component, Prop, Method } from '@stencil/core';
 import { FormOptions } from './interface';
 
 
@@ -10,23 +10,25 @@ export class FormController {
     HTMLIonModalControllerElement;
 
   @Method()
-  async create(schema: string, feature: any, options: FormOptions = {}) {
+  async create(feature: any, options: FormOptions) {
     let form = document.createElement('gl-form');
-    form.schema = schema;
     form.feature = feature;
-    if (options.translate) form.translate = options.translate;
-    if (options.label) form.label = options.label;
-    if (options.formId) form.formId = options.formId;
-    if (options.submitText) form.submitText = options.submitText;
-    if (options.cancelText) form.cancelText = options.cancelText;
+    for (let optionName in options) form[optionName] = options[optionName];
 
     const modal = await this.modalCtrl.create({
       component: form
     });
 
-    form.addEventListener('glFormCancel', () => modal.dismiss());
-    form.addEventListener('glFormSubmit', () => modal.dismiss());
+    return await new Promise((resolve) => {
+      form.addEventListener('glFormCancel', () => {
+        modal.dismiss();
+        resolve();
+      });
 
-    return modal;
+      form.addEventListener('glFormSubmit', () => {
+        modal.dismiss();
+        resolve(feature);
+      });
+    });
   }
 }

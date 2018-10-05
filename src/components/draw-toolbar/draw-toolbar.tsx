@@ -11,53 +11,64 @@ export class DrawToolbar {
   @Event() glDrawCancel: EventEmitter;
   @Event() glDrawConfirm: EventEmitter;
 
+  @State() visible = false;
   @State() featureCount = 0;
-  @State() disabled = false;
 
   @Prop() cancelText: string = _t('webmapgl.draw-toolbar.cancel');
   @Prop() color: Color = 'primary';
   @Prop() confirmText: string = _t('webmapgl.draw-toolbar.confirm');
   @Prop() label: string = _t('webmapgl.draw-toolbar.label');
+  @Prop() mapId: string;
+  @Prop() maxFeatures: number = 1;
+  @Prop() minFeatures: number = 1;
 
   @Listen('body:glDrawEnter')
-  handleDrawEnter() {
+  handleDrawEnter(e: CustomEvent) {
+    if (e.detail.mapId != this.mapId) return;
     this.featureCount = 0;
-    this.disabled = false;
+    this.visible = true;
   }
 
   @Listen('body:glDrawExit')
-  handleDrawExit() {
-    this.disabled = true;
+  handleDrawExit(e: CustomEvent) {
+    if (e.detail.mapId != this.mapId) return;
+    this.visible = false;
   }
 
   @Listen('body:glDrawCreate')
-  handleDrawCreate() {
+  handleDrawCreate(e: CustomEvent) {
+    if (e.detail.mapId != this.mapId) return;
     this.featureCount += 1;
   }
 
   @Listen('body:glDrawDelete')
-  handleDrawDelete() {
+  handleDrawDelete(e: CustomEvent) {
+    if (e.detail.mapId != this.mapId) return;
     this.featureCount -= 1;
   }
 
   cancel() {
-    this.glDrawCancel.emit();
+    this.glDrawCancel.emit({
+      mapId: this.mapId
+    });
   }
 
-  async confirm() {
-    this.glDrawConfirm.emit();
+  confirm() {
+    this.glDrawConfirm.emit({
+      mapId: this.mapId
+    });
   }
 
   render() {
+    if (!this.visible) return;
     let small = screen.width <= 640;
-    let canCancel = !this.disabled;
-    let canConfirm = !this.disabled && this.featureCount > 0;
+    let canConfirm = this.featureCount >= this.minFeatures &&
+      this.featureCount <= this.maxFeatures;
     return (
       <ion-toolbar color={this.color}>
         <ion-title>{this.label}</ion-title>
         <ion-buttons slot="end">
-          <ion-button onClick={() => { if (canCancel) this.cancel(); }}
-              disabled={!canCancel}>
+          <ion-button onClick={() => { this.cancel() }}>
             <ion-icon slot={(small) ? 'icon-only' : 'start'} name="close">
             </ion-icon>
             {(small) ? null : this.cancelText}

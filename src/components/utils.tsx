@@ -1,11 +1,5 @@
-export class Hold {
-  public release: Function;
-  public promise: Promise<void>;
-  constructor() {
-    this.promise = new Promise((resolve) => {
-      this.release = resolve;
-    });
-  }
+export function getMap(id?: string) : HTMLGlMapElement {
+  return document.querySelector((id) ? `gl-map#${id}`: 'gl-map');
 }
 
 export function getThumbnail(item) {

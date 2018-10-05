@@ -23,8 +23,8 @@ import {
   ReverseGeocodeOptions,
 } from './components/geocode-controller/geocode-interface';
 import {
-  RemoteOptions,
-} from './components/remote-controller/interface';
+  RestOptions,
+} from './components/rest-controller/interface';
 
 
 export namespace Components {
@@ -46,36 +46,28 @@ export namespace Components {
   interface GlBasemaps {}
   interface GlBasemapsAttributes extends StencilHTMLAttributes {}
 
-  interface GlClickController {
-    'setClickable': (layer: string, clickable: boolean) => void;
-  }
-  interface GlClickControllerAttributes extends StencilHTMLAttributes {
-    'onGlFeatureClick'?: (event: CustomEvent) => void;
-  }
-
   interface GlDrawController {
-    'enter': (options?: DrawOptions) => Promise<void>;
-    'exit': () => Promise<void>;
-    'getAll': () => Promise<any>;
+    'create': (featureCollection: any, options: DrawOptions) => Promise<{}>;
   }
-  interface GlDrawControllerAttributes extends StencilHTMLAttributes {
-    'onGlDrawCreate'?: (event: CustomEvent) => void;
-    'onGlDrawDelete'?: (event: CustomEvent) => void;
-    'onGlDrawEnter'?: (event: CustomEvent) => void;
-    'onGlDrawExit'?: (event: CustomEvent) => void;
-  }
+  interface GlDrawControllerAttributes extends StencilHTMLAttributes {}
 
   interface GlDrawToolbar {
     'cancelText': string;
     'color': Color;
     'confirmText': string;
     'label': string;
+    'mapId': string;
+    'maxFeatures': number;
+    'minFeatures': number;
   }
   interface GlDrawToolbarAttributes extends StencilHTMLAttributes {
     'cancelText'?: string;
     'color'?: Color;
     'confirmText'?: string;
     'label'?: string;
+    'mapId'?: string;
+    'maxFeatures'?: number;
+    'minFeatures'?: number;
     'onGlDrawCancel'?: (event: CustomEvent) => void;
     'onGlDrawConfirm'?: (event: CustomEvent) => void;
   }
@@ -115,49 +107,6 @@ export namespace Components {
     'widget'?: 'header' | 'item';
   }
 
-  interface GlFeatureAdd {
-    'alertDuration': number;
-    'failureMessage': string;
-    'formId': string;
-    'icon': string;
-    'label': string;
-    'layers': string | string[];
-    'method': 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE';
-    'requestMode': RequestMode;
-    'schema': string;
-    'successMessage': string;
-    'token': string;
-    'toolbarLabel': string;
-    'translateForm': boolean;
-    'url': string;
-  }
-  interface GlFeatureAddAttributes extends StencilHTMLAttributes {
-    'alertDuration'?: number;
-    'failureMessage'?: string;
-    'formId'?: string;
-    'icon'?: string;
-    'label'?: string;
-    'layers'?: string | string[];
-    'method'?: 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE';
-    'onGlFeatureAdd'?: (event: CustomEvent) => void;
-    'requestMode'?: RequestMode;
-    'schema'?: string;
-    'successMessage'?: string;
-    'token'?: string;
-    'toolbarLabel'?: string;
-    'translateForm'?: boolean;
-    'url'?: string;
-  }
-
-  interface GlFeatureButtons {
-    'horizontal': 'start' | 'end' | 'center';
-    'vertical': 'top' | 'bottom' | 'center';
-  }
-  interface GlFeatureButtonsAttributes extends StencilHTMLAttributes {
-    'horizontal'?: 'start' | 'end' | 'center';
-    'vertical'?: 'top' | 'bottom' | 'center';
-  }
-
   interface GlFeatureList {
     'batchSize': number;
     'component': string;
@@ -167,9 +116,11 @@ export namespace Components {
     'item': boolean;
     'loadingSpinner': string;
     'loadingText': string;
+    'mapId': string;
     'order': 'asc' | 'desc' | 'none';
     'orderBy': string;
-    'source': string;
+    'sourceId': string;
+    'styleId': string;
   }
   interface GlFeatureListAttributes extends StencilHTMLAttributes {
     'batchSize'?: number;
@@ -180,9 +131,11 @@ export namespace Components {
     'item'?: boolean;
     'loadingSpinner'?: string;
     'loadingText'?: string;
+    'mapId'?: string;
     'order'?: 'asc' | 'desc' | 'none';
     'orderBy'?: string;
-    'source'?: string;
+    'sourceId'?: string;
+    'styleId'?: string;
   }
 
   interface GlField {
@@ -207,7 +160,7 @@ export namespace Components {
   }
 
   interface GlFormController {
-    'create': (schema: string, feature: any, options?: FormOptions) => Promise<HTMLIonModalElement>;
+    'create': (feature: any, options: FormOptions) => Promise<{}>;
   }
   interface GlFormControllerAttributes extends StencilHTMLAttributes {}
 
@@ -273,12 +226,14 @@ export namespace Components {
   interface GlLegendItem {
     'image': string;
     'layers': string | string[];
+    'styleId': string;
     'toggle': boolean;
     'widget': 'divider' | 'item';
   }
   interface GlLegendItemAttributes extends StencilHTMLAttributes {
     'image'?: string;
     'layers'?: string | string[];
+    'styleId'?: string;
     'toggle'?: boolean;
     'widget'?: 'divider' | 'item';
   }
@@ -323,37 +278,32 @@ export namespace Components {
   }
 
   interface GlMap {
-    'easeTo': (options: any) => Promise<void>;
-    'fitBounds': (bounds: any, options: any) => Promise<any>;
-    'flyTo': (options: any) => Promise<void>;
-    'getCenter': () => Promise<any>;
-    'getLayoutProperty': (layerName: string, propName: string) => Promise<any>;
-    'getPaintProperty': (layerName: string, propName: string) => Promise<any>;
-    'getStyle': () => Promise<any>;
-    'getStyleElementById': (id: string) => Promise<any>;
-    'getZoom': () => Promise<any>;
+    'draw': any;
+    'drawOptions'?: any;
+    'drawing': boolean;
+    'id': string;
     'latitude': number;
     'longitude': number;
     'map': any;
     'maxzoom': number;
     'minzoom': number;
-    'off': (eventName: string, layerName: string, handler: Function) => Promise<void>;
-    'on': (eventName: string, layerNameOrHandler: string | Function, handler?: Function) => Promise<void>;
-    'queryRenderedFeatures': (geometry?: any, options?: any) => Promise<any>;
-    'querySourceFeatures': (sourceId: string, options?: any) => Promise<any>;
     'resizeMap': () => void;
-    'setCenter': (center: any, eventData: any) => Promise<any>;
-    'setCursor': (cursor: string) => Promise<void>;
-    'setLayoutProperty': (layerName: string, propName: string, propValue: any) => Promise<void>;
-    'setPaintProperty': (layerName: string, propName: string, propValue: any) => Promise<void>;
     'zoom': number;
   }
   interface GlMapAttributes extends StencilHTMLAttributes {
+    'draw'?: any;
+    'drawOptions'?: any;
+    'drawing'?: boolean;
+    'id'?: string;
     'latitude'?: number;
     'longitude'?: number;
     'map'?: any;
     'maxzoom'?: number;
     'minzoom'?: number;
+    'onGlDrawCreate'?: (event: CustomEvent) => void;
+    'onGlDrawDelete'?: (event: CustomEvent) => void;
+    'onGlDrawEnter'?: (event: CustomEvent) => void;
+    'onGlDrawExit'?: (event: CustomEvent) => void;
     'onGlStyleUpdated'?: (event: CustomEvent) => void;
     'zoom'?: number;
   }
@@ -385,13 +335,14 @@ export namespace Components {
     'layers'?: string[] | string;
   }
 
-  interface GlRemoteController {
-    'send': (options: RemoteOptions) => Promise<Response>;
+  interface GlRestController {
+    'send': (feature: any, options: RestOptions) => Promise<Response>;
   }
-  interface GlRemoteControllerAttributes extends StencilHTMLAttributes {}
+  interface GlRestControllerAttributes extends StencilHTMLAttributes {}
 
   interface GlStyle {
     'basemap': boolean;
+    'clickableLayers': string[] | string;
     'enabled': boolean;
     'id': string;
     'json': any;
@@ -402,10 +353,12 @@ export namespace Components {
   }
   interface GlStyleAttributes extends StencilHTMLAttributes {
     'basemap'?: boolean;
+    'clickableLayers'?: string[] | string;
     'enabled'?: boolean;
     'id'?: string;
     'json'?: any;
     'name'?: string;
+    'onGlFeatureClick'?: (event: CustomEvent) => void;
     'onGlStyleElementAdded'?: (event: CustomEvent) => void;
     'onGlStyleElementModified'?: (event: CustomEvent) => void;
     'onGlStyleElementRemoved'?: (event: CustomEvent) => void;
@@ -420,14 +373,11 @@ declare global {
     'GlApp': Components.GlApp;
     'GlBasemapSwitcher': Components.GlBasemapSwitcher;
     'GlBasemaps': Components.GlBasemaps;
-    'GlClickController': Components.GlClickController;
     'GlDrawController': Components.GlDrawController;
     'GlDrawToolbar': Components.GlDrawToolbar;
     'GlDrawerToggle': Components.GlDrawerToggle;
     'GlDrawer': Components.GlDrawer;
     'GlFacet': Components.GlFacet;
-    'GlFeatureAdd': Components.GlFeatureAdd;
-    'GlFeatureButtons': Components.GlFeatureButtons;
     'GlFeatureList': Components.GlFeatureList;
     'GlField': Components.GlField;
     'GlFormController': Components.GlFormController;
@@ -442,7 +392,7 @@ declare global {
     'GlMap': Components.GlMap;
     'GlOption': Components.GlOption;
     'GlPopup': Components.GlPopup;
-    'GlRemoteController': Components.GlRemoteController;
+    'GlRestController': Components.GlRestController;
     'GlStyle': Components.GlStyle;
   }
 
@@ -450,14 +400,11 @@ declare global {
     'gl-app': Components.GlAppAttributes;
     'gl-basemap-switcher': Components.GlBasemapSwitcherAttributes;
     'gl-basemaps': Components.GlBasemapsAttributes;
-    'gl-click-controller': Components.GlClickControllerAttributes;
     'gl-draw-controller': Components.GlDrawControllerAttributes;
     'gl-draw-toolbar': Components.GlDrawToolbarAttributes;
     'gl-drawer-toggle': Components.GlDrawerToggleAttributes;
     'gl-drawer': Components.GlDrawerAttributes;
     'gl-facet': Components.GlFacetAttributes;
-    'gl-feature-add': Components.GlFeatureAddAttributes;
-    'gl-feature-buttons': Components.GlFeatureButtonsAttributes;
     'gl-feature-list': Components.GlFeatureListAttributes;
     'gl-field': Components.GlFieldAttributes;
     'gl-form-controller': Components.GlFormControllerAttributes;
@@ -472,7 +419,7 @@ declare global {
     'gl-map': Components.GlMapAttributes;
     'gl-option': Components.GlOptionAttributes;
     'gl-popup': Components.GlPopupAttributes;
-    'gl-remote-controller': Components.GlRemoteControllerAttributes;
+    'gl-rest-controller': Components.GlRestControllerAttributes;
     'gl-style': Components.GlStyleAttributes;
   }
 
@@ -493,12 +440,6 @@ declare global {
   var HTMLGlBasemapsElement: {
     prototype: HTMLGlBasemapsElement;
     new (): HTMLGlBasemapsElement;
-  };
-
-  interface HTMLGlClickControllerElement extends Components.GlClickController, HTMLStencilElement {}
-  var HTMLGlClickControllerElement: {
-    prototype: HTMLGlClickControllerElement;
-    new (): HTMLGlClickControllerElement;
   };
 
   interface HTMLGlDrawControllerElement extends Components.GlDrawController, HTMLStencilElement {}
@@ -529,18 +470,6 @@ declare global {
   var HTMLGlFacetElement: {
     prototype: HTMLGlFacetElement;
     new (): HTMLGlFacetElement;
-  };
-
-  interface HTMLGlFeatureAddElement extends Components.GlFeatureAdd, HTMLStencilElement {}
-  var HTMLGlFeatureAddElement: {
-    prototype: HTMLGlFeatureAddElement;
-    new (): HTMLGlFeatureAddElement;
-  };
-
-  interface HTMLGlFeatureButtonsElement extends Components.GlFeatureButtons, HTMLStencilElement {}
-  var HTMLGlFeatureButtonsElement: {
-    prototype: HTMLGlFeatureButtonsElement;
-    new (): HTMLGlFeatureButtonsElement;
   };
 
   interface HTMLGlFeatureListElement extends Components.GlFeatureList, HTMLStencilElement {}
@@ -627,10 +556,10 @@ declare global {
     new (): HTMLGlPopupElement;
   };
 
-  interface HTMLGlRemoteControllerElement extends Components.GlRemoteController, HTMLStencilElement {}
-  var HTMLGlRemoteControllerElement: {
-    prototype: HTMLGlRemoteControllerElement;
-    new (): HTMLGlRemoteControllerElement;
+  interface HTMLGlRestControllerElement extends Components.GlRestController, HTMLStencilElement {}
+  var HTMLGlRestControllerElement: {
+    prototype: HTMLGlRestControllerElement;
+    new (): HTMLGlRestControllerElement;
   };
 
   interface HTMLGlStyleElement extends Components.GlStyle, HTMLStencilElement {}
@@ -643,14 +572,11 @@ declare global {
     'gl-app': HTMLGlAppElement
     'gl-basemap-switcher': HTMLGlBasemapSwitcherElement
     'gl-basemaps': HTMLGlBasemapsElement
-    'gl-click-controller': HTMLGlClickControllerElement
     'gl-draw-controller': HTMLGlDrawControllerElement
     'gl-draw-toolbar': HTMLGlDrawToolbarElement
     'gl-drawer-toggle': HTMLGlDrawerToggleElement
     'gl-drawer': HTMLGlDrawerElement
     'gl-facet': HTMLGlFacetElement
-    'gl-feature-add': HTMLGlFeatureAddElement
-    'gl-feature-buttons': HTMLGlFeatureButtonsElement
     'gl-feature-list': HTMLGlFeatureListElement
     'gl-field': HTMLGlFieldElement
     'gl-form-controller': HTMLGlFormControllerElement
@@ -665,7 +591,7 @@ declare global {
     'gl-map': HTMLGlMapElement
     'gl-option': HTMLGlOptionElement
     'gl-popup': HTMLGlPopupElement
-    'gl-remote-controller': HTMLGlRemoteControllerElement
+    'gl-rest-controller': HTMLGlRestControllerElement
     'gl-style': HTMLGlStyleElement
   }
 
@@ -673,14 +599,11 @@ declare global {
     'gl-app': HTMLGlAppElement;
     'gl-basemap-switcher': HTMLGlBasemapSwitcherElement;
     'gl-basemaps': HTMLGlBasemapsElement;
-    'gl-click-controller': HTMLGlClickControllerElement;
     'gl-draw-controller': HTMLGlDrawControllerElement;
     'gl-draw-toolbar': HTMLGlDrawToolbarElement;
     'gl-drawer-toggle': HTMLGlDrawerToggleElement;
     'gl-drawer': HTMLGlDrawerElement;
     'gl-facet': HTMLGlFacetElement;
-    'gl-feature-add': HTMLGlFeatureAddElement;
-    'gl-feature-buttons': HTMLGlFeatureButtonsElement;
     'gl-feature-list': HTMLGlFeatureListElement;
     'gl-field': HTMLGlFieldElement;
     'gl-form-controller': HTMLGlFormControllerElement;
@@ -695,7 +618,7 @@ declare global {
     'gl-map': HTMLGlMapElement;
     'gl-option': HTMLGlOptionElement;
     'gl-popup': HTMLGlPopupElement;
-    'gl-remote-controller': HTMLGlRemoteControllerElement;
+    'gl-rest-controller': HTMLGlRestControllerElement;
     'gl-style': HTMLGlStyleElement;
   }
 

@@ -1,4 +1,4 @@
-import { Component, Element, Listen, Method, Prop, Watch } from '@stencil/core';
+import { Component, Element, Listen, Method, Prop } from '@stencil/core';
 import { toArray } from '../utils';
 declare const mapboxgl;
 
@@ -8,8 +8,6 @@ declare const mapboxgl;
   tag: 'gl-popup'
 })
 export class Popup {
-  clickCtrl?: HTMLGlClickControllerElement;
-  map?: any;
   popup?: any;
 
   @Element() el: HTMLGlPopupElement;
@@ -18,19 +16,11 @@ export class Popup {
   @Prop() component: string;
   @Prop() componentOptions: any;
   @Prop() layers: string[] | string;
-  @Prop({connect: 'gl-click-controller'}) lazyClickCtrl!:
-    HTMLGlClickControllerElement;
-  @Prop({connect: 'gl-map'}) lazyMap!: HTMLGlMapElement;
-
-  async componentWillLoad() {
-    let mapEl = await this.lazyMap.componentOnReady();
-    this.map = mapEl.map;
-    this.clickCtrl = await this.lazyClickCtrl.componentOnReady();
-  }
 
   @Listen('body:glFeatureClick')
   handleFeatureClick(e: CustomEvent) {
-    let layers = toArray(this.layers);
+    let style = this.el.closest('gl-style');
+    let layers = toArray(this.layers).map((layer) => `${style.id}:${layer}`);
     let features = e.detail.features
       .filter((feature) => layers.indexOf(feature.layer.id) !== -1);
     if (features.length) this.openPopup(features);
@@ -41,10 +31,6 @@ export class Popup {
     if (e.keyCode === this.closeKey) this.removePopup();
   }
 
-  componentDidLoad() {
-    this.handleLayers(this.layers);
-  }
-
   @Method()
   async isOpen() {
     return (this.popup) ? this.popup.isOpen() : false;
@@ -53,17 +39,6 @@ export class Popup {
   @Method()
   async removePopup() {
     if (this.popup) this.popup.remove();
-  }
-
-  @Watch('layers')
-  handleLayers(newLayers: string[] | string, oldLayers?: string[] | string) {
-    newLayers = toArray(newLayers);
-    oldLayers = toArray(oldLayers);
-
-    // TODO: This logic may not work if there are multiple popups configured
-    // with overlapping layers.
-    for (let layer of oldLayers) this.clickCtrl.setClickable(layer, false);
-    for (let layer of newLayers) this.clickCtrl.setClickable(layer, true);
   }
 
   openPopup(features: any[]) {
@@ -78,6 +53,6 @@ export class Popup {
     this.popup = new mapboxgl.Popup()
         .setLngLat(coordinates)
         .setDOMContent(component)
-        .addTo(this.map);
+        .addTo(this.el.closest('gl-map').map);
   }
 }

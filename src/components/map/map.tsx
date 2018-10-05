@@ -1,6 +1,7 @@
-import { Component, Element, Event, EventEmitter, Listen, Method, Prop }
+import { Component, Element, Event, EventEmitter, Listen, Method, Prop, Watch }
   from '@stencil/core';
 declare const mapboxgl;
+declare const MapboxDraw;
 
 
 @Component({
@@ -9,13 +10,24 @@ declare const mapboxgl;
 })
 export class Map {
   @Element() el: HTMLElement;
+
+  @Event() glDrawCreate: EventEmitter;
+  @Event() glDrawDelete: EventEmitter;
+  @Event() glDrawEnter: EventEmitter;
+  @Event() glDrawExit: EventEmitter;
   @Event() glStyleUpdated: EventEmitter;
+
+  @Prop() draw: any;
+  @Prop() drawOptions?: any;
+  @Prop() drawing: boolean = false;
+  @Prop() id: string;
   @Prop() latitude: number;
   @Prop() longitude: number;
   @Prop() zoom = 10;
   @Prop() minzoom = 0;
   @Prop() maxzoom = 22;
   @Prop({mutable: true}) map: any;
+
   private _resizeMapTimeout: number;
   private _style: any;
   private _updateStyleTimeout: number;
@@ -31,6 +43,14 @@ export class Map {
       style: this._style
     });
     window.addEventListener('resize', this.resizeMap.bind(this));
+    this.map.on('draw.create', (e) => this.glDrawCreate.emit({
+      mapId: this.id,
+      features: e.features
+    }));
+    this.map.on('draw.delete', (e) => this.glDrawDelete.emit({
+      mapId: this.id,
+      features: e.features
+    }));
   }
 
   componentDidUpdate() {
@@ -62,6 +82,23 @@ export class Map {
     this.updateStyle();
   }
 
+  @Watch('drawing')
+  async updateDrawing() {
+    if (this.drawing) {
+      this.draw = new MapboxDraw(this.drawOptions);
+      this.map.addControl(this.draw);
+      this.glDrawEnter.emit({
+        mapId: this.id
+      });
+    } else {
+      this.map.removeControl(this.draw);
+      this.draw = null;
+      this.glDrawExit.emit({
+        mapId: this.id
+      });
+    }
+  }
+
   @Method()
   resizeMap() {
     if (this._resizeMapTimeout) return;
@@ -69,128 +106,6 @@ export class Map {
       this._resizeMapTimeout = null;
       if (this.map) this.map.resize();
     }, 66);
-  }
-
-  @Method()
-  async easeTo(options: any) {
-    this.map.easeTo(options);
-  }
-
-  @Method()
-  async fitBounds(bounds: any, options: any) {
-    return this.map.fitBounds(bounds, options);
-  }
-
-  @Method()
-  async flyTo(options: any) {
-    this.map.flyTo(options);
-  }
-
-  @Method()
-  async getCenter() {
-    return this.map.getCenter();
-  }
-
-  @Method()
-  async getLayoutProperty(layerName: string, propName: string) {
-    let {layer} = await this.getLayerInfo(layerName);
-    if (layer) return (layer.layer || {})[propName];
-  }
-
-  @Method()
-  async getPaintProperty(layerName: string, propName: string) {
-    let {layer} = await this.getLayerInfo(layerName);
-    if (layer) return (layer.paint || {})[propName];
-  }
-
-  @Method()
-  async getStyle() {
-    return this._style;
-  }
-
-  @Method()
-  async getStyleElementById(id: string): Promise<HTMLGlStyleElement> {
-    let styles = document.querySelectorAll('gl-style');
-    for (let i = 0; i < styles.length; i++) {
-      let style = styles[i];
-      if (style.id === id) return style;
-    }
-  }
-
-  @Method()
-  async getZoom() {
-    return this.map.getZoom();
-  }
-
-  @Method()
-  async queryRenderedFeatures(geometry? , options?) {
-    return this.map.queryRenderedFeatures(geometry, options);
-  }
-
-  @Method()
-  async querySourceFeatures(sourceId: string, options?: any) {
-    return this.map.querySourceFeatures(sourceId, options);
-  }
-
-  @Method()
-  async setLayoutProperty(layerName: string, propName: string, propValue: any) {
-    let {layer} = await this.getLayerInfo(layerName);
-    if (layer) {
-      layer.layout = layer.layout || {};
-      layer.layout[propName] = propValue;
-      // style.setJSON(styleJson);
-    }
-  }
-
-  @Method()
-  async setPaintProperty(layerName: string, propName: string, propValue: any) {
-    let {layer} = await this.getLayerInfo(layerName);
-    if (layer) {
-      layer.paint = layer.paint || {};
-      layer.paint[propName] = propValue;
-      // style.setJSON(styleJson);
-    }
-  }
-
-  @Method()
-  async setCenter(center: any, eventData: any) {
-    return this.map.setCenter(center, eventData);
-  }
-
-  @Method()
-  async setCursor(cursor: string) {
-    this.map.getCanvas().style.cursor = cursor;
-  }
-
-  on(eventName: string, layerNameOrHandler: string, handler: Function): void;
-  on(eventName: string, layerNameOrHandler: Function): void;
-
-  @Method()
-  async on(eventName: string, layerNameOrHandler: string | Function,
-      handler?: Function) {
-    (handler) ?
-      this.map.on(eventName, layerNameOrHandler, handler) :
-      this.map.on(eventName, layerNameOrHandler);
-  }
-
-  @Method()
-  async off(eventName: string, layerName: string, handler: Function) {
-    this.map.off(eventName, layerName, handler);
-  }
-
-  async getLayerInfo(layerName: string) {
-    let layerParts = layerName.split(':', 2);
-    let style = await this.getStyleElementById(layerParts[0]);
-    let json = (style as HTMLGlStyleElement).json;
-    for (let layer of json.layers) {
-      if (layer.id === layerParts[1]) {
-        return {
-          layer: layer,
-          style: style,
-          styleJson: json
-        };
-      }
-    }
   }
 
   getStyleLayers(styleId: string, json: any) {

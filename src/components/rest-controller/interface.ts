@@ -1,6 +1,5 @@
-export interface RemoteOptions {
+export interface RestOptions {
   url: string;
-  feature: any;
   token?: string;
   method?: 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE';
   mode?: RequestMode;

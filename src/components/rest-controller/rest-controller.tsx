@@ -1,19 +1,20 @@
-import { Component, Method } from '@stencil/core';
-import { RemoteOptions } from './interface';
+import { Component, Method }
+  from '@stencil/core';
+import { RestOptions } from './interface';
 
 
 @Component({
-  tag: 'gl-remote-controller'
+  tag: 'gl-rest-controller'
 })
-export class RemoteController {
+export class RestController {
   @Method()
-  send(options: RemoteOptions) {
+  async send(feature: any, options: RestOptions) {
     let headers = {};
     headers['Content-Type'] = 'application/json';
     if (options.token) headers['Authorization'] = 'Bearer ' + options.token;
 
-    return fetch(options.url, {
-      body: JSON.stringify(options.feature),
+    return await fetch(options.url, {
+      body: JSON.stringify(feature),
       headers: headers,
       method: options.method || 'POST',
       mode: options.mode || 'cors'

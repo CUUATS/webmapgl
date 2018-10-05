@@ -1,5 +1,6 @@
 import { Component, Listen, Prop, State, Watch } from '@stencil/core';
 import { _t } from '../i18n/i18n';
+import { getMap } from '../utils';
 
 
 @Component({
@@ -7,7 +8,6 @@ import { _t } from '../i18n/i18n';
 })
 export class FeatureList {
   data: any;
-  map?: HTMLGlMapElement;
 
   @State() limit: number;
 
@@ -19,12 +19,14 @@ export class FeatureList {
   @Prop() item: boolean = true;
   @Prop() loadingSpinner: string = 'bubbles';
   @Prop() loadingText: string = _t('webmapgl.feature-list.loading');
+  @Prop() mapId: string;
   @Prop() orderBy: string;
   @Prop() order: 'asc' | 'desc' | 'none' = 'asc';
-  @Prop() source: string;
+  @Prop() styleId: string;
+  @Prop() sourceId: string;
 
   async componentWillLoad() {
-    await this.handleSource();
+    await this.handleSourceId();
     const map = this.getMap();
     if (map) map.on('moveend', () => this.filter());
   }
@@ -40,13 +42,12 @@ export class FeatureList {
     this.filter();
   }
 
-  @Watch('source')
-  async handleSource() {
-    if (!this.source) return;
-
-    const map = this.getMap();
-    const style = await map.getStyle();
-    const data = style.sources[this.source].data;
+  @Watch('sourceId')
+  async handleSourceId() {
+    const style : HTMLGlStyleElement =
+      document.querySelector(`#${this.styleId}`);
+    if (!style) return;
+    const data = style.json.sources[this.sourceId].data;
 
     if (typeof data === 'string') {
       let res = await fetch(data);
@@ -57,7 +58,7 @@ export class FeatureList {
   }
 
   getMap() {
-    return document.querySelector('gl-map');
+    return getMap(this.mapId).map;
   }
 
   async filter() {
@@ -67,8 +68,7 @@ export class FeatureList {
     if (this.display === 'all') {
       features = this.data.features;
     } else {
-      const map = this.getMap();
-      let bounds = map.map.getBounds();
+      let bounds = this.getMap().getBounds();
       features = this.data.features.filter((feature) => {
         let [lng, lat] = feature.geometry.coordinates;
         return lng >= bounds.getWest() && lng <= bounds.getEast() &&

@@ -6,18 +6,15 @@ import { Component, Element, Event, EventEmitter, Prop, State, Watch }
   tag: 'gl-like-button'
 })
 export class LikeButton {
-  likeCtrl?: HTMLGlLikeControllerElement;
-  remoteCtrl?: HTMLGlRemoteControllerElement;
-
   @Element() el: HTMLGlLikeButtonElement;
 
   @State() count: number = 0;
   @State() liked: boolean = false;
 
-  @Prop({connect: 'gl-like-controller'}) lazyLikeCtrl!:
+  @Prop({connect: 'gl-like-controller'}) likeCtrl!:
     HTMLGlLikeControllerElement;
-  @Prop({connect: 'gl-remote-controller'}) lazyRemoteCtrl!:
-    HTMLGlRemoteControllerElement;
+  @Prop({connect: 'gl-rest-controller'}) restCtrl!:
+    HTMLGlRestControllerElement;
 
   @Prop() attribute: string = '_likes';
   @Prop() disabled: boolean = false;
@@ -32,8 +29,6 @@ export class LikeButton {
   @Event() glLike: EventEmitter;
 
   async componentWillLoad() {
-    this.likeCtrl = await this.lazyLikeCtrl.componentOnReady();
-    this.remoteCtrl = await this.lazyRemoteCtrl.componentOnReady();
     this.setState();
   }
 
@@ -56,16 +51,15 @@ export class LikeButton {
     // Fail silently if request fails.
     let success = false;
     try {
-      await this.remoteCtrl.send({
+      await this.restCtrl.send({
+        type: 'Feature',
+        properties: {
+          action: (this.liked) ? 'like' : 'unlike',
+          feature_id: this.feature.id,
+          client_id: this.likeCtrl.clientId
+        }
+      }, {
         url: this.url,
-        feature: {
-          type: 'Feature',
-          properties: {
-            action: (this.liked) ? 'like' : 'unlike',
-            feature_id: this.feature.id,
-            client_id: this.likeCtrl.clientId
-          }
-        },
         token: this.token,
         method: this.method,
         mode: this.requestMode

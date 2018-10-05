@@ -1,13 +1,12 @@
-import { Component, Event, EventEmitter, Method, Prop } from '@stencil/core';
+import { Component, Method } from '@stencil/core';
 import { DrawOptions } from './interface';
-declare const MapboxDraw;
+import { getMap } from '../utils';
 
 
 @Component({
   tag: 'gl-draw-controller'
 })
 export class DrawController {
-  draw: any;
   defaultOptions: DrawOptions = {
     type: 'point',
     multiple: false,
@@ -15,20 +14,35 @@ export class DrawController {
     delete: false,
     mode: 'draw'
   };
-  map?: any;
 
-  @Event() glDrawCreate: EventEmitter;
-  @Event() glDrawDelete: EventEmitter;
-  @Event() glDrawEnter: EventEmitter;
-  @Event() glDrawExit: EventEmitter;
+  @Method()
+  async create(featureCollection: any, options: DrawOptions) {
+    let map = getMap(options.mapId);
+    if (!map) throw 'Draw action map not found';
 
-  @Prop({connect: 'gl-map'}) lazyMap!: HTMLGlMapElement;
+    let toolbar = document.querySelector('gl-draw-toolbar');
+    if (toolbar && options.toolbarLabel) toolbar.label = options.toolbarLabel;
 
-  async componentWillLoad() {
-    let mapEl = await this.lazyMap.componentOnReady();
-    this.map = mapEl.map;
-    this.map.on('draw.create', (e) => this.glDrawCreate.emit(e));
-    this.map.on('draw.delete', (e) => this.glDrawDelete.emit(e));
+    map.drawOptions = this.getControlOptions(options);
+    map.drawing = true;
+    (featureCollection) ?
+      map.draw.set(featureCollection) : map.draw.deleteAll();
+
+    return await new Promise((resolve) => {
+      let cancel = () => {
+        map.drawing = false;
+        resolve();
+        toolbar.removeEventListener('glDrawCancel', cancel);
+      };
+      toolbar.addEventListener('glDrawCancel', cancel);
+
+      let confirm = () => {
+        map.drawing = false;
+        resolve(map.draw.getAll());
+        toolbar.removeEventListener('glDrawConfirm', confirm);
+      };
+      toolbar.addEventListener('glDrawConfirm', confirm);
+    });
   }
 
   getControlOptions(options?: DrawOptions) {
@@ -57,27 +71,5 @@ export class DrawController {
     if (opts.styles) (result as any).styles = opts.styles;
 
     return result;
-  }
-
-  @Method()
-  async enter(options?: DrawOptions) {
-    if (this.draw) return;
-    this.draw = new MapboxDraw(this.getControlOptions(options));
-    this.map.addControl(this.draw);
-    this.glDrawEnter.emit();
-  }
-
-  @Method()
-  async exit() {
-    if (!this.draw) return;
-    this.map.removeControl(this.draw);
-    this.draw = null;
-    this.glDrawExit.emit();
-  }
-
-  @Method()
-  async getAll() {
-    if (!this.draw) return;
-    return this.draw.getAll();
   }
 }

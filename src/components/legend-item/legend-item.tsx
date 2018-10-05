@@ -1,4 +1,4 @@
-import { Component, Element, Listen, Prop, State } from '@stencil/core';
+import { Component, Element, Listen, Prop, State, Watch } from '@stencil/core';
 import { toArray } from '../utils';
 
 @Component({
@@ -6,27 +6,32 @@ import { toArray } from '../utils';
   styleUrl: 'legend-item.scss'
 })
 export class LegendItem {
-  map?: HTMLGlMapElement;
-
   @Element() el: HTMLElement;
 
   @State() visible: boolean;
 
   @Prop() layers: string | string[];
   @Prop() image: string;
-  @Prop({connect: 'gl-map'}) lazyMap!: HTMLGlMapElement;
   @Prop() toggle: boolean = false;
+  @Prop() styleId: string;
   @Prop() widget: 'divider' | 'item' = 'item';
 
   async componentWillLoad() {
-    this.map = await this.lazyMap.componentOnReady();
-    let style = await this.map.getStyle();
-    this.update(style);
+    this.handleStyleId();
   }
 
-  @Listen('body:glStyleUpdated')
+  @Watch('styleId')
+  async handleStyleId() {
+    this.update(this.getStyle().json);
+  }
+
+  @Listen('body:glStyleElementModified')
   handleStyleUpdated(e: CustomEvent) {
-    this.update(e.detail);
+    if (e.detail.id === this.styleId) this.update(e.detail.json);
+  }
+
+  getStyle() : HTMLGlStyleElement {
+    return document.querySelector(`gl-style#${this.styleId}`);
   }
 
   getVisible(json) {
@@ -41,16 +46,25 @@ export class LegendItem {
     }
   }
 
-  toggleVisible() {
-    let visible = !(this.visible || false);
-    toArray(this.layers).forEach((layer) => {
-      this.map.setLayoutProperty(layer, 'visibility',
-        (visible) ? 'visible' : 'none');
+  setVisible(visible) {
+    if (this.visible === visible) return;
+
+    let layers = toArray(this.layers);
+    let styleEl = this.getStyle();
+
+    let json = {...styleEl.json};
+    json.layers = (json.layers || []).map((layer) => {
+      if (layers.indexOf(layer.id) !== -1) {
+        layer.layout = layer.layout || {};
+        layer.layout.visibility = (visible) ? 'visible' : 'none';
+      }
+      return layer;
     });
+    styleEl.json = json;
   }
 
-  update(style) {
-    this.visible = this.getVisible(style);
+  update(json) {
+    if (json) this.visible = this.getVisible(json);
   }
 
   render() {
@@ -65,7 +79,7 @@ export class LegendItem {
     );
     if (this.toggle) content.push(
       <ion-toggle slot="end" checked={this.visible}
-        onIonChange={() => this.toggleVisible()}></ion-toggle>
+        onIonChange={(e) => this.setVisible(e.detail.checked)}></ion-toggle>
     );
 
     if (this.widget === 'divider') return (
