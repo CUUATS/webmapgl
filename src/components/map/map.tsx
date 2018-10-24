@@ -32,7 +32,7 @@ export class Map {
   private _style: any;
   private _updateStyleTimeout: number;
 
-  async componentWillLoad() {
+  componentWillLoad() {
     this._style = this.loadStyle();
     this.map = new mapboxgl.Map({
       container: this.el,
@@ -143,6 +143,7 @@ export class Map {
 
       let id = styleEl.id;
       let json = styleEl.json;
+      if (!json) return;
 
       style.layers = this.getStyleLayers(id, json).concat(style.layers);
       style.sources = {
