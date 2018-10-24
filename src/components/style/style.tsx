@@ -40,6 +40,7 @@ export class Style {
   }
 
   componentDidLoad() {
+    if (this.clickableLayers) this.updateClickable(this.clickableLayers);
     this.glStyleElementAdded.emit(this);
   }
 
@@ -75,18 +76,20 @@ export class Style {
     for (let layer of newLayers) {
       const layerIdx = oldLayers.indexOf(layer);
       if (layerIdx === -1) {
-        map.on('click', layer, this.handlers.click);
-        map.on('mouseenter', layer, this.handlers.mouseenter);
-        map.on('mouseleave', layer, this.handlers.mouseleave);
+        let layerName = `${this.id}:${layer}`;
+        map.on('click', layerName, this.handlers.click);
+        map.on('mouseenter', layerName, this.handlers.mouseenter);
+        map.on('mouseleave', layerName, this.handlers.mouseleave);
       } else {
         oldLayers.splice(layerIdx, 1);
       }
     }
 
     for (let layer of oldLayers) {
-      map.off('click', layer, this.handlers.click);
-      map.off('mouseenter', layer, this.handlers.mouseenter);
-      map.off('mouseleave', layer, this.handlers.mouseleave);
+      let layerName = `${this.id}:${layer}`;
+      map.off('click', layerName, this.handlers.click);
+      map.off('mouseenter', layerName, this.handlers.mouseenter);
+      map.off('mouseleave', layerName, this.handlers.mouseleave);
     }
   }
 
@@ -95,10 +98,10 @@ export class Style {
   }
 
   handleMouseenter() {
-    this.getMap().setCursor('pointer');
+    this.getMap().getCanvas().style.cursor = 'pointer';
   }
 
   handleMouseleave() {
-    this.getMap().setCursor('');
+    this.getMap().getCanvas().style.cursor = '';
   }
 }
