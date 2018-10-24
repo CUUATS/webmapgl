@@ -1,5 +1,3 @@
-import { sass } from '@stencil/sass';
-
 export const config = {
   namespace: 'webmapgl',
   copy: [
