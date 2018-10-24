@@ -1,0 +1,13 @@
+gl-drawer {
+  flex-direction: column;
+  height: 50%;
+}
+gl-drawer.gl-drawer-closed {
+  display: none;
+}
+gl-drawer.gl-drawer-open {
+  display: flex;
+}
+gl-drawer ion-content {
+  height: 100%;
+}

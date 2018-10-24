@@ -3,7 +3,7 @@ import { toArray } from '../utils';
 
 @Component({
   tag: 'gl-legend-item',
-  styleUrl: 'legend-item.scss'
+  styleUrl: 'legend-item.css'
 })
 export class LegendItem {
   @Element() el: HTMLElement;

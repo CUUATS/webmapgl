@@ -1,0 +1,22 @@
+gl-app {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+gl-app .pane-main {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+gl-app .map-content .fixed-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+gl-app .map-content ion-fab.fab-vertical-bottom {
+  bottom: 30px;
+}

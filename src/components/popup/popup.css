@@ -1,0 +1,6 @@
+gl-popup {
+  display: none;
+}
+gl-map .mapboxgl-popup-content h2 {
+  font-size: 1.3em;
+}

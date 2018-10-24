@@ -3,7 +3,7 @@ import { _t } from '../i18n/i18n';
 
 
 @Component({
-  styleUrl: 'form-page.scss',
+  styleUrl: 'form-page.css',
   tag: 'gl-form-page'
 })
 export class FormPage {

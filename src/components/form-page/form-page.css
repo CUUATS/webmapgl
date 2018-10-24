@@ -1,0 +1,7 @@
+gl-form-page ion-list,
+gl-form-page ion-list.list-md,
+gl-form-page ion-list.list-ios {
+  /* Fix extra height in modal scroll area */
+  margin-bottom: 0;
+  padding-bottom: 16px;
+}

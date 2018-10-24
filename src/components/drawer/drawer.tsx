@@ -2,7 +2,7 @@ import { Component, Method, Prop, State } from '@stencil/core';
 
 
 @Component({
-  styleUrl: 'drawer.scss',
+  styleUrl: 'drawer.css',
   tag: 'gl-drawer'
 })
 export class Drawer {

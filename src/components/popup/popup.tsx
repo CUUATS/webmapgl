@@ -4,7 +4,7 @@ declare const mapboxgl;
 
 
 @Component({
-  styleUrl: 'popup.scss',
+  styleUrl: 'popup.css',
   tag: 'gl-popup'
 })
 export class Popup {

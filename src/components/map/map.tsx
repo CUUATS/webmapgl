@@ -6,7 +6,7 @@ declare const MapboxDraw;
 
 @Component({
   tag: 'gl-map',
-  styleUrl: 'map.scss'
+  styleUrl: 'map.css'
 })
 export class Map {
   @Element() el: HTMLElement;

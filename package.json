@@ -25,7 +25,6 @@
     "screenfull": "^3.3.2"
   },
   "devDependencies": {
-    "@stencil/sass": "0.1.0",
     "@types/dot": "^1.1.2",
     "@types/jest": "^21.1.1",
     "jest": "^21.2.1"

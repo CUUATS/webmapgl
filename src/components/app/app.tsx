@@ -4,7 +4,7 @@ import { _t } from '../i18n/i18n';
 
 @Component({
   tag: 'gl-app',
-  styleUrl: 'app.scss'
+  styleUrl: 'app.css'
 })
 export class App {
   @Element() el: HTMLElement;
