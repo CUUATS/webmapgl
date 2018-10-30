@@ -25,8 +25,7 @@ export class DrawController {
 
     map.drawOptions = this.getControlOptions(options);
     map.drawing = true;
-    (featureCollection) ?
-      map.draw.set(featureCollection) : map.draw.deleteAll();
+    if (featureCollection) map.draw.set(featureCollection);
 
     return await new Promise((resolve) => {
       let cancel = () => {
@@ -37,8 +36,9 @@ export class DrawController {
       toolbar.addEventListener('glDrawCancel', cancel);
 
       let confirm = () => {
+        let featureCollection = map.draw.getAll();
         map.drawing = false;
-        resolve(map.draw.getAll());
+        resolve(featureCollection);
         toolbar.removeEventListener('glDrawConfirm', confirm);
       };
       toolbar.addEventListener('glDrawConfirm', confirm);

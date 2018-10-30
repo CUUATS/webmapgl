@@ -17,7 +17,7 @@ export class Map {
   @Event() glDrawExit: EventEmitter;
   @Event() glStyleUpdated: EventEmitter;
 
-  @Prop() draw: any;
+  @Prop({mutable: true}) draw: any;
   @Prop() drawOptions?: any;
   @Prop() drawing: boolean = false;
   @Prop() id: string;
