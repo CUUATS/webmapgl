@@ -6,14 +6,17 @@ import { Component, Element, Event, EventEmitter, Prop, State, Watch }
   tag: 'gl-like-button'
 })
 export class LikeButton {
+  likeCtrl?: HTMLGlLikeControllerElement;
+  restCtrl?: HTMLGlRestControllerElement;
+
   @Element() el: HTMLGlLikeButtonElement;
 
   @State() count: number = 0;
   @State() liked: boolean = false;
 
-  @Prop({connect: 'gl-like-controller'}) likeCtrl!:
+  @Prop({connect: 'gl-like-controller'}) lazyLikeCtrl!:
     HTMLGlLikeControllerElement;
-  @Prop({connect: 'gl-rest-controller'}) restCtrl!:
+  @Prop({connect: 'gl-rest-controller'}) lazyRestCtrl!:
     HTMLGlRestControllerElement;
 
   @Prop() attribute: string = '_likes';
@@ -29,7 +32,9 @@ export class LikeButton {
   @Event() glLike: EventEmitter;
 
   async componentWillLoad() {
-    this.setState();
+    this.likeCtrl = await this.lazyLikeCtrl.componentOnReady();
+    this.restCtrl = await this.lazyRestCtrl.componentOnReady();
+    await this.setState();
   }
 
   @Watch('feature')
