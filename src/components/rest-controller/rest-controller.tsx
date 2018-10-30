@@ -8,7 +8,7 @@ import { RestOptions } from './interface';
 })
 export class RestController {
   @Method()
-  async send(feature: any, options: RestOptions) {
+  async create(feature: any, options: RestOptions) {
     let headers = {};
     headers['Content-Type'] = 'application/json';
     if (options.token) headers['Authorization'] = 'Bearer ' + options.token;
