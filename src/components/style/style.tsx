@@ -24,7 +24,7 @@ export class Style {
   @Prop() basemap = false;
   @Prop() clickableLayers: string[] | string = [];
   @Prop() enabled = true;
-  @Prop({mutable: true}) id: string;
+  @Prop({mutable: true, reflectToAttr: true}) id: string;
   @Prop() name: string;
   @Prop() thumbnail: string;
   @Prop() token: string;

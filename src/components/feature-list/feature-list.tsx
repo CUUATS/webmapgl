@@ -7,8 +7,7 @@ import { getMap } from '../utils';
   tag: 'gl-feature-list'
 })
 export class FeatureList {
-  data: any;
-
+  @State() data: any = {};
   @State() limit: number;
 
   @Prop() batchSize: number = 20;
@@ -25,11 +24,11 @@ export class FeatureList {
   @Prop() styleId: string;
   @Prop() sourceId: string;
 
-  async componentWillLoad() {
-    await this.handleSourceId();
+  componentWillLoad() {
+    this.handleSourceId();
     const map = this.getMap();
     if (map) map.on('moveend', () => this.filter());
-  }
+}
 
   @Listen('ionInfinite')
   handleInfiniteScroll(e) {
@@ -37,16 +36,17 @@ export class FeatureList {
     e.target.complete();
   }
 
-  @Watch('display')
-  handleDisplay() {
-    this.filter();
+  @Listen('body:glStyleElementModified')
+  handleStyleUpdated(e: CustomEvent) {
+    if (e.detail.id === this.styleId) this.handleSourceId();
   }
 
+  @Watch('styleId')
   @Watch('sourceId')
   async handleSourceId() {
     const style : HTMLGlStyleElement =
       document.querySelector(`#${this.styleId}`);
-    if (!style) return;
+    if (!style || !style.json.sources) return;
     const data = style.json.sources[this.sourceId].data;
 
     if (typeof data === 'string') {
@@ -55,6 +55,7 @@ export class FeatureList {
     } else {
       this.data = data;
     }
+    this.filter();
   }
 
   getMap() {
@@ -62,7 +63,7 @@ export class FeatureList {
   }
 
   async filter() {
-    if (!this.data) return;
+    if (!this.data.features) return;
 
     let features;
     if (this.display === 'all') {
@@ -78,7 +79,7 @@ export class FeatureList {
 
     this.limit = this.batchSize;
     this.features = this.sort(features);
-  }
+}
 
   sort(features: any[]) {
     if (this.order === 'none' || !this.orderBy) return features;
