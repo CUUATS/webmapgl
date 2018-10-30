@@ -23,6 +23,12 @@ import {
   ReverseGeocodeOptions,
 } from './components/geocode-controller/geocode-interface';
 import {
+  LikeProxy,
+} from './components/like-controller/like-proxy';
+import {
+  LikeOptions,
+} from './components/like-controller/interface';
+import {
   RestOptions,
 } from './components/rest-controller/interface';
 
@@ -266,16 +272,9 @@ export namespace Components {
   }
 
   interface GlLikeController {
-    'clientId': string;
-    'getLiked': (feature: any) => Promise<boolean>;
-    'keyPrefix': string;
-    'like': (feature: any) => Promise<void>;
-    'unlike': (feature: any) => Promise<void>;
+    'create': (feature: any, options?: LikeOptions) => Promise<LikeProxy>;
   }
-  interface GlLikeControllerAttributes extends StencilHTMLAttributes {
-    'clientId'?: string;
-    'keyPrefix'?: string;
-  }
+  interface GlLikeControllerAttributes extends StencilHTMLAttributes {}
 
   interface GlMap {
     'draw': any;
@@ -336,7 +335,7 @@ export namespace Components {
   }
 
   interface GlRestController {
-    'send': (feature: any, options: RestOptions) => Promise<Response>;
+    'create': (feature: any, options: RestOptions) => Promise<Response>;
   }
   interface GlRestControllerAttributes extends StencilHTMLAttributes {}
 
