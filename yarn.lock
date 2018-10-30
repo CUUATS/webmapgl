@@ -9,9 +9,9 @@
     "@types/node" "10.11.0"
     ionicons "4.4.6"
 
-"@stencil/core@0.14.2":
-  version "0.14.2"
-  resolved "https://registry.yarnpkg.com/@stencil/core/-/core-0.14.2.tgz#2a2c5c14b15cf2cf8fb8fd268db647abaf749250"
+"@stencil/core@0.15.1":
+  version "0.15.1"
+  resolved "https://registry.yarnpkg.com/@stencil/core/-/core-0.15.1.tgz#d2061c5e755a6ebd07ecb29dc9897effd1e60b77"
   dependencies:
     chokidar "2.0.3"
     jsdom "11.11.0"
