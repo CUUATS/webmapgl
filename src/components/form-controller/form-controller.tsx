@@ -19,6 +19,8 @@ export class FormController {
       component: form
     });
 
+    await modal.present();
+
     return await new Promise((resolve) => {
       form.addEventListener('glFormCancel', () => {
         modal.dismiss();
