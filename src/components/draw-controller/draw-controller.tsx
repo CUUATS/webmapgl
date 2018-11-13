@@ -32,15 +32,16 @@ export class DrawController {
         map.drawing = false;
         resolve();
         toolbar.removeEventListener('glDrawCancel', cancel);
+        toolbar.removeEventListener('glDrawConfirm', confirm);
       };
-      toolbar.addEventListener('glDrawCancel', cancel);
-
       let confirm = () => {
         let featureCollection = map.draw.getAll();
         map.drawing = false;
         resolve(featureCollection);
         toolbar.removeEventListener('glDrawConfirm', confirm);
+        toolbar.removeEventListener('glDrawConfirm', confirm);
       };
+      toolbar.addEventListener('glDrawCancel', cancel);
       toolbar.addEventListener('glDrawConfirm', confirm);
     });
   }
